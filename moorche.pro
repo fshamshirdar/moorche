@@ -1,5 +1,5 @@
 SOURCES += \
-    main.cpp
+    src/main.cpp
 
 INCLUDEPATH += /home/faraz/workspace/stage/include/Stage-4.1
 
