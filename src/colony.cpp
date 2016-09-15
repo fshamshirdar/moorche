@@ -1,0 +1,53 @@
+#include <include/colony.h>
+
+Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size])
+{
+}
+
+Colony::~Colony()
+{
+    delete[] moors;
+}
+
+void Colony::connect(Stg::World* world)
+{
+    for(unsigned int idx = 0; idx < size; idx++) {
+        // the robots' models are named r0 .. r1999
+        std::stringstream name;
+        name << "r" << idx;
+
+        // get the robot's model and subscribe to it
+        Stg::ModelPosition* position = reinterpret_cast<Stg::ModelPosition*>(world->GetModel(name.str()));
+        assert(position != 0);
+
+        moors[idx].setPosition(position);
+        moors[idx].subscribePosition();
+
+        // get the robot's ranger model and subscribe to it
+        Stg::ModelRanger* ranger = reinterpret_cast<Stg::ModelRanger*>(moors[idx].getPosition()->GetChild("ranger:0"));
+        assert(ranger != 0);
+
+        moors[idx].setRanger(ranger);
+        moors[idx].subscribeRanger();
+    }
+
+    // register with the world
+    world->AddUpdateCallback(Colony::updateCallback, reinterpret_cast<void*>(this));
+}
+
+int Colony::updateCallback(Stg::World* world, void* arg)
+{
+    Colony* colony = reinterpret_cast<Colony*>(arg);
+
+    colony->run(world);
+
+    // never remove this callback
+    return 0;
+}
+
+void Colony::run(Stg::World *world)
+{
+    for (int idx = 0; idx < size; ++idx) {
+        moors[idx].setSpeed(0, 0, 1);
+    }
+}
