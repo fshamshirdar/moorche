@@ -2,7 +2,7 @@
 # Authors: Richard Vaughan
 # $Id$
 
-include "pioneer.inc"
+include "irobot.inc"
 include "map.inc"
 include "sick.inc"
 
@@ -58,7 +58,7 @@ zone
   fiducial_return 10
 )
 
-define moor pioneer2dx                                                                             
+define moor roomba                                                                             
 (
  sicklaser()
  fiducial()
