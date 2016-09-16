@@ -11,10 +11,15 @@ Colony::~Colony()
 
 void Colony::connect(Stg::World* world)
 {
+    this->source = world->GetModel("source_0");
+    this->food = world->GetModel("food_0");
+
     for(unsigned int idx = 0; idx < size; idx++) {
         // the robots' models are named r0 .. r1999
         std::stringstream name;
         name << "r" << idx;
+
+        moors[idx].setColony(this);
 
         // get the robot's model and subscribe to it
         Stg::ModelPosition* position = reinterpret_cast<Stg::ModelPosition*>(world->GetModel(name.str()));

@@ -5,38 +5,34 @@ Moorche::Moorche()
 {
 }
 
-void Moorche::setPosition(Stg::ModelPosition *position)
-{
-    this->position = position;
-}
-
-Stg::ModelPosition* Moorche::getPosition()
-{
-    return this->position;
-}
-
-void Moorche::setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed)
-{
-    this->position->SetSpeed(forwardSpeed, sideSpeed, turnSpeed);
-}
-
-void Moorche::setRanger(Stg::ModelRanger* ranger)
-{
-    this->ranger = ranger;
-}
-
-Stg::ModelRanger* Moorche::getRanger()
-{
-    return this->ranger;
-}
-
 void Moorche::subscribe()
 {
     this->position->Subscribe();
     this->ranger->Subscribe();
 }
 
+bool Moorche::moveToPose(Stg::Pose targetPose)
+{
+    double forwardSpeed = 0;
+    double sideSpeed = 0;
+    double turnSpeed = 0;
+
+    Stg::Pose pose = getPosition()->GetPose();
+    Stg::Pose line(targetPose.x - pose.x, targetPose.y - pose.y, 0, 0);
+
+    if (line.y != 0) {
+        turnSpeed = std::atan2(line.y, line.x) - pose.a;
+    }
+
+    std::cout << turnSpeed << std::endl;
+
+    setSpeed(0, 0, turnSpeed);
+
+    return true;
+}
+
 void Moorche::desicion(Stg::World *world)
 {
-    setSpeed(0, 0, 1);
+    setLastVelocity(getPosition()->GetVelocity());
+    moveToPose(getColony()->getSource()->GetPose());
 }

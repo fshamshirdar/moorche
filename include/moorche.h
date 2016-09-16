@@ -2,28 +2,42 @@
 #define MOORCHE_H
 
 #include <stage.hh>
+#include <include/colony.h>
+
+class Colony;
 
 class Moorche
 {
 public:
     Moorche();
+    void setColony(Colony* colony) { this->colony = colony; }
+    Colony* getColony() { return colony; }
 
     // Positioning
-    void setPosition(Stg::ModelPosition* position);
-    Stg::ModelPosition* getPosition();
-    void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed);
+    void setPosition(Stg::ModelPosition* position) { this->position = position; }
+    Stg::ModelPosition* getPosition() { return position; }
+    void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed) { position->SetSpeed(forwardSpeed, sideSpeed, turnSpeed); }
 
     // Ranger
-    void setRanger(Stg::ModelRanger* ranger);
-    Stg::ModelRanger* getRanger();
+    void setRanger(Stg::ModelRanger* ranger) { this->ranger = ranger; }
+    Stg::ModelRanger* getRanger() { return ranger; }
+
+    // Velocity
+    void setLastVelocity(Stg::Velocity lastVelocity) { this->lastVelocity = lastVelocity; }
+    Stg::Velocity getLastVelocity() { return lastVelocity; }
 
     // Desicion
     void subscribe();
     void desicion(Stg::World* world);
 
 private:
+    bool moveToPose(Stg::Pose targetPose);
+
+private:
     Stg::ModelPosition* position;
     Stg::ModelRanger* ranger;
+    Stg::Velocity lastVelocity;
+    Colony* colony;
 };
 
 #endif // MOORCHE_H
