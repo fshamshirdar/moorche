@@ -11,13 +11,15 @@ public:
     // Positioning
     void setPosition(Stg::ModelPosition* position);
     Stg::ModelPosition* getPosition();
-    void subscribePosition();
     void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed);
 
     // Ranger
     void setRanger(Stg::ModelRanger* ranger);
     Stg::ModelRanger* getRanger();
-    void subscribeRanger();
+
+    // Desicion
+    void subscribe();
+    void desicion(Stg::World* world);
 
 private:
     Stg::ModelPosition* position;

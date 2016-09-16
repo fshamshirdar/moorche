@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-    char* worldPath = "/home/faraz/workspace/stage/src/worlds/simple.world";
+    char* worldPath = "/home/faraz/workspace/cmpt882/moorche/worlds/simple.world";
     unsigned int populationSize = 1;
 
     // check and handle the argumets
@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 
     // create the world
     // Stg::World world;
-    Stg::WorldGui world(800, 700, "Stage Benchmark Program");
+    Stg::WorldGui world(800, 700, "Moorche");
     world.Load(worldPath);
 
     Colony* colony = new Colony(populationSize);

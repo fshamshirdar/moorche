@@ -19,16 +19,15 @@ void Colony::connect(Stg::World* world)
         // get the robot's model and subscribe to it
         Stg::ModelPosition* position = reinterpret_cast<Stg::ModelPosition*>(world->GetModel(name.str()));
         assert(position != 0);
-
         moors[idx].setPosition(position);
-        moors[idx].subscribePosition();
 
         // get the robot's ranger model and subscribe to it
         Stg::ModelRanger* ranger = reinterpret_cast<Stg::ModelRanger*>(moors[idx].getPosition()->GetChild("ranger:0"));
         assert(ranger != 0);
-
         moors[idx].setRanger(ranger);
-        moors[idx].subscribeRanger();
+
+        // Subscribe to models
+        moors[idx].subscribe();
     }
 
     // register with the world
@@ -48,6 +47,6 @@ int Colony::updateCallback(Stg::World* world, void* arg)
 void Colony::run(Stg::World *world)
 {
     for (int idx = 0; idx < size; ++idx) {
-        moors[idx].setSpeed(0, 0, 1);
+        moors[idx].desicion(world);
     }
 }

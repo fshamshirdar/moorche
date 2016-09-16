@@ -1,4 +1,5 @@
 #include <include/moorche.h>
+#include <iostream>
 
 Moorche::Moorche()
 {
@@ -12,11 +13,6 @@ void Moorche::setPosition(Stg::ModelPosition *position)
 Stg::ModelPosition* Moorche::getPosition()
 {
     return this->position;
-}
-
-void Moorche::subscribePosition()
-{
-    this->position->Subscribe();
 }
 
 void Moorche::setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed)
@@ -34,7 +30,13 @@ Stg::ModelRanger* Moorche::getRanger()
     return this->ranger;
 }
 
-void Moorche::subscribeRanger()
+void Moorche::subscribe()
 {
+    this->position->Subscribe();
     this->ranger->Subscribe();
+}
+
+void Moorche::desicion(Stg::World *world)
+{
+    setSpeed(0, 0, 1);
 }
