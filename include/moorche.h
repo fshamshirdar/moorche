@@ -12,11 +12,13 @@ public:
     enum State {
        GO_TO_SOURCE,
        SEARCH_FOR_FOOD,
+       MOVE_FOOD_TO_SOURCE,
        GO_TO_FOOD
     };
 
 public:
     Moorche();
+    ~Moorche();
     void setColony(Colony* colony) { this->colony = colony; }
     Colony* getColony() { return colony; }
 
@@ -33,13 +35,18 @@ public:
     void setLastVelocity(Stg::Velocity lastVelocity) { this->lastVelocity = lastVelocity; }
     Stg::Velocity getLastVelocity() { return lastVelocity; }
 
+    // Cycle
+    void setCycle(uint64_t cycle) { this->cycle = cycle; }
+    uint64_t getCycle() { return this->cycle; }
+
     // Desicion
     void subscribe();
     void desicion(Stg::World* world);
 
 private:
-    bool moveToPose(Stg::Pose targetPose);
-    bool randomMove();
+    void moveToPose(Stg::Pose targetPose);
+    void randomMove();
+    void calculateDistances();
 
 private:
     Stg::ModelPosition* position;
@@ -47,6 +54,13 @@ private:
     Stg::Velocity lastVelocity;
     Colony* colony;
     Moorche::State currentState;
+    uint64_t cycle;
+
+    double forward_distance;
+    double left_distance;
+    double right_distance;
+    double average_left_distance;
+    double average_right_distance;
 };
 
 #endif // MOORCHE_H

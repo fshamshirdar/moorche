@@ -52,7 +52,7 @@ zone
 (
   color "red"
   size [ 0.5 0.5 0.0001 ]
-  pose [ 6.000 6.000 0 0 ]
+  pose [ 6.000 -4.000 0 0 ]
   name "food_0"
   fiducial()
   fiducial_return 10
@@ -64,4 +64,13 @@ define moor roomba
  fiducial()
 )
 
-moor( name "r0" pose [-7.071 -6.858 0 82.372] )
+moor( name "r0" pose [-7.071 -6.858 0 0.372] )
+moor( name "r1" pose [-7.771 -6.858 0 0.372] )
+moor( name "r2" pose [-6.071 -6.858 0 0.372] )
+moor( name "r3" pose [-7.071 -5.858 0 0.372] )
+moor( name "r4" pose [-7.771 -5.858 0 0.372] )
+moor( name "r5" pose [-6.071 -5.858 0 0.372] )
+moor( name "r6" pose [-7.071 -7.858 0 0.372] )
+moor( name "r7" pose [-7.771 -7.858 0 0.372] )
+moor( name "r8" pose [-6.071 -7.858 0 0.372] )
+moor( name "r9" pose [-7.071 -4.858 0 0.372] )

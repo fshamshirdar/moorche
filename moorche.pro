@@ -1,12 +1,12 @@
 SOURCES += \
     src/main.cpp \
     src/moorche.cpp \
-    src/colony.cpp
+    src/colony.cpp \
 
-INCLUDEPATH += /Users/farazshamshirdar/workspace/autonomylab/Stage/include/Stage-4.1
+INCLUDEPATH += /home/faraz/workspace/stage/include/Stage-4.1
 
-LIBS += -L/Users/farazshamshirdar/workspace/autonomylab/Stage/lib/ -lstage
+LIBS += -L/home/faraz/workspace/stage/lib64/ -lstage
 
 HEADERS += \
     include/moorche.h \
-    include/colony.h
+    include/colony.h \
