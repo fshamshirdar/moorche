@@ -17,6 +17,16 @@ void Moorche::subscribe()
     this->ranger->Subscribe();
 }
 
+void Moorche::setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed)
+{
+    if (forwardSpeed > 0.0) {
+        // getColony()->getTrail()->addPoint(this->getPosition()->GetPose());
+        temporaryTrail.push_back(this->getPosition()->GetPose());
+    }
+
+    this->position->SetSpeed(forwardSpeed, sideSpeed, turnSpeed);
+}
+
 void Moorche::moveToPose(Stg::Pose targetPose)
 {
     setLastVelocity(getPosition()->GetVelocity());
@@ -117,24 +127,27 @@ void Moorche::randomMove()
     if (turnSide != 0) {
         additionalTurnSpeed *= turnSide;
     }
-    if (getCycle() % 10 == 0) {
+    if (this->getColony()->getCycle() % 10 == 0) {
         if (turnSide == 0) { // Obstacle Avoidance
             turnSide = (rand() % 2 == 0) ? -1 : 1;
-            additionalTurnSpeed = turnSide * ((double)rand() / RAND_MAX) / turnSpeedCoef;
-        } else {
-            additionalTurnSpeed = turnSpeed;
         }
+        additionalTurnSpeed = turnSide * ((double)rand() / RAND_MAX);
     }
 
-    turnSpeed += additionalTurnSpeed;
+    Trail::Point* targetPoint = getColony()->getTrail()->getAveragePointInCircle(getPosition()->GetPose(), 0.5, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
+    double prob = (double)(rand() % 100) / 100.0;
+    if (prob < Config::ALPHA * targetPoint->getDensity()) {
+        double followingTrailAngle = targetPoint->getPose().a - getPosition()->GetPose().a; 
+        turnSpeed += followingTrailAngle;
+    } else {
+        turnSpeed += additionalTurnSpeed;
+    }
 
-    // finally, relay the commands to the robot
     setSpeed(forwardSpeed, 0, turnSpeed);
 }
 
 void Moorche::calculateDistances()
 {
-    // the range model has multiple sensors
     const Stg::ModelRanger::Sensor sensor = getRanger()->GetSensors()[0];
 
     const unsigned int left_idx_start = 0;
@@ -178,13 +191,16 @@ void Moorche::calculateDistances()
 
 void Moorche::desicion(Stg::World *world)
 {
-    setCycle(world->GetUpdateCount());
     calculateDistances();
     switch (currentState) {
         case Moorche::GO_TO_SOURCE:
             if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < 0.5) {
                 getPosition()->SetColor(Stg::Color::blue);
                 currentState = Moorche::SEARCH_FOR_FOOD;
+                if (temporaryTrail.size() < 1000) {
+                    getColony()->getTrail()->addPoints(temporaryTrail, true);
+                }
+                temporaryTrail.clear();
             } else {
                 moveToPose(getColony()->getSource()->GetPose());
             }
@@ -200,6 +216,10 @@ void Moorche::desicion(Stg::World *world)
             if (getPosition()->GetPose().Distance(getColony()->getFood()->GetPose()) < 0.5) {
                 getPosition()->SetColor(Stg::Color::red);
                 currentState = Moorche::MOVE_FOOD_TO_SOURCE;
+                if (temporaryTrail.size() < 1000) {
+                    getColony()->getTrail()->addPoints(temporaryTrail, false);
+                }
+                temporaryTrail.clear();
             } else {
                 moveToPose(getColony()->getFood()->GetPose());
             }

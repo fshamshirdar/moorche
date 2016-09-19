@@ -1,12 +1,13 @@
 #include <include/colony.h>
 
-Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size])
+Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail())
 {
 }
 
 Colony::~Colony()
 {
     delete[] moors;
+    delete[] trail;
 }
 
 void Colony::connect(Stg::World* world)
@@ -51,6 +52,8 @@ int Colony::updateCallback(Stg::World* world, void* arg)
 
 void Colony::run(Stg::World *world)
 {
+    setCycle(world->GetUpdateCount());
+    trail->update(getCycle());
     for (int idx = 0; idx < size; ++idx) {
         moors[idx].desicion(world);
     }

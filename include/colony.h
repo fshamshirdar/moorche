@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <include/moorche.h>
+#include <include/trail.h>
 
 class Moorche;
 
@@ -16,6 +17,9 @@ public:
 
     Stg::Model* getSource() { return source; }
     Stg::Model* getFood() { return food; }
+    Trail* getTrail() { return trail; }
+    void setCycle(uint64_t cycle) { this->cycle = cycle; }
+    uint64_t getCycle() { return this->cycle; }
 
     void connect(Stg::World* world);
     static int updateCallback(Stg::World* world, void* arg);
@@ -24,6 +28,8 @@ public:
 private:
     unsigned int size;
     Moorche* moors;
+    Trail* trail;
+    uint64_t cycle;
     Stg::Model *source, *food;
 };
 

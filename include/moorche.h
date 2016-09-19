@@ -3,6 +3,7 @@
 
 #include <stage.hh>
 #include <include/colony.h>
+#include <include/config.h>
 
 class Colony;
 
@@ -25,7 +26,7 @@ public:
     // Positioning
     void setPosition(Stg::ModelPosition* position) { this->position = position; }
     Stg::ModelPosition* getPosition() { return position; }
-    void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed) { position->SetSpeed(forwardSpeed, sideSpeed, turnSpeed); }
+    void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed);
 
     // Ranger
     void setRanger(Stg::ModelRanger* ranger) { this->ranger = ranger; }
@@ -34,10 +35,6 @@ public:
     // Velocity
     void setLastVelocity(Stg::Velocity lastVelocity) { this->lastVelocity = lastVelocity; }
     Stg::Velocity getLastVelocity() { return lastVelocity; }
-
-    // Cycle
-    void setCycle(uint64_t cycle) { this->cycle = cycle; }
-    uint64_t getCycle() { return this->cycle; }
 
     // Desicion
     void subscribe();
@@ -54,7 +51,7 @@ private:
     Stg::Velocity lastVelocity;
     Colony* colony;
     Moorche::State currentState;
-    uint64_t cycle;
+    std::vector<Stg::Pose> temporaryTrail;
 
     double forward_distance;
     double left_distance;
