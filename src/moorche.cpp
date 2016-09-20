@@ -164,21 +164,27 @@ void Moorche::randomMove()
                 followingTrailAngle += 2 * M_PI;
             }
 
-    //        double additionalAngle = 0.0; // SO_LOST
-    //        Trail::Point* otherPoint = getColony()->getTrail()->getBestPointInCircle(targetPoint->getPose(), Config::MIN_DISTANCE_BETWEEN_TRAILS, (currentState != Moorche::MOVE_FOOD_TO_SOURCE));
-    //        if (otherPoint && otherPoint->getPose().Distance(targetPoint->getPose()) < Config::MIN_DISTANCE_BETWEEN_TRAILS) {
-    //            double trailsAngle = atan2((targetPoint->getPose().y - otherPoint->getPose().y), (targetPoint->getPose().x - otherPoint->getPose().x));
-    //            additionalAngle = (M_PI - trailsAngle) / 10.0;
-    //            std::cout << "SO_LOST " << additionalAngle << std::endl;
-    //        }
+            double additionalAngle = 0.0; // SO_LOST
+            Trail::Point* otherPoint = getColony()->getTrail()->getBestPointInCircle(targetPoint->getPose(), Config::MIN_DISTANCE_BETWEEN_TRAILS, (currentState != Moorche::MOVE_FOOD_TO_SOURCE));
+            if (otherPoint && otherPoint->getPose().Distance(targetPoint->getPose()) < Config::MIN_DISTANCE_BETWEEN_TRAILS && targetPoint->getPose().x != otherPoint->getPose().x) {
+                double trailsAngle = atan2((targetPoint->getPose().y - otherPoint->getPose().y), (targetPoint->getPose().x - otherPoint->getPose().x));
+                additionalAngle = (M_PI - trailsAngle) / 5.0;
+            }
 
-    //        followingTrailAngle += additionalAngle;
+            if (additionalAngle > M_PI) {
+                additionalAngle -= 2 * M_PI;
+            } else if (additionalAngle < -M_PI) {
+                additionalAngle += 2 * M_PI;
+            }
 
-    //        if (followingTrailAngle > M_PI) {
-    //            followingTrailAngle -= 2 * M_PI;
-    //        } else if (followingTrailAngle < -M_PI) {
-    //            followingTrailAngle += 2 * M_PI;
-    //        }
+            followingTrailAngle += additionalAngle;
+
+            if (followingTrailAngle > M_PI) {
+                followingTrailAngle -= 2 * M_PI;
+            } else if (followingTrailAngle < -M_PI) {
+                followingTrailAngle += 2 * M_PI;
+            }
+             std::cout << "SO_LOST " << additionalAngle << std::endl;
 
             turnSpeed += turnSpeedCoef * followingTrailAngle;
         } else {
