@@ -5,7 +5,7 @@
 int main(int argc, char** argv)
 {
     char* worldPath = "/Users/farazshamshirdar/workspace/autonomylab/moorche/worlds/simple.world";
-    unsigned int populationSize = 5;
+    unsigned int populationSize = 7;
 
     // check and handle the argumets
 //    if (argc < 3) {

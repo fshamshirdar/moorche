@@ -1,4 +1,4 @@
 .gitignore
 build
-*.user
+*.user*
 *DS_Store

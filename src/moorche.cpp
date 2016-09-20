@@ -21,7 +21,9 @@ void Moorche::setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed)
 {
     if (forwardSpeed > 0.0) {
         // getColony()->getTrail()->addPoint(this->getPosition()->GetPose());
-        temporaryTrail.push_back(this->getPosition()->GetPose());
+        if (getColony()->getCycle() % Config::TRAIL_UPDATE_MODE_CYCLE == 0) {
+            temporaryTrail.push_back(this->getPosition()->GetPose());
+        }
     }
 
     getPosition()->SetSpeed(forwardSpeed, sideSpeed, turnSpeed);
@@ -65,9 +67,9 @@ void Moorche::moveToPose(Stg::Pose targetPose)
         forwardSpeed = 0.0;
     }
 
-    const double forward_distance_thrd = 0.50;
-    const double left_distance_thrd = 0.20;
-    const double right_distance_thrd = 0.20;
+    const double forward_distance_thrd = Config::FORWARD_DISTANCE_THRD;
+    const double left_distance_thrd = Config::LEFT_DISTANCE_THRD;
+    const double right_distance_thrd = Config::RIGHT_DISTANCE_THRD;
 
     if (forward_distance < forward_distance_thrd) {
         forwardSpeed = 0.2;
@@ -100,13 +102,13 @@ void Moorche::randomMove()
     static double additionalTurnSpeed = 0;
 
     int turnSide = 0;
-    const double turnSpeedCoef = 2.0;
+    const double turnSpeedCoef = Config::TURN_SPEED_COEF;
     double turnSpeed = 0;
-    double forwardSpeed = 1.0;
+    double forwardSpeed = Config::DEFAULT_FORWARD_SPEED;
 
-    const double forward_distance_thrd = 0.85;
-    const double left_distance_thrd = 0.40;
-    const double right_distance_thrd = 0.40;
+    const double forward_distance_thrd = Config::FORWARD_DISTANCE_THRD;
+    const double left_distance_thrd = Config::LEFT_DISTANCE_THRD;
+    const double right_distance_thrd = Config::RIGHT_DISTANCE_THRD;
 
     if (forward_distance < forward_distance_thrd) {
         forwardSpeed = 0.0;
@@ -136,21 +138,22 @@ void Moorche::randomMove()
     if (turnSide != 0) {
         additionalTurnSpeed *= turnSide;
     } else {
-        if (this->getColony()->getCycle() % 5 == 0) {
+        if (getColony()->getCycle() % Config::RANDOM_DECISION_MODE_CYCLE == 0) {
             if (turnSide == 0) { // Obstacle Avoidance
                 turnSide = (rand() % 2 == 0) ? -1 : 1;
             }
             additionalTurnSpeed = turnSide * ((double)rand() / RAND_MAX);
         }
 
-        Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), 1.5, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
+        Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), Config::ROBOT_TRAIL_RADIUS, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
         double prob = (double)(rand() % 100) / 100.0;
         if (targetPoint && prob < Config::ALPHA) {
             double followingTrailAngle = 0.0;
             double angleToTarget = atan2((targetPoint->getPose().y - getPosition()->GetPose().y), (targetPoint->getPose().x - getPosition()->GetPose().x));
             double angleDiff = (targetPoint->getPose().a - getPosition()->GetPose().a);
             if (targetPoint->getPose().x != getPosition()->GetPose().x) {
-                followingTrailAngle = angleDiff + (angleToTarget / 4);
+                // followingTrailAngle = angleDiff + (angleToTarget / 4); // worse results
+                followingTrailAngle = angleToTarget - getPosition()->GetPose().a;
             } else {
                 followingTrailAngle = angleDiff;
             }
@@ -190,12 +193,12 @@ void Moorche::calculateDistances()
 {
     const Stg::ModelRanger::Sensor sensor = getRanger()->GetSensors()[0];
 
-    const unsigned int left_idx_start = 0;
-    const unsigned int left_idx_end = 85;
-    const unsigned int forward_idx_start = 85;
-    const unsigned int forward_idx_end = 95;
-    const unsigned int right_idx_start = 95;
-    const unsigned int right_idx_end = 180;
+    const unsigned int left_idx_start = Config::LEFT_IDX_START;
+    const unsigned int left_idx_end = Config::LEFT_IDX_END;
+    const unsigned int forward_idx_start = Config::FORWARD_IDX_START;
+    const unsigned int forward_idx_end = Config::FORWARD_IDX_END;
+    const unsigned int right_idx_start = Config::RIGHT_IDX_START;
+    const unsigned int right_idx_end = Config::RIGHT_IDX_END;
 
     forward_distance = 1000.0;
     left_distance = 1000.0;
@@ -245,7 +248,7 @@ void Moorche::desicion(Stg::World *world)
                 currentState = Moorche::SEARCH_FOR_FOOD;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
                     getColony()->getTrail()->addPoints(temporaryTrail, true);
-                    std::cout << "Trail updated" << std::endl;
+                    std::cout << "Trail to source updated: " << temporaryTrail.size() << std::endl;
                 }
                 temporaryTrail.clear();
             } else {
@@ -265,7 +268,7 @@ void Moorche::desicion(Stg::World *world)
                 currentState = Moorche::MOVE_FOOD_TO_SOURCE;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
                     getColony()->getTrail()->addPoints(temporaryTrail, false);
-                    std::cout << "Trail updated" << std::endl;
+                    std::cout << "Trail to food updated: " << temporaryTrail.size() << std::endl;
                 }
                 temporaryTrail.clear();
             } else {
