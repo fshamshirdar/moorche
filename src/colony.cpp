@@ -2,6 +2,17 @@
 
 Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail())
 {
+    std::vector<Stg::Pose> poses;
+    poses.push_back(Stg::Pose(2.0, -2.0, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(1.5, -1.5, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(1.0, -1.0, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(0.5, -0.5, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(-0.0, -0.0, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(-0.5, 0.5, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(-1.0, 1.0, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(-1.5, 1.5, 0.0, M_PI_4));
+    poses.push_back(Stg::Pose(-2.0, 2.0, 0.0, M_PI_4));
+//    trail->addPoints(poses, false);
 }
 
 Colony::~Colony()
@@ -43,9 +54,7 @@ void Colony::connect(Stg::World* world)
 int Colony::updateCallback(Stg::World* world, void* arg)
 {
     Colony* colony = reinterpret_cast<Colony*>(arg);
-
     colony->run(world);
-
     // never remove this callback
     return 0;
 }

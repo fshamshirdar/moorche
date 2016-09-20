@@ -41,8 +41,11 @@ public:
     void update(uint64_t cycle);
     void addPoint(Stg::Pose pose);
     void addPoints(std::vector<Stg::Pose> poses, bool toSource);
+    std::vector<Trail::Point*> getPoints() { return this->points; }
     Trail::Point* getClosestPoint(Stg::Pose pose);
     Trail::Point* getAveragePointInCircle(Stg::Pose pose, double radius, bool toSource);
+    Trail::Point* getBestPointInCircle(Stg::Pose pose, double radius, bool toSource);
+
     void print();
 
 private:

@@ -14,7 +14,8 @@ public:
        GO_TO_SOURCE,
        SEARCH_FOR_FOOD,
        MOVE_FOOD_TO_SOURCE,
-       GO_TO_FOOD
+       GO_TO_FOOD,
+       OBSTACLE_AVOIDANCE
     };
 
 public:
@@ -23,10 +24,15 @@ public:
     void setColony(Colony* colony) { this->colony = colony; }
     Colony* getColony() { return colony; }
 
+    // State
+    void setState(Moorche::State state);
+    State getState() { return this->currentState; }
+
     // Positioning
     void setPosition(Stg::ModelPosition* position) { this->position = position; }
     Stg::ModelPosition* getPosition() { return position; }
     void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed);
+    void setSpeed(Stg::Velocity vel);
 
     // Ranger
     void setRanger(Stg::ModelRanger* ranger) { this->ranger = ranger; }
@@ -51,7 +57,9 @@ private:
     Stg::Velocity lastVelocity;
     Colony* colony;
     Moorche::State currentState;
+    Moorche::State lastState;
     std::vector<Stg::Pose> temporaryTrail;
+    int obstacleAvoidanceCycle;
 
     double forward_distance;
     double left_distance;
