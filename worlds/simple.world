@@ -16,17 +16,17 @@ resolution 0.02
 
 # set the multiple of real time that Stage should try to achieve. Default is 1. 
 # set to 0 to go as fast as possible.
-speedup 1.000
+speedup 4.384
 
 # configure the GUI window
 window
 (
   size [ 635 666 ] # in pixels
-  scale 36.995   # pixels per meter
-  center [ -0.040 -0.517 ]
+  scale 49.240   # pixels per meter
+  center [ 0.061 -0.099 ]
   rotate [ 0.000 0.000 ]
   			
-  show_data 1              # 1=on 0=off
+  show_data 0              # 1=on 0=off
 )
 
 # load an environment bitmap
@@ -43,7 +43,7 @@ zone
 (
   color "green"
   size [ 0.500 0.500 0.001 ]
-  pose [ 3.636 -1.553 0.000 0.000 ]
+  pose [ 4.541 4.551 0.000 0.000 ]
   name "source_0"
   fiducial()
   fiducial_return 20
@@ -53,7 +53,7 @@ zone
 (
   color "red"
   size [ 0.500 0.500 0.001 ]
-  pose [ -3.636 -2.960 0.000 0.000 ]
+  pose [ -4.398 -4.446 0.000 0.000 ]
   name "food_0"
   fiducial()
   fiducial_return 10
@@ -75,11 +75,11 @@ define moor roomba
  obstacle_return 0
 )
 
-moor( name "r0" pose [4.624 -1.484 0.008 0.372] )
-#moor( name "r1" pose [4.160 -2.531 0.000 0.372] )
-#moor( name "r2" pose [2.306 -1.188 0.000 0.372] )
-#moor( name "r3" pose [3.711 -2.045 0.000 0.372] )
-#moor( name "r4" pose [2.922 -2.415 0.000 0.372] )
+moor( name "r0" pose [3.752 2.469 0.008 154.596] )
+moor( name "r1" pose [1.887 4.130 0.000 -25.767] )
+moor( name "r2" pose [3.143 3.632 0.000 -145.047] )
+moor( name "r3" pose [4.377 1.522 0.000 -163.273] )
+moor( name "r4" pose [2.360 2.527 0.000 27.430] )
 #moor( name "r5" pose [2.033 -1.819 0.000 0.372] )
 #moor( name "r6" pose [4.208 -0.657 0.000 0.372] )
 #moor( name "r7" pose [2.196 -2.296 0.000 0.372] )

@@ -4,8 +4,8 @@
 
 int main(int argc, char** argv)
 {
-    char* worldPath = "/home/faraz/workspace/cmpt882/moorche/worlds/simple.world";
-    unsigned int populationSize = 1;
+    char* worldPath = "/Users/farazshamshirdar/workspace/autonomylab/moorche/worlds/simple.world";
+    unsigned int populationSize = 5;
 
     // check and handle the argumets
 //    if (argc < 3) {

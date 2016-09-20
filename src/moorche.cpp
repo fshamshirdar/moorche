@@ -143,14 +143,14 @@ void Moorche::randomMove()
             additionalTurnSpeed = turnSide * ((double)rand() / RAND_MAX);
         }
 
-        Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), 2.0, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
+        Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), 1.5, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
         double prob = (double)(rand() % 100) / 100.0;
         if (targetPoint && prob < Config::ALPHA) {
             double followingTrailAngle = 0.0;
             double angleToTarget = atan2((targetPoint->getPose().y - getPosition()->GetPose().y), (targetPoint->getPose().x - getPosition()->GetPose().x));
             double angleDiff = (targetPoint->getPose().a - getPosition()->GetPose().a);
             if (targetPoint->getPose().x != getPosition()->GetPose().x) {
-                followingTrailAngle = angleDiff + (angleToTarget / 2);
+                followingTrailAngle = angleDiff + (angleToTarget / 4);
             } else {
                 followingTrailAngle = angleDiff;
             }
