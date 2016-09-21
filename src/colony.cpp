@@ -1,7 +1,8 @@
-#include <include/colony.h>
+#include <colony.h>
 
 Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail())
 {
+    // Debug Data
     std::vector<Stg::Pose> poses;
     poses.push_back(Stg::Pose(2.0, -2.0, 0.0, M_PI_4));
     poses.push_back(Stg::Pose(1.5, -1.5, 0.0, M_PI_4));

@@ -2,8 +2,8 @@
 #define MOORCHE_H
 
 #include <stage.hh>
-#include <include/colony.h>
-#include <include/config.h>
+#include <colony.h>
+#include <config.h>
 
 class Colony;
 

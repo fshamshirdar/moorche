@@ -1,4 +1,4 @@
-#include <include/trail.h>
+#include <trail.h>
 
 Trail::Trail() : cycle(0)
 {

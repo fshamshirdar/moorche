@@ -4,8 +4,8 @@
 #include <stage.hh>
 #include <string>
 #include <sstream>
-#include <include/moorche.h>
-#include <include/trail.h>
+#include <moorche.h>
+#include <trail.h>
 
 class Moorche;
 

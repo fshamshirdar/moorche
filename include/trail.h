@@ -2,7 +2,7 @@
 #define TRAIL_H
 
 #include <stage.hh>
-#include <include/config.h>
+#include <config.h>
 
 class Trail
 {

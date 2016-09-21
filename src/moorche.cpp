@@ -1,4 +1,4 @@
-#include <include/moorche.h>
+#include <moorche.h>
 #include <iostream>
 
 Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0)
@@ -184,7 +184,7 @@ void Moorche::randomMove()
             } else if (followingTrailAngle < -M_PI) {
                 followingTrailAngle += 2 * M_PI;
             }
-             std::cout << "SO_LOST " << additionalAngle << std::endl;
+             // std::cout << "SO_LOST " << additionalAngle << std::endl;
 
             turnSpeed += turnSpeedCoef * followingTrailAngle;
         } else {
