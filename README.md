@@ -8,3 +8,4 @@
   - cd build
   - qmake ..
   - make
+  - ./moorche ../worlds/simple.world 7
