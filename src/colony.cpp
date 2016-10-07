@@ -1,6 +1,6 @@
 #include <colony.h>
 
-Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail())
+Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail(this)), map(new Map())
 {
     // Debug Data
     std::vector<Stg::Pose> poses;
@@ -19,7 +19,8 @@ Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Mo
 Colony::~Colony()
 {
     delete[] moors;
-    delete[] trail;
+    delete trail;
+    delete map;
 }
 
 void Colony::connect(Stg::World* world)
@@ -67,4 +68,5 @@ void Colony::run(Stg::World *world)
     for (int idx = 0; idx < size; ++idx) {
         moors[idx].desicion(world);
     }
+    map->print();
 }

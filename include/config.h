@@ -4,7 +4,7 @@
 class Config
 {
 public:
-    static const double EVAPORATION_COEFFICIENT_PER_CYCLE = 0.002;
+    static const double EVAPORATION_COEFFICIENT_PER_CYCLE = 0.005;
     static const double ALPHA = 0.40;
     static const double ROBOT_TRAIL_RADIUS = 1.5;
     static const unsigned int TRAIL_UPDATE_MODE_CYCLE = 10;

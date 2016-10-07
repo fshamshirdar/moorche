@@ -4,10 +4,12 @@
 #include <stage.hh>
 #include <string>
 #include <sstream>
+#include <map.h>
 #include <moorche.h>
 #include <trail.h>
 
 class Moorche;
+class Trail;
 
 class Colony
 {
@@ -18,6 +20,7 @@ public:
     Stg::Model* getSource() { return source; }
     Stg::Model* getFood() { return food; }
     Trail* getTrail() { return trail; }
+    Map* getMap() { return map; }
     void setCycle(uint64_t cycle) { this->cycle = cycle; }
     uint64_t getCycle() { return this->cycle; }
 
@@ -27,6 +30,7 @@ public:
 
 private:
     unsigned int size;
+    Map* map;
     Moorche* moors;
     Trail* trail;
     uint64_t cycle;

@@ -3,6 +3,7 @@ SOURCES += \
     src/moorche.cpp \
     src/colony.cpp \
     src/trail.cpp \
+    src/map.cpp
 
 INCLUDEPATH += /home/faraz/workspace/stage/include/Stage-4.1 ./include
 
@@ -13,3 +14,4 @@ HEADERS += \
     include/colony.h \
     include/trail.h \
     include/config.h \
+    include/map.h

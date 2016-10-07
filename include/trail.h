@@ -2,7 +2,10 @@
 #define TRAIL_H
 
 #include <stage.hh>
+#include <colony.h>
 #include <config.h>
+
+class Colony;
 
 class Trail
 {
@@ -37,7 +40,7 @@ public:
     };
 
 public:
-    Trail();
+    Trail(Colony* colony);
     void update(uint64_t cycle);
     void addPoint(Stg::Pose pose);
     void addPoints(std::vector<Stg::Pose> poses, bool toSource);
@@ -49,6 +52,7 @@ public:
     void print();
 
 private:
+    Colony* colony;
     std::vector<Trail::Point*> points;
     uint64_t cycle;
 };

@@ -1,6 +1,6 @@
 #include <trail.h>
 
-Trail::Trail() : cycle(0)
+Trail::Trail(Colony* colony) : colony(colony), cycle(0)
 {
 }
 
@@ -20,6 +20,7 @@ void Trail::update(uint64_t cycle)
     for (iterator = points.begin(); iterator != points.end();) {
         (*iterator)->update(cycle);
         if ((*iterator)->getDensity() <= 0) {
+            colony->getMap()->decreasePopulation((*iterator)->getPose());
             delete (*iterator);
             iterator = points.erase(iterator);
         } else {
@@ -39,6 +40,7 @@ void Trail::addPoints(std::vector<Stg::Pose> poses, bool toSource)
     int counter = 0;
     for (std::vector<Stg::Pose>::iterator it = poses.begin(); it != poses.end(); it++) {
         Trail::Point* point = new Trail::Point((*it), this->cycle, 1.0, poses.size() - counter, toSource);
+        colony->getMap()->increasePopulation(point->getPose());
         points.push_back(point);
         counter ++;
     }
