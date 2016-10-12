@@ -1,36 +1,47 @@
 #include <map.h>
 
-Map::Map()
+Map::Map(int width, int height) : width(width), height(height)
 {
-    memset(grid, 0, sizeof(grid[0][0]) * MAP_SIZE * MAP_SIZE);
+    int scaledWidth = width / Config::MAP_SCALE;
+    int scaledHeight  = height / Config::MAP_SCALE;
+
+    grid = new int*[scaledHeight];
+    for (int i = 0; i < scaledHeight; i++) {
+        grid[i] = new int[scaledWidth];
+        memset(grid[i], 0, sizeof(grid[0][0]) * scaledWidth);
+    }   
 }
 
 void Map::increasePopulation(Stg::Pose pose)
 {
-    int x = pose.x / MAP_SCALE + MAP_SIZE / 2;
-    int y = pose.y / MAP_SCALE + MAP_SIZE / 2;
-    grid[x][y] ++;
+    int x = pose.x / Config::MAP_SCALE + width / (2 * Config::MAP_SCALE);
+    int y = pose.y / Config::MAP_SCALE + height / (2 * Config::MAP_SCALE);
+    grid[y][x] ++;
 }
 
 void Map::decreasePopulation(Stg::Pose pose)
 {
-    int x = pose.x / MAP_SCALE + MAP_SIZE / 2;
-    int y = pose.y / MAP_SCALE + MAP_SIZE / 2;
-    grid[x][y] --;
+    int x = pose.x / Config::MAP_SCALE + width / (2 * Config::MAP_SCALE);
+    int y = pose.y / Config::MAP_SCALE + height / (2 * Config::MAP_SCALE);
+    grid[y][x] --;
 }
 
 int Map::getValue(Stg::Pose pose)
 {
-    int x = pose.x / MAP_SCALE + MAP_SIZE / 2;
-    int y = pose.y / MAP_SCALE + MAP_SIZE / 2;
-    return grid[x][y];
+    int x = pose.x / Config::MAP_SCALE + width / (2 * Config::MAP_SCALE);
+    int y = pose.y / Config::MAP_SCALE + height / (2 * Config::MAP_SCALE);
+    return grid[y][x];
 }
 
 void Map::print()
 {
-    for (int i = 0; i < MAP_SIZE; ++i) {
-        for (int j = 0; j < MAP_SIZE; ++j) {
-            std::cout << grid[i][j] << " ";
+    int scaledWidth = width / Config::MAP_SCALE;
+    int scaledHeight  = height / Config::MAP_SCALE;
+
+    
+    for (int j = scaledHeight - 1; j >= 0; --j) {
+        for (int i = 0; i < scaledWidth; ++i) {
+            std::cout << grid[j][i] << " ";
         }
         std::cout << std::endl;
     }

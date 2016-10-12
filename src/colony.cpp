@@ -1,6 +1,6 @@
 #include <colony.h>
 
-Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail(this)), map(new Map())
+Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail(this))
 {
     // Debug Data
     std::vector<Stg::Pose> poses;
@@ -27,6 +27,8 @@ void Colony::connect(Stg::World* world)
 {
     this->source = world->GetModel("source_0");
     this->food = world->GetModel("food_0");
+
+    map = new Map(world->GetModel("cave")->GetGeom().size.x, world->GetModel("cave")->GetGeom().size.y);
 
     for(unsigned int idx = 0; idx < size; idx++) {
         // the robots' models are named r0 .. r1999
