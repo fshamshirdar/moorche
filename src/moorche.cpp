@@ -238,6 +238,17 @@ void Moorche::calculateDistances()
     average_right_distance = average_right_distance / (right_idx_end - right_idx_start);
 }
 
+bool Moorche::inZone(Stg::Model *model)
+{
+    return (fabs(getPosition()->GetPose().x - model->GetPose().x) < model->GetGeom().size.x / 2 &&
+            fabs(getPosition()->GetPose().y - model->GetPose().y) < model->GetGeom().size.y / 2);
+}
+
+double Moorche::getModelRadius(Stg::Model* model)
+{
+    return sqrt(pow(model->GetGeom().size.x, 2) + pow(model->GetGeom().size.y, 2));
+}
+
 void Moorche::setState(Moorche::State state)
 {
     lastState = currentState;
@@ -249,7 +260,7 @@ void Moorche::desicion(Stg::World *world)
     calculateDistances();
     switch (currentState) {
         case Moorche::GO_TO_SOURCE:
-            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < 0.5) {
+            if (inZone(getColony()->getSource())) {
                 getPosition()->SetColor(Stg::Color::blue);
                 currentState = Moorche::SEARCH_FOR_FOOD;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
@@ -262,14 +273,14 @@ void Moorche::desicion(Stg::World *world)
             }
             break;
         case Moorche::SEARCH_FOR_FOOD:
-            if (getPosition()->GetPose().Distance(getColony()->getFood()->GetPose()) < 2.0) {
+            if (getPosition()->GetPose().Distance(getColony()->getFood()->GetPose()) < getModelRadius(getColony()->getFood())) {
                 currentState = Moorche::GO_TO_FOOD;
             } else {
                 randomMove();
             }
             break;
         case Moorche::GO_TO_FOOD:
-            if (getPosition()->GetPose().Distance(getColony()->getFood()->GetPose()) < 0.5) {
+            if (inZone(getColony()->getFood())) {
                 getPosition()->SetColor(Stg::Color::red);
                 currentState = Moorche::MOVE_FOOD_TO_SOURCE;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
@@ -282,7 +293,7 @@ void Moorche::desicion(Stg::World *world)
             }
             break;
         case Moorche::MOVE_FOOD_TO_SOURCE:
-            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < 2.0) {
+            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < getModelRadius(getColony()->getSource())) {
                 currentState = Moorche::GO_TO_SOURCE;
             } else {
                 randomMove();

@@ -31,6 +31,8 @@ public:
     // Positioning
     void setPosition(Stg::ModelPosition* position) { this->position = position; }
     Stg::ModelPosition* getPosition() { return position; }
+    bool inZone(Stg::Model* model);
+    double getModelRadius(Stg::Model* model);
     void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed);
     void setSpeed(Stg::Velocity vel);
 

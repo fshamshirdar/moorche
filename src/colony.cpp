@@ -70,5 +70,9 @@ void Colony::run(Stg::World *world)
     for (int idx = 0; idx < size; ++idx) {
         moors[idx].desicion(world);
     }
-    map->print();
+
+
+    if (getCycle() % 100 == 0) {
+        map->print();
+    }
 }
