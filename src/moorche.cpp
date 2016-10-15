@@ -57,7 +57,7 @@ void Moorche::moveToPose(Stg::Pose targetPose)
         turnSpeed = angleDiff * turnSpeedCoef;
     }
 
-    if (pose.Distance(targetPose) > distanceThrd) {
+    if (pose.Distance2D(targetPose) > distanceThrd) {
         forwardSpeed = 0.4;
     } else {
         turnSpeed = 0.0;
@@ -166,7 +166,7 @@ void Moorche::randomMove()
 
             double additionalAngle = 0.0; // SO_LOST
             Trail::Point* otherPoint = getColony()->getTrail()->getBestPointInCircle(targetPoint->getPose(), Config::MIN_DISTANCE_BETWEEN_TRAILS, (currentState != Moorche::MOVE_FOOD_TO_SOURCE));
-            if (otherPoint && otherPoint->getPose().Distance(targetPoint->getPose()) < Config::MIN_DISTANCE_BETWEEN_TRAILS && targetPoint->getPose().x != otherPoint->getPose().x) {
+            if (otherPoint && otherPoint->getPose().Distance2D(targetPoint->getPose()) < Config::MIN_DISTANCE_BETWEEN_TRAILS && targetPoint->getPose().x != otherPoint->getPose().x) {
                 double trailsAngle = atan2((targetPoint->getPose().y - otherPoint->getPose().y), (targetPoint->getPose().x - otherPoint->getPose().x));
                 additionalAngle = (M_PI - trailsAngle) / 5.0;
             }
@@ -273,7 +273,7 @@ void Moorche::desicion(Stg::World *world)
             }
             break;
         case Moorche::SEARCH_FOR_FOOD:
-            if (getPosition()->GetPose().Distance(getColony()->getFood()->GetPose()) < getModelRadius(getColony()->getFood())) {
+            if (getPosition()->GetPose().Distance2D(getColony()->getFood()->GetPose()) < getModelRadius(getColony()->getFood())) {
                 currentState = Moorche::GO_TO_FOOD;
             } else {
                 randomMove();
@@ -293,7 +293,7 @@ void Moorche::desicion(Stg::World *world)
             }
             break;
         case Moorche::MOVE_FOOD_TO_SOURCE:
-            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < getModelRadius(getColony()->getSource())) {
+            if (getPosition()->GetPose().Distance2D(getColony()->getSource()->GetPose()) < getModelRadius(getColony()->getSource())) {
                 currentState = Moorche::GO_TO_SOURCE;
             } else {
                 randomMove();

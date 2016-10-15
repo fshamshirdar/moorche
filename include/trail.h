@@ -29,7 +29,7 @@ public:
         int getTimesToTarget() { return this->timesToTarget; }
 
         Stg::Pose getPose() { return this->pose; }
-        double getDistance(Stg::Pose target) { return this->pose.Distance(target); }
+        double getDistance(Stg::Pose target) { return this->pose.Distance2D(target); }
 
     private:
         Stg::Pose pose;

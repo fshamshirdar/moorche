@@ -5,8 +5,9 @@ SOURCES += \
     src/trail.cpp \
     src/map.cpp
 
-INCLUDEPATH += /home/faraz/workspace/stage/include/Stage-4.1 ./include
+INCLUDEPATH += ${STAGEPATH} ../include
 
+LIBPATH += ${STAGELIBPATH}
 LIBS += ${STAGELIBS}
 
 HEADERS += \
