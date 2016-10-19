@@ -86,14 +86,17 @@ Trail::Point* Trail::getAveragePointInCircle(Stg::Pose pose, double radius, bool
 Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool toSource = false)
 {
     Trail::Point* best = NULL;
-    int bestScore = 1000;
+    double bestScore = 0;
 
     std::vector<Trail::Point*>::iterator iterator;
     for (iterator = points.begin(); iterator != points.end(); iterator ++) {
         if ((*iterator)->getDistance(pose) < radius && (*iterator)->isToSource() == toSource) {
-            if ((*iterator)->getTimesToTarget() < bestScore) {
+            double density = colony->getMap()->getValue((*iterator)->getPose());
+            int stepsToTarget = (*iterator)->getTimesToTarget();
+            double score = Config::STEPS_TO_TARGET_WEIGHT * (1. / (1. + stepsToTarget)) - Config::DENSITY_WEIGHT * (density);
+            if (score > bestScore) {
                 best = (*iterator);
-                bestScore = (*iterator)->getTimesToTarget();
+                bestScore = score;
             }
         }
     }

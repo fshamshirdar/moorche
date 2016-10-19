@@ -7,7 +7,7 @@ SOURCES += \
 
 INCLUDEPATH += /home/faraz/workspace/stage/include/Stage-4.1 ./include
 
-LIBS += ${STAGELIBS}
+LIBS += -L/home/faraz/workspace/stage/lib64/ -lstage
 
 HEADERS += \
     include/moorche.h \
