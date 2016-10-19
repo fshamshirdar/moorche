@@ -24,6 +24,9 @@ void Map::decreasePopulation(Stg::Pose pose)
     int x = pose.x / Config::MAP_SCALE + width / (2 * Config::MAP_SCALE);
     int y = pose.y / Config::MAP_SCALE + height / (2 * Config::MAP_SCALE);
     grid[y][x] --;
+    if (grid[y][x] < 0) {
+        grid[y][x] = 0;
+    }
 }
 
 int Map::getValue(Stg::Pose pose)

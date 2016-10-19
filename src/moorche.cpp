@@ -22,6 +22,7 @@ void Moorche::setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed)
     if (forwardSpeed > 0.0) {
         // getColony()->getTrail()->addPoint(this->getPosition()->GetPose());
         if (getColony()->getCycle() % Config::TRAIL_UPDATE_MODE_CYCLE == 0) {
+            getColony()->getMap()->increasePopulation(this->getPosition()->GetPose());
             temporaryTrail.push_back(this->getPosition()->GetPose());
         }
     }
@@ -266,7 +267,12 @@ void Moorche::desicion(Stg::World *world)
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
                     getColony()->getTrail()->addPoints(temporaryTrail, true);
                     std::cout << "Trail to source updated: " << temporaryTrail.size() << std::endl;
+                } else {
+                    for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
+                        getColony()->getMap()->decreasePopulation((*it));
+                    }
                 }
+ 
                 temporaryTrail.clear();
             } else {
                 moveToPose(getColony()->getSource()->GetPose());
@@ -286,6 +292,10 @@ void Moorche::desicion(Stg::World *world)
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
                     getColony()->getTrail()->addPoints(temporaryTrail, false);
                     std::cout << "Trail to food updated: " << temporaryTrail.size() << std::endl;
+                } else {
+                    for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
+                        getColony()->getMap()->decreasePopulation((*it));
+                    }
                 }
                 temporaryTrail.clear();
             } else {

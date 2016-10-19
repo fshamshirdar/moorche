@@ -40,7 +40,7 @@ void Trail::addPoints(std::vector<Stg::Pose> poses, bool toSource)
     int counter = 0;
     for (std::vector<Stg::Pose>::iterator it = poses.begin(); it != poses.end(); it++) {
         Trail::Point* point = new Trail::Point((*it), this->cycle, 1.0, poses.size() - counter, toSource);
-        colony->getMap()->increasePopulation(point->getPose());
+        // colony->getMap()->increasePopulation(point->getPose());
         points.push_back(point);
         counter ++;
     }
