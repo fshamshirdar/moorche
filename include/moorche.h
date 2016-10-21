@@ -62,6 +62,7 @@ private:
     Moorche::State lastState;
     std::vector<Stg::Pose> temporaryTrail;
     int obstacleAvoidanceCycle;
+    int chosenFood;
 
     double forward_distance;
     double left_distance;

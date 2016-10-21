@@ -1,7 +1,7 @@
 #include <moorche.h>
 #include <iostream>
 
-Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0)
+Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0), chosenFood(0)
 {
     srand(time(0));
 }
@@ -258,8 +258,6 @@ void Moorche::setState(Moorche::State state)
 
 void Moorche::desicion(Stg::World *world)
 {
-    static int chosenFood = 0;
-
     calculateDistances();
     switch (currentState) {
         case Moorche::GO_TO_SOURCE:
@@ -282,7 +280,7 @@ void Moorche::desicion(Stg::World *world)
             break;
         case Moorche::SEARCH_FOR_FOOD:
             for (int i = 0; i < getColony()->getFoods().size(); i++) {
-                if (getPosition()->GetPose().Distance(getColony()->getFood(i)->GetPose()) < 2 * getModelRadius(getColony()->getFood(i))) {
+                if (getPosition()->GetPose().Distance(getColony()->getFood(i)->GetPose()) < getModelRadius(getColony()->getFood(i))) {
                     currentState = Moorche::GO_TO_FOOD;
                     chosenFood = i;
                 } else {
@@ -313,7 +311,7 @@ void Moorche::desicion(Stg::World *world)
             }
             break;
         case Moorche::MOVE_FOOD_TO_SOURCE:
-            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < 2 * getModelRadius(getColony()->getSource())) {
+            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < getModelRadius(getColony()->getSource())) {
                 currentState = Moorche::GO_TO_SOURCE;
             } else {
                 randomMove();
