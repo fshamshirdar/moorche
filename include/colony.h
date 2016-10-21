@@ -14,7 +14,7 @@ class Trail;
 class Colony
 {
 public:
-    Colony(unsigned int populationSize);
+    Colony();
     ~Colony();
 
     Stg::Model* getSource() { return source; }
@@ -32,7 +32,7 @@ public:
 private:
     unsigned int size;
     Map* map;
-    Moorche* moors;
+    std::vector<Moorche> moors;
     Trail* trail;
     uint64_t cycle;
     Stg::Model *source;

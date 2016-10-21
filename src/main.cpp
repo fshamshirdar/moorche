@@ -8,8 +8,8 @@ int main(int argc, char** argv)
     // unsigned int populationSize = 7;
 
     // check and handle the argumets
-    if (argc < 3) {
-        puts( "Usage: moorche <worldfile> <number of robots>" );
+    if (argc < 2) {
+        puts( "Usage: moorche <worldfile>" );
         exit(0);
     }
 
@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     Stg::WorldGui world(800, 700, "Moorche");
     world.Load(argv[1]);
 
-    Colony* colony = new Colony(atoi(argv[2]));
+    Colony* colony = new Colony();
     colony->connect(&world);
 
     // and then run the simulation

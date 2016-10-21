@@ -22,7 +22,7 @@ public:
     static const unsigned int FORWARD_IDX_END = 95;
     static const unsigned int RIGHT_IDX_START = 95;
     static const unsigned int RIGHT_IDX_END = 180;
-    static const double MAP_SCALE = 0.5;
+    static const double MAP_SCALE = 0.25;
     static const double DENSITY_WEIGHT = 0.05;
     static const double STEPS_TO_TARGET_WEIGHT = 10.0;
 };

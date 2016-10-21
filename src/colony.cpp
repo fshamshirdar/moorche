@@ -1,6 +1,6 @@
 #include <colony.h>
 
-Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Moorche[size]), trail(new Trail(this))
+Colony::Colony() : size(0), trail(new Trail(this))
 {
     // Debug Data
     std::vector<Stg::Pose> poses;
@@ -18,7 +18,6 @@ Colony::Colony(unsigned int populationSize) : size(populationSize), moors(new Mo
 
 Colony::~Colony()
 {
-    delete[] moors;
     delete trail;
     delete map;
 }
@@ -38,26 +37,32 @@ void Colony::connect(Stg::World* world)
 
     map = new Map(world->GetModel("cave")->GetGeom().size.x, world->GetModel("cave")->GetGeom().size.y);
 
-    for(unsigned int idx = 0; idx < size; idx++) {
-        // the robots' models are named r0 .. r1999
-        std::stringstream name;
-        name << "r" << idx;
+    i = 0;
+    std::stringstream name;
+    name << "r" << i;
+    while (world->GetModel(name.str())) {
+        moors.push_back(Moorche());
 
-        moors[idx].setColony(this);
+        // the robots' models are named r0 .. r1999
+        moors[i].setColony(this);
 
         // get the robot's model and subscribe to it
         Stg::ModelPosition* position = reinterpret_cast<Stg::ModelPosition*>(world->GetModel(name.str()));
         assert(position != 0);
-        moors[idx].setPosition(position);
+        moors[i].setPosition(position);
 
         // get the robot's ranger model and subscribe to it
-        Stg::ModelRanger* ranger = reinterpret_cast<Stg::ModelRanger*>(moors[idx].getPosition()->GetChild("ranger:0"));
+        Stg::ModelRanger* ranger = reinterpret_cast<Stg::ModelRanger*>(moors[i].getPosition()->GetChild("ranger:0"));
         assert(ranger != 0);
-        moors[idx].setRanger(ranger);
+        moors[i].setRanger(ranger);
 
         // Subscribe to models
-        moors[idx].subscribe();
+        moors[i].subscribe();
+
+        name.str("");
+        name << "r" << ++i;
     }
+    size = i;
 
     // register with the world
     world->AddUpdateCallback(Colony::updateCallback, reinterpret_cast<void*>(this));
@@ -79,7 +84,7 @@ void Colony::run(Stg::World *world)
         moors[idx].desicion(world);
     }
 
-    if (getCycle() % 500 == 0) {
+    if (getCycle() % 1000 == 0) {
         map->print();
     }
 }
