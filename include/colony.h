@@ -18,7 +18,8 @@ public:
     ~Colony();
 
     Stg::Model* getSource() { return source; }
-    Stg::Model* getFood() { return food; }
+    std::vector<Stg::Model*> getFoods() { return foods; }
+    Stg::Model* getFood(int i) { return foods.at(i); }
     Trail* getTrail() { return trail; }
     Map* getMap() { return map; }
     void setCycle(uint64_t cycle) { this->cycle = cycle; }
@@ -34,7 +35,8 @@ private:
     Moorche* moors;
     Trail* trail;
     uint64_t cycle;
-    Stg::Model *source, *food;
+    Stg::Model *source;
+    std::vector<Stg::Model*> foods;
 };
 
 #endif // COLONY_H

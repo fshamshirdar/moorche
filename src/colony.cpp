@@ -26,7 +26,15 @@ Colony::~Colony()
 void Colony::connect(Stg::World* world)
 {
     this->source = world->GetModel("source_0");
-    this->food = world->GetModel("food_0");
+
+    int i = 0;
+    std::stringstream foodName;
+    foodName << "food_" << i;
+    while (world->GetModel(foodName.str())) {
+        this->foods.push_back(world->GetModel(foodName.str()));
+        foodName.str("");
+        foodName << "food_" << ++i;
+    }
 
     map = new Map(world->GetModel("cave")->GetGeom().size.x, world->GetModel("cave")->GetGeom().size.y);
 
@@ -71,8 +79,7 @@ void Colony::run(Stg::World *world)
         moors[idx].desicion(world);
     }
 
-
-    if (getCycle() % 100 == 0) {
+    if (getCycle() % 500 == 0) {
         map->print();
     }
 }

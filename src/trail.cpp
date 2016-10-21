@@ -93,7 +93,9 @@ Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool to
         if ((*iterator)->getDistance(pose) < radius && (*iterator)->isToSource() == toSource) {
             double density = colony->getMap()->getValue((*iterator)->getPose());
             int stepsToTarget = (*iterator)->getTimesToTarget();
-            double score = Config::STEPS_TO_TARGET_WEIGHT * (1. / (1. + stepsToTarget)) - Config::DENSITY_WEIGHT * (density);
+            double score =
+                    Config::STEPS_TO_TARGET_WEIGHT * (1. / (1. + stepsToTarget)) -
+                    Config::DENSITY_WEIGHT * (density);
             if (score > bestScore) {
                 best = (*iterator);
                 bestScore = score;

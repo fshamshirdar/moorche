@@ -1,0 +1,106 @@
+# simple.world - basic world file example
+# Authors: Richard Vaughan
+# $Id$
+
+include "irobot.inc"
+include "map.inc"
+include "sick.inc"
+
+# time to pause (in GUI mode) or quit (in headless mode (-g)) the simulation
+quit_time 3600 # 1 hour of simulated time
+
+paused 1
+
+# spatial resolution of the underlying occupancy grid. Default is 0.02m.
+resolution 0.02
+
+# set the multiple of real time that Stage should try to achieve. Default is 1. 
+# set to 0 to go as fast as possible.
+speedup 5.723
+
+# configure the GUI window
+window
+(
+  size [ 1135 1896 ] # in pixels
+  scale 95.955   # pixels per meter
+  center [ 0.183 -0.205 ]
+  rotate [ 0.000 0.000 ]
+  			
+  show_data 0              # 1=on 0=off
+)
+
+# load an environment bitmap
+floorplan
+( 
+  name "cave"
+  size [10.000 10.000 0.800]
+  pose [0.000 0.000 0.000 0.000]
+#  bitmap "bitmaps/cave.png"
+  bitmap "bitmaps/rink.png"
+)
+
+zone                                                                                                  
+(
+  color "green"
+  size [ 1.500 1.500 0.001 ]
+  pose [ 0.000 0.000 0.000 0.000 ]
+  name "source_0"
+  fiducial()
+  fiducial_return 20
+)
+
+zone
+(
+  color "red"
+  size [ 1.000 1.000 0.001 ]
+  pose [ -3.210 -1.740 0.000 0.000 ]
+  name "food_0"
+  fiducial()
+  fiducial_return 10
+)
+
+zone
+(
+  color "yellow"
+  size [ 1.000 1.000 0.001 ]
+  pose [ 3.210 1.740 0.000 0.000 ]
+  name "food_1"
+  fiducial()
+  fiducial_return 10
+)
+
+define moor roomba                                                                             
+(
+ sicklaser(
+   blob_return 0
+   ranger_return 0
+   fiducial_return 0
+   obstacle_return 0
+ )
+ #fiducial(ranger_return 0)
+ #fiducial_return 0
+ blob_return 0
+ ranger_return 0
+ fiducial_return 0
+ obstacle_return 0
+)
+
+moor( name "r0" pose [2.920 1.860 0.008 -175.385] )
+moor( name "r1" pose [3.615 1.611 0.000 -98.087] )
+moor( name "r2" pose [2.482 1.039 0.000 78.543] )
+moor( name "r3" pose [3.724 -1.115 0.000 13.110] )
+moor( name "r4" pose [4.390 -0.947 0.000 107.286] )
+moor( name "r5" pose [2.799 -0.917 0.000 149.154] )
+moor( name "r6" pose [4.099 0.499 0.000 -34.880] )
+moor( name "r7" pose [3.626 1.041 0.000 -34.880] )
+moor( name "r8" pose [4.305 1.083 0.000 -34.880] )
+moor( name "r9" pose [3.839 -0.241 0.000 -34.880] )
+moor( name "r10" pose [3.217 1.229 0.000 -34.880] )
+moor( name "r11" pose [3.294 0.270 0.000 -34.880] )
+moor( name "r12" pose [1.784 1.083 0.000 -34.880] )
+moor( name "r13" pose [2.199 0.426 0.000 -34.880] )
+moor( name "r14" pose [2.082 1.542 0.000 -34.880] )
+moor( name "r15" pose [2.461 -0.293 0.000 -34.880] )
+#moor( name "r7" pose [2.196 -2.296 0.000 0.372] )
+#moor( name "r8" pose [3.061 -0.808 0.000 0.372] )
+#moor( name "r9" pose [2.687 -1.764 0.000 0.372] )

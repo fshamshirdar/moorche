@@ -4,10 +4,10 @@
 class Config
 {
 public:
-    static const double EVAPORATION_COEFFICIENT_PER_CYCLE = 0.001;
-    static const double ALPHA = 0.60;
-    static const double ROBOT_TRAIL_RADIUS = 2.5;
-    static const unsigned int TRAIL_UPDATE_MODE_CYCLE = 5;
+    static const double EVAPORATION_COEFFICIENT_PER_CYCLE = 0.005;
+    static const double ALPHA = 0.80;
+    static const double ROBOT_TRAIL_RADIUS = 1.5;
+    static const unsigned int TRAIL_UPDATE_MODE_CYCLE = 1;
     static const unsigned int RANDOM_DECISION_MODE_CYCLE = 5;
     static const double MIN_DISTANCE_BETWEEN_TRAILS = 0.75;
     static const double MAX_TRAIL_SIZE = 2000;
@@ -22,9 +22,10 @@ public:
     static const unsigned int FORWARD_IDX_END = 95;
     static const unsigned int RIGHT_IDX_START = 95;
     static const unsigned int RIGHT_IDX_END = 180;
-    static const double MAP_SCALE = 0.25;
-    static const double DENSITY_WEIGHT = 0.05;
+    static const double MAP_SCALE = 0.5;
+    static const double DENSITY_WEIGHT = 0.01;
     static const double STEPS_TO_TARGET_WEIGHT = 10.0;
+    static const double INTENSITY_WEIGHT = 15.0;
 };
 
 #endif
