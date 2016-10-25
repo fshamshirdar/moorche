@@ -11,12 +11,17 @@ public:
     void increasePopulation(Stg::Pose pose);
     void decreasePopulation(Stg::Pose pose);
     int getValue(Stg::Pose pose);
+    int getTotalDensity() { return this->totalDensity; }
+    int getMaxDensity() { return this->maxDensity; }
+    void calculate();
 
     void print();
 private:
      int** grid;
      int width;
      int height;
+     int totalDensity;
+     int maxDensity;
 };
 
 #endif // GRID_H

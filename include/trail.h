@@ -13,7 +13,7 @@ public:
     class Point
     {
     public:
-        Point(Stg::Pose pose, uint64_t createCycle, double density, int timesToTarget, bool toSource);
+        Point(Stg::Pose pose, uint64_t createCycle, double density, int timesToTarget, int totalSteps, bool toSource);
         void update(uint64_t cycle);
 
         // Density
@@ -28,6 +28,10 @@ public:
         void setTimesToTarget(int timesToTarget) { this->timesToTarget = timesToTarget; }
         int getTimesToTarget() { return this->timesToTarget; }
 
+        // Total Steps
+        void setTotalSteps(int totalSteps) { this->totalSteps = totalSteps; }
+        int getTotalSteps() { return this->totalSteps; }
+
         Stg::Pose getPose() { return this->pose; }
         double getDistance(Stg::Pose target) { return this->pose.Distance(target); }
 
@@ -37,6 +41,7 @@ public:
         double density;
         bool toSource; // or to food
         int timesToTarget;
+        int totalSteps;
     };
 
 public:
