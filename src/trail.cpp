@@ -118,7 +118,7 @@ Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool to
             double stepsToTarget = (*iterator)->getTimesToTarget();
             double totalSteps = (*iterator)->getTotalSteps();
             double cost =
-                    Config::STEPS_TO_TARGET_WEIGHT * (stepsToTarget / totalSteps) +
+                    Config::STEPS_TO_TARGET_WEIGHT * stepsToTarget +
                     Config::DENSITY_WEIGHT * (density / maxDensity);
             if (cost < minCost) {
                 best = (*iterator);

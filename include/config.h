@@ -24,7 +24,7 @@ public:
     static const unsigned int RIGHT_IDX_END = 180;
     static const double MAP_SCALE = 0.25;
     static const double DENSITY_WEIGHT = 0.8;
-    static const double STEPS_TO_TARGET_WEIGHT = 0.2;
+    static const double STEPS_TO_TARGET_WEIGHT = 0.002;
 };
 
 #endif
