@@ -14,6 +14,8 @@ Colony::Colony() : size(0), trail(new Trail(this))
     poses.push_back(Stg::Pose(-1.5, 1.5, 0.0, M_PI_4));
     poses.push_back(Stg::Pose(-2.0, 2.0, 0.0, M_PI_4));
 //    trail->addPoints(poses, false);
+
+    this->logFile.open("../results/logFile.txt", std::ios_base::out | std::ios_base::app);
 }
 
 Colony::~Colony()
@@ -34,6 +36,9 @@ void Colony::connect(Stg::World* world)
         foodName.str("");
         foodName << "food_" << ++i;
     }
+    
+    this->foodsCollected = new uint64_t[this->foods.size()];
+    memset(this->foodsCollected, 0, this->foods.size() * sizeof(this->foodsCollected));
 
     map = new Map(world->GetModel("cave")->GetGeom().size.x, world->GetModel("cave")->GetGeom().size.y);
 
@@ -86,5 +91,16 @@ void Colony::run(Stg::World *world)
 
     if (getCycle() % 1000 == 0) {
         map->print();
+        printFoodCount();
     }
+}
+
+void Colony::printFoodCount(void)
+{
+    for (uint32_t i = 0; i < this->foods.size(); i++) {
+        std::cout << i << ": " << this->foodsCollected[i] << " ";
+        this->logFile << foodsCollected[i] << " ";
+    }
+    std::cout << std::endl;
+    this->logFile << std::endl;
 }

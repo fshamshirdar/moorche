@@ -290,6 +290,9 @@ void Moorche::desicion(Stg::World *world)
             break;
         case Moorche::GO_TO_FOOD:
             if (inZone(getColony()->getFood(chosenFood))) {
+                // update food count
+                getColony()->increaseFood(chosenFood);
+
                 if (chosenFood == 0) {
                     getPosition()->SetColor(Stg::Color::red);
                 } else if (chosenFood == 1) {
