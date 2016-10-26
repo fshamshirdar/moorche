@@ -86,7 +86,7 @@ Trail::Point* Trail::getAveragePointInCircle(Stg::Pose pose, double radius, bool
 Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool toSource = false)
 {
     Trail::Point* best = NULL;
-    double bestScore = 0;
+    /*double bestScore = 0;
 
     std::vector<Trail::Point*>::iterator iterator;
     for (iterator = points.begin(); iterator != points.end(); iterator ++) {
@@ -105,7 +105,27 @@ Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool to
             }
         }
     }
+    */
 
+    double minCost = INFINITY;
+
+    std::vector<Trail::Point*>::iterator iterator;
+    for (iterator = points.begin(); iterator != points.end(); iterator ++) {
+        if ((*iterator)->getDistance(pose) < radius && (*iterator)->isToSource() == toSource) {
+            double density = colony->getMap()->getValue((*iterator)->getPose());
+            double totalDensity = colony->getMap()->getTotalDensity();
+            double maxDensity = colony->getMap()->getMaxDensity();
+            double stepsToTarget = (*iterator)->getTimesToTarget();
+            double totalSteps = (*iterator)->getTotalSteps();
+            double cost =
+                    Config::STEPS_TO_TARGET_WEIGHT * (stepsToTarget / totalSteps) +
+                    Config::DENSITY_WEIGHT * (density / maxDensity);
+            if (cost < minCost) {
+                best = (*iterator);
+                minCost = cost;
+            }
+        }
+    }
     return best;
 }
 
