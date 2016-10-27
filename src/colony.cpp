@@ -14,8 +14,8 @@ Colony::Colony() : size(0), trail(new Trail(this))
     poses.push_back(Stg::Pose(-1.5, 1.5, 0.0, M_PI_4));
     poses.push_back(Stg::Pose(-2.0, 2.0, 0.0, M_PI_4));
 //    trail->addPoints(poses, false);
-
-    this->logFile.open("../results/logFile.txt", std::ios_base::out | std::ios_base::app);
+    remove(CONFIG_LOG_FILE);
+    this->logFile.open(CONFIG_LOG_FILE, std::ios_base::out | std::ios_base::app);
 }
 
 Colony::~Colony()
@@ -89,7 +89,7 @@ void Colony::run(Stg::World *world)
         moors[idx].desicion(world);
     }
 
-    if (getCycle() % 1000 == 0) {
+    if (getCycle() % 100 == 0) {
         map->print();
         printFoodCount();
     }

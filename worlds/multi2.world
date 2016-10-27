@@ -21,7 +21,7 @@ speedup 5.723
 # configure the GUI window
 window
 (
-  size [ 1135 1896 ] # in pixels
+  size [ 1135 972 ] # in pixels
   scale 95.955   # pixels per meter
   center [ 0.183 -0.205 ]
   rotate [ 0.000 0.000 ]
@@ -53,7 +53,7 @@ zone
 (
   color "red"
   size [ 1.000 1.000 0.001 ]
-  pose [ -3.210 -1.740 0.000 0.000 ]
+  pose [ -2.750 -2.750 0.000 0.000 ]
   name "food_0"
   fiducial()
   fiducial_return 10
@@ -63,7 +63,7 @@ zone
 (
   color "yellow"
   size [ 1.000 1.000 0.001 ]
-  pose [ 3.210 1.740 0.000 0.000 ]
+  pose [ 2.750 2.750 0.000 0.000 ]
   name "food_1"
   fiducial()
   fiducial_return 10
@@ -80,7 +80,7 @@ define moor roomba
  #fiducial(ranger_return 0)
  #fiducial_return 0
  blob_return 0
- ranger_return 1
+ ranger_return 1.000
  fiducial_return 0
  obstacle_return 0
 )

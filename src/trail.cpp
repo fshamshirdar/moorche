@@ -86,7 +86,7 @@ Trail::Point* Trail::getAveragePointInCircle(Stg::Pose pose, double radius, bool
 Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool toSource = false)
 {
     Trail::Point* best = NULL;
-    /*double bestScore = 0;
+    double bestScore = 0;
 
     std::vector<Trail::Point*>::iterator iterator;
     for (iterator = points.begin(); iterator != points.end(); iterator ++) {
@@ -105,8 +105,8 @@ Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool to
             }
         }
     }
-    */
-
+    
+/*
     double minCost = INFINITY;
 
     std::vector<Trail::Point*>::iterator iterator;
@@ -126,6 +126,7 @@ Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool to
             }
         }
     }
+    */
     return best;
 }
 
