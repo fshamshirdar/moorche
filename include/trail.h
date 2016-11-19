@@ -42,6 +42,7 @@ public:
         bool toSource; // or to food
         int timesToTarget;
         int totalSteps;
+        int foodId;
     };
 
 public:

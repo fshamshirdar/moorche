@@ -63,6 +63,7 @@ private:
     std::vector<Stg::Pose> temporaryTrail;
     int obstacleAvoidanceCycle;
     int chosenFood;
+    double additionalTurnSpeed;
 
     double forward_distance;
     double left_distance;

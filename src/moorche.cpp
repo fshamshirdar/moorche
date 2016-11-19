@@ -1,7 +1,7 @@
 #include <moorche.h>
 #include <iostream>
 
-Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0), chosenFood(0)
+Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0), chosenFood(0), additionalTurnSpeed(0.0)
 {
     srand(time(0));
 }
@@ -73,7 +73,7 @@ void Moorche::moveToPose(Stg::Pose targetPose)
     const double right_distance_thrd = Config::RIGHT_DISTANCE_THRD;
 
     if (forward_distance < forward_distance_thrd) {
-        forwardSpeed = 0.2;
+        forwardSpeed = 0.1;
         if (average_right_distance < average_left_distance) {
             turnSpeed = -1.0;
         } else {
@@ -81,17 +81,17 @@ void Moorche::moveToPose(Stg::Pose targetPose)
         }
     } else if (left_distance < left_distance_thrd) {
         if (right_distance < left_distance) {
-            forwardSpeed = 0.0; // move backward
+            forwardSpeed = -0.1; // move backward
         } else {
             turnSpeed = 1.0;
-            forwardSpeed = 0.2;
+            forwardSpeed = 0.1;
         }
     } else if (right_distance < right_distance_thrd) {
         if (left_distance < right_distance) {
-            forwardSpeed = 0.0; // move backward
+            forwardSpeed = -0.1; // move backward
         } else {
             turnSpeed = -1.0;
-            forwardSpeed = 0.2;
+            forwardSpeed = 0.1;
         }
     }
 
@@ -100,8 +100,6 @@ void Moorche::moveToPose(Stg::Pose targetPose)
 
 void Moorche::randomMove()
 {
-    static double additionalTurnSpeed = 0;
-
     int turnSide = 0;
     const double turnSpeedCoef = Config::TURN_SPEED_COEF;
     double turnSpeed = 0;
@@ -112,7 +110,7 @@ void Moorche::randomMove()
     const double right_distance_thrd = Config::RIGHT_DISTANCE_THRD;
 
     if (forward_distance < forward_distance_thrd) {
-        forwardSpeed = 0.0;
+        forwardSpeed = 0.1;
         if (average_right_distance < average_left_distance) {
             turnSide = -1;
         } else {
@@ -121,14 +119,14 @@ void Moorche::randomMove()
 
     } else if (left_distance < left_distance_thrd) {
         if (right_distance < left_distance) {
-            forwardSpeed = 0.0; // move backward
+            forwardSpeed = -0.1; // move backward
         } else {
             turnSide = 1;
             forwardSpeed = 0.1;
         }
     } else if (right_distance < right_distance_thrd) {
         if (left_distance < right_distance) {
-            forwardSpeed = 0.0; // move backward
+            forwardSpeed = -0.1; // move backward
         } else {
             turnSide = -1;
             forwardSpeed = 0.1;
@@ -136,16 +134,7 @@ void Moorche::randomMove()
     }
 
     turnSpeed = turnSide * turnSpeedCoef;
-    if (turnSide != 0) {
-        additionalTurnSpeed *= turnSide;
-    } else {
-        if (getColony()->getCycle() % Config::RANDOM_DECISION_MODE_CYCLE == 0) {
-            if (turnSide == 0) { // Obstacle Avoidance
-                turnSide = (rand() % 2 == 0) ? -1 : 1;
-            }
-            additionalTurnSpeed = turnSide * ((double)rand() / RAND_MAX);
-        }
-
+    if (turnSide == 0) {
         Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), Config::ROBOT_TRAIL_RADIUS, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
         double prob = (double)(rand() % 100) / 100.0;
         if (targetPoint && prob < Config::ALPHA) {
@@ -189,6 +178,12 @@ void Moorche::randomMove()
 
             turnSpeed += turnSpeedCoef * followingTrailAngle;
         } else {
+            if (getColony()->getCycle() % Config::RANDOM_DECISION_MODE_CYCLE == 0) {
+                if (turnSide == 0) { // Obstacle Avoidance
+                    turnSide = (rand() % 2 == 0) ? -1 : 1;
+                }
+                additionalTurnSpeed = turnSide * ((double)rand() / RAND_MAX);
+            }
             turnSpeed += additionalTurnSpeed;
         }
     }
