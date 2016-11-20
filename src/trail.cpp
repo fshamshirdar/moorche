@@ -4,7 +4,7 @@ Trail::Trail(Colony* colony) : colony(colony), cycle(0)
 {
 }
 
-Trail::Point::Point(Stg::Pose pose, uint64_t createdCycle, double density = 1.0, int timesToTarget = 0, int totalSteps = 0, bool toSource = false) : pose(pose), createdCycle(createdCycle), timesToTarget(timesToTarget), totalSteps(totalSteps), toSource(toSource), density(density)
+Trail::Point::Point(Stg::Pose pose, int foodId, uint64_t createdCycle, double density = 1.0, double distanceToTarget = 0.0, int timesToTarget = 0, int totalSteps = 0, bool toSource = false) : pose(pose), foodId(foodId), createdCycle(createdCycle), distanceToTarget(distanceToTarget), timesToTarget(timesToTarget), totalSteps(totalSteps), toSource(toSource), density(density)
 {
 }
 
@@ -29,17 +29,20 @@ void Trail::update(uint64_t cycle)
     }
 }
 
-void Trail::addPoint(Stg::Pose pose) // Deprecated
-{
-    Trail::Point* point = new Trail::Point(pose, this->cycle);
-    points.push_back(point);
-}
-
-void Trail::addPoints(std::vector<Stg::Pose> poses, bool toSource)
+void Trail::addPoints(std::vector<Stg::Pose> poses, int foodId, bool toSource)
 {
     int counter = 0;
+    double trailDistance = 0;
+    Stg::Pose oldPoint;
+
     for (std::vector<Stg::Pose>::iterator it = poses.begin(); it != poses.end(); it++) {
-        Trail::Point* point = new Trail::Point((*it), this->cycle, 1.0, poses.size() - counter, poses.size(), toSource);
+
+        if (it != poses.begin()) {
+            trailDistance += oldPoint.Distance(*it);
+        }
+        oldPoint = *it;
+
+        Trail::Point* point = new Trail::Point((*it), foodId, this->cycle, 1.0, trailDistance, poses.size() - counter, poses.size(), toSource);
         // colony->getMap()->increasePopulation(point->getPose());
         points.push_back(point);
         counter ++;
@@ -83,14 +86,14 @@ Trail::Point* Trail::getAveragePointInCircle(Stg::Pose pose, double radius, bool
     return averagePoint;
 }
 
-Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, double radius, bool toSource = false)
+Trail::Point* Trail::getBestPointInCircle(Stg::Pose pose, int foodId, double radius, bool toSource = false)
 {
     Trail::Point* best = NULL;
     double bestScore = 0;
 
     std::vector<Trail::Point*>::iterator iterator;
     for (iterator = points.begin(); iterator != points.end(); iterator ++) {
-        if ((*iterator)->getDistance(pose) < radius && (*iterator)->isToSource() == toSource) {
+        if ((*iterator)->getFoodId() == foodId && (*iterator)->getDistance(pose) < radius && (*iterator)->isToSource() == toSource) {
             double density = colony->getMap()->getValue((*iterator)->getPose());
             double totalDensity = colony->getMap()->getTotalDensity();
             double maxDensity = colony->getMap()->getMaxDensity();

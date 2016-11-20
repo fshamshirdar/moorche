@@ -21,18 +21,30 @@ public:
     Stg::Model* getSource() { return source; }
     std::vector<Stg::Model*> getFoods() { return foods; }
     Stg::Model* getFood(int i) { return foods.at(i); }
+    void addFoodIdToKnownFoods(int id);
+    std::vector<int> getKnownFoodsId() { return this->knownFoodsId; }
     Trail* getTrail() { return trail; }
     Map* getMap() { return map; }
     void setCycle(uint64_t cycle) { this->cycle = cycle; }
     uint64_t getCycle() { return this->cycle; }
 
     // counts the number of foods collected from each source
-    void increaseFood(unsigned int foodIndex) { this->foodsCollected[foodIndex]++; }
+    void increaseFood(unsigned int foodIndex) { this->foodsCollected[foodIndex]++; } 
     void printFoodCount();
 
     void connect(Stg::World* world);
     static int updateCallback(Stg::World* world, void* arg);
     void run(Stg::World* world);
+
+    // known food id
+    void addKnownFoodId(int foodId) { knownFoodsId.push_back(foodId); }
+
+    // no of robots
+    void increaseNoOfRobots(int foodId) { noOfRobots[foodId]++; }
+    void decreaseNoOfRobots(int foodId) { noOfRobots[foodId]--; }
+    int getNoOfRobots(int foodId) { return noOfRobots[foodId]; }
+
+
 
 private:
     unsigned int size;
@@ -42,6 +54,8 @@ private:
     uint64_t cycle;
     Stg::Model *source;
     std::vector<Stg::Model*> foods;
+    std::vector<int> knownFoodsId;
+    std::vector<int> noOfRobots;
     // counts the number of foods collected from each source
     uint64_t *foodsCollected;
 

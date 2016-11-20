@@ -35,6 +35,7 @@ public:
     double getModelRadius(Stg::Model* model);
     void setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed);
     void setSpeed(Stg::Velocity vel);
+    void assigningFood();
 
     // Ranger
     void setRanger(Stg::ModelRanger* ranger) { this->ranger = ranger; }
@@ -63,6 +64,7 @@ private:
     std::vector<Stg::Pose> temporaryTrail;
     int obstacleAvoidanceCycle;
     int chosenFood;
+    int assignedFoodId;
     double additionalTurnSpeed;
 
     double forward_distance;

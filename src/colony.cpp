@@ -33,6 +33,7 @@ void Colony::connect(Stg::World* world)
     foodName << "food_" << i;
     while (world->GetModel(foodName.str())) {
         this->foods.push_back(world->GetModel(foodName.str()));
+        this->noOfRobots.push_back(0);
         foodName.str("");
         foodName << "food_" << ++i;
     }
@@ -90,15 +91,22 @@ void Colony::run(Stg::World *world)
     }
 
     if (getCycle() % 100 == 0) {
-        map->print();
+//        map->print();
         printFoodCount();
+    }
+}
+
+void Colony::addFoodIdToKnownFoods(int id)
+{
+    if(std::find(knownFoodsId.begin(), knownFoodsId.end(), id) == knownFoodsId.end()) {
+        this->knownFoodsId.push_back(id);
     }
 }
 
 void Colony::printFoodCount(void)
 {
     for (uint32_t i = 0; i < this->foods.size(); i++) {
-        std::cout << i << ": " << this->foodsCollected[i] << " ";
+        std::cout << "Robots assigned to food " << i << " : " << this->getNoOfRobots(i) << " ";
         this->logFile << foodsCollected[i] << " ";
     }
     std::cout << std::endl;

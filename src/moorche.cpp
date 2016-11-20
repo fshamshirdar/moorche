@@ -1,7 +1,7 @@
 #include <moorche.h>
 #include <iostream>
 
-Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0), chosenFood(0), additionalTurnSpeed(0.0)
+Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0), chosenFood(0), additionalTurnSpeed(0.0), assignedFoodId(-1)
 {
     srand(time(0));
 }
@@ -20,7 +20,6 @@ void Moorche::subscribe()
 void Moorche::setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed)
 {
     if (forwardSpeed > 0.0) {
-        // getColony()->getTrail()->addPoint(this->getPosition()->GetPose());
         if (getColony()->getCycle() % Config::TRAIL_UPDATE_MODE_CYCLE == 0) {
             getColony()->getMap()->increasePopulation(this->getPosition()->GetPose());
             temporaryTrail.push_back(this->getPosition()->GetPose());
@@ -135,7 +134,7 @@ void Moorche::randomMove()
 
     turnSpeed = turnSide * turnSpeedCoef;
     if (turnSide == 0) {
-        Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), Config::ROBOT_TRAIL_RADIUS, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
+        Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), assignedFoodId, Config::ROBOT_TRAIL_RADIUS, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
         double prob = (double)(rand() % 100) / 100.0;
         if (targetPoint && prob < Config::ALPHA) {
             double followingTrailAngle = 0.0;
@@ -155,7 +154,7 @@ void Moorche::randomMove()
             }
 
             double additionalAngle = 0.0; // SO_LOST
-            Trail::Point* otherPoint = getColony()->getTrail()->getBestPointInCircle(targetPoint->getPose(), Config::MIN_DISTANCE_BETWEEN_TRAILS, (currentState != Moorche::MOVE_FOOD_TO_SOURCE));
+            Trail::Point* otherPoint = getColony()->getTrail()->getBestPointInCircle(targetPoint->getPose(), assignedFoodId, Config::MIN_DISTANCE_BETWEEN_TRAILS, (currentState != Moorche::MOVE_FOOD_TO_SOURCE));
             if (otherPoint && otherPoint->getPose().Distance(targetPoint->getPose()) < Config::MIN_DISTANCE_BETWEEN_TRAILS && targetPoint->getPose().x != otherPoint->getPose().x) {
                 double trailsAngle = atan2((targetPoint->getPose().y - otherPoint->getPose().y), (targetPoint->getPose().x - otherPoint->getPose().x));
                 additionalAngle = (M_PI - trailsAngle) / 5.0;
@@ -251,6 +250,31 @@ void Moorche::setState(Moorche::State state)
     currentState = state;
 }
 
+void Moorche::assigningFood()
+{
+    int id = -1;
+    double bestScore = 1;
+    double robotSize = (getPosition()->GetGeom().size.x > getPosition()->GetGeom().size.y) ? getPosition()->GetGeom().size.x : getPosition()->GetGeom().size.y;
+    for (std::vector<int>::const_iterator it = getColony()->getKnownFoodsId().begin(); it != getColony()->getKnownFoodsId().end(); it++) {
+        Trail::Point* point = getColony()->getTrail()->getBestPointInCircle(getColony()->getSource()->GetPose(), (*it), Config::ROBOT_TRAIL_RADIUS, false);
+        if (point != NULL) {
+            double score = (robotSize + Config::FORWARD_DISTANCE_THRD) * getColony()->getNoOfRobots(*it) / point->getDistanceToTarget();
+            if (score < bestScore) {
+                id = (*it);
+                bestScore = score;
+            }
+        }
+    }
+
+    assignedFoodId = id;
+    if (assignedFoodId != -1) {
+        getColony()->increaseNoOfRobots(assignedFoodId);
+    }
+
+    // debug
+    std::cout << "I was assigned food: " << assignedFoodId << std::endl;
+}
+
 void Moorche::desicion(Stg::World *world)
 {
     calculateDistances();
@@ -259,8 +283,8 @@ void Moorche::desicion(Stg::World *world)
             if (inZone(getColony()->getSource())) {
                 getPosition()->SetColor(Stg::Color::blue);
                 currentState = Moorche::SEARCH_FOR_FOOD;
-                if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
-                    getColony()->getTrail()->addPoints(temporaryTrail, true);
+                if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE && assignedFoodId >= 0) {
+                    getColony()->getTrail()->addPoints(temporaryTrail, assignedFoodId, true);
                     std::cout << "Trail to source updated: " << temporaryTrail.size() << std::endl;
                 } else {
                     for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
@@ -268,16 +292,26 @@ void Moorche::desicion(Stg::World *world)
                     }
                 }
  
+                assigningFood();
                 temporaryTrail.clear();
             } else {
                 moveToPose(getColony()->getSource()->GetPose());
             }
             break;
         case Moorche::SEARCH_FOR_FOOD:
-            for (int i = 0; i < getColony()->getFoods().size(); i++) {
-                if (getPosition()->GetPose().Distance(getColony()->getFood(i)->GetPose()) < getModelRadius(getColony()->getFood(i))) {
+            if (assignedFoodId == -1) {
+                for (int i = 0; i < getColony()->getFoods().size(); i++) {
+                    if (getPosition()->GetPose().Distance(getColony()->getFood(i)->GetPose()) < getModelRadius(getColony()->getFood(i))) {
+                        currentState = Moorche::GO_TO_FOOD;
+                        chosenFood = i;
+                    } else {
+                        randomMove();
+                    }
+                }
+            } else {
+                if (getPosition()->GetPose().Distance(getColony()->getFood(assignedFoodId)->GetPose()) < getModelRadius(getColony()->getFood(assignedFoodId))) {
                     currentState = Moorche::GO_TO_FOOD;
-                    chosenFood = i;
+                    chosenFood = assignedFoodId;
                 } else {
                     randomMove();
                 }
@@ -294,9 +328,12 @@ void Moorche::desicion(Stg::World *world)
                     getPosition()->SetColor(Stg::Color::magenta);
                 }
 
+                getColony()->addFoodIdToKnownFoods(chosenFood);
+                getColony()->decreaseNoOfRobots(assignedFoodId);
+
                 currentState = Moorche::MOVE_FOOD_TO_SOURCE;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
-                    getColony()->getTrail()->addPoints(temporaryTrail, false);
+                    getColony()->getTrail()->addPoints(temporaryTrail, chosenFood, false);
                     std::cout << "Trail to food updated: " << temporaryTrail.size() << std::endl;
                 } else {
                     for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
