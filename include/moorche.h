@@ -49,6 +49,9 @@ public:
     void subscribe();
     void desicion(Stg::World* world);
 
+    // assigned food
+    int getAssignedFoodId() {return assignedFoodId; }
+
 private:
     void moveToPose(Stg::Pose targetPose);
     void randomMove();

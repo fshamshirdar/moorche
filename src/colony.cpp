@@ -91,8 +91,17 @@ void Colony::run(Stg::World *world)
     }
 
     if (getCycle() % 100 == 0) {
-//        map->print();
-        printFoodCount();
+       map->print();
+        // printFoodCount();
+        for (int idx = 0; idx < size; ++idx) {
+            std::cout << "Moor " << idx << " assigned source " << moors[idx].getAssignedFoodId() << std::endl;
+        }
+
+        for (int idx = 0; idx < this->foods.size(); idx++) {
+            std::cout << "Robots assigned to food " << idx << " : " << this->getNoOfRobots(idx) << " ";
+        }
+        std::cout << std::endl << std::endl;
+
     }
 }
 
@@ -106,7 +115,7 @@ void Colony::addFoodIdToKnownFoods(int id)
 void Colony::printFoodCount(void)
 {
     for (uint32_t i = 0; i < this->foods.size(); i++) {
-        std::cout << "Robots assigned to food " << i << " : " << this->getNoOfRobots(i) << " ";
+        // std::cout << "Robots assigned to food " << i << " : " << this->getNoOfRobots(i) << " ";
         this->logFile << foodsCollected[i] << " ";
     }
     std::cout << std::endl;

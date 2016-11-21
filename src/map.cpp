@@ -65,7 +65,11 @@ void Map::print()
 
     for (int j = scaledHeight - 1; j >= 0; --j) {
         for (int i = 0; i < scaledWidth; ++i) {
-            std::cout << grid[j][i] << " ";
+            if (grid[j][i]) {
+                std::cout << grid[j][i] << " ";
+            } else {
+                std::cout << "* ";
+            }
         }
         std::cout << std::endl;
     }
