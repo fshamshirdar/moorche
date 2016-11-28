@@ -192,7 +192,7 @@ void Moorche::randomMove()
 
 void Moorche::calculateDistances()
 {
-    const Stg::ModelRanger::Sensor sensor = getRanger()->GetSensors()[0];
+    Stg::ModelRanger::Sensor sensor = getRanger()->GetSensors()[0];
 
     const unsigned int left_idx_start = Config::LEFT_IDX_START;
     const unsigned int left_idx_end = Config::LEFT_IDX_END;
@@ -255,6 +255,8 @@ void Moorche::assigningFood()
     int id = -1;
     double min_congestion_factor = Config::MAX_CONGESTION_FACTOR; //1;
     double robotSize = (getPosition()->GetGeom().size.x > getPosition()->GetGeom().size.y) ? getPosition()->GetGeom().size.x : getPosition()->GetGeom().size.y;
+    // find what is the congestion factor of previous assigned food source3 (to decide whether to change food or not)
+    double previous_food_congestion_factor = Config::MAX_CONGESTION_FACTOR;;
     
     std::vector<int> knownFoodsId = getColony()->getKnownFoodsId();
     for (std::vector<int>::const_iterator it = knownFoodsId.begin(); it != knownFoodsId.end(); it++) {
@@ -263,16 +265,27 @@ void Moorche::assigningFood()
         // std::cout << point << std::endl;
         if (point != NULL) {
             double congestion_factor = (robotSize + Config::FORWARD_DISTANCE_THRD) * getColony()->getNoOfRobots(*it) / point->getDistanceToTarget();
-            std::cout << congestion_factor << " ";
+            // std::cout << congestion_factor << " ";
             if (congestion_factor < min_congestion_factor) {
                 id = (*it);
                 min_congestion_factor = congestion_factor;
             }
+
+            if (*it == assignedFoodId) {
+                previous_food_congestion_factor = congestion_factor;
+            }
         }
     }
-    std::cout << std::endl;
-    
-    assignedFoodId = id;
+    // std::cout << std::endl;
+    if ( (assignedFoodId != -1) && (assignedFoodId != id) ) {
+        // switch to another food only if better than the previous food by a threshold
+        if ( (previous_food_congestion_factor - min_congestion_factor) > Config::CONGESTION_SWITCHING_THRESHOLD ) {
+            assignedFoodId = id;
+        }
+    } else {
+        assignedFoodId = id;
+    }
+
     if (assignedFoodId != -1) {
         getColony()->increaseNoOfRobots(assignedFoodId);
     }

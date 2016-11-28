@@ -60,6 +60,7 @@ void Colony::connect(Stg::World* world)
         // get the robot's ranger model and subscribe to it
         Stg::ModelRanger* ranger = reinterpret_cast<Stg::ModelRanger*>(moors[i].getPosition()->GetChild("ranger:0"));
         assert(ranger != 0);
+        std::cout << "ranger size: " << ranger->GetSensors().size() << std::endl;
         moors[i].setRanger(ranger);
 
         // Subscribe to models

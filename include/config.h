@@ -27,7 +27,8 @@ public:
     static const double MAP_SCALE = 0.25;
     static const double DENSITY_WEIGHT = 0; //0.7;
     static const double STEPS_TO_TARGET_WEIGHT = 0.3;
-    static const double MAX_CONGESTION_FACTOR = 1.2;
+    static const double MAX_CONGESTION_FACTOR = 1.4; // 1.2;
+    static const double CONGESTION_SWITCHING_THRESHOLD = 0.5; // .3; // switch to another source only if congestion factor drop by more than this threshold
 };
 
 #endif
