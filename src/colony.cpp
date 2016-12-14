@@ -1,6 +1,6 @@
 #include <colony.h>
 
-Colony::Colony() : size(0), trail(new Trail(this))
+Colony::Colony() : size(0), trail(new Trail(this)), currentSourceId(0)
 {
     // Debug Data
     std::vector<Stg::Pose> poses;
@@ -21,7 +21,7 @@ Colony::Colony() : size(0), trail(new Trail(this))
 Colony::~Colony()
 {
     delete trail;
-    delete map;
+//    delete map;
 }
 
 void Colony::connect(Stg::World* world)
@@ -40,7 +40,7 @@ void Colony::connect(Stg::World* world)
     this->foodsCollected = new uint64_t[this->foods.size()];
     memset(this->foodsCollected, 0, this->foods.size() * sizeof(this->foodsCollected));
 
-    map = new Map(world->GetModel("cave")->GetGeom().size.x, world->GetModel("cave")->GetGeom().size.y);
+//    map = new Map(world->GetModel("cave")->GetGeom().size.x, world->GetModel("cave")->GetGeom().size.y);
 
     i = 0;
     std::stringstream name;
@@ -88,11 +88,12 @@ void Colony::run(Stg::World *world)
     for (int idx = 0; idx < size; ++idx) {
         moors[idx].desicion(world);
     }
+}
 
-    if (getCycle() % 1000 == 0) {
-        map->print();
-        printFoodCount();
-    }
+void Colony::addNewSource(double distance)
+{
+    Source newSource(++currentSourceId, distance);
+    sources.push_back(newSource);
 }
 
 void Colony::printFoodCount(void)

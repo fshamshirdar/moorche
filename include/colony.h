@@ -8,6 +8,7 @@
 #include <map.h>
 #include <moorche.h>
 #include <trail.h>
+#include <source.h>
 
 class Moorche;
 class Trail;
@@ -22,7 +23,7 @@ public:
     std::vector<Stg::Model*> getFoods() { return foods; }
     Stg::Model* getFood(int i) { return foods.at(i); }
     Trail* getTrail() { return trail; }
-    Map* getMap() { return map; }
+//    Map* getMap() { return map; }
     void setCycle(uint64_t cycle) { this->cycle = cycle; }
     uint64_t getCycle() { return this->cycle; }
 
@@ -30,14 +31,19 @@ public:
     void increaseFood(unsigned int foodIndex) { this->foodsCollected[foodIndex]++; }
     void printFoodCount();
 
+    void addNewSource(double distance);
+    std::vector<Source> getSources() { return this->sources; }
+
     void connect(Stg::World* world);
     static int updateCallback(Stg::World* world, void* arg);
     void run(Stg::World* world);
 
 private:
     unsigned int size;
-    Map* map;
+//    Map* map;
     std::vector<Moorche> moors;
+    std::vector<Source> sources;
+    int currentSourceId;
     Trail* trail;
     uint64_t cycle;
     Stg::Model *source;

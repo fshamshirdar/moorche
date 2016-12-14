@@ -44,6 +44,9 @@ public:
     void setLastVelocity(Stg::Velocity lastVelocity) { this->lastVelocity = lastVelocity; }
     Stg::Velocity getLastVelocity() { return lastVelocity; }
 
+    void setSourceId(int sourceId) { this->sourceId = sourceId; }
+    int getSourceId() { return this->sourceId; }
+
     // Desicion
     void subscribe();
     void desicion(Stg::World* world);
@@ -63,6 +66,7 @@ private:
     std::vector<Stg::Pose> temporaryTrail;
     int obstacleAvoidanceCycle;
     int chosenFood;
+    int sourceId;
 
     double forward_distance;
     double left_distance;

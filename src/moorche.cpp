@@ -1,7 +1,7 @@
 #include <moorche.h>
 #include <iostream>
 
-Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0), chosenFood(0)
+Moorche::Moorche() : currentState(Moorche::GO_TO_SOURCE), lastState(Moorche::GO_TO_SOURCE), obstacleAvoidanceCycle(0), chosenFood(0), sourceId(0)
 {
     srand(time(0));
 }
@@ -22,7 +22,7 @@ void Moorche::setSpeed(double forwardSpeed, double sideSpeed, double turnSpeed)
     if (forwardSpeed > 0.0) {
         // getColony()->getTrail()->addPoint(this->getPosition()->GetPose());
         if (getColony()->getCycle() % Config::TRAIL_UPDATE_MODE_CYCLE == 0) {
-            getColony()->getMap()->increasePopulation(this->getPosition()->GetPose());
+            // getColony()->getMap()->increasePopulation(this->getPosition()->GetPose());
             temporaryTrail.push_back(this->getPosition()->GetPose());
         }
     }
@@ -146,7 +146,7 @@ void Moorche::randomMove()
             additionalTurnSpeed = turnSide * ((double)rand() / RAND_MAX);
         }
 
-        Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), Config::ROBOT_TRAIL_RADIUS, (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
+       Trail::Point* targetPoint = getColony()->getTrail()->getBestPointInCircle(getPosition()->GetPose(), Config::ROBOT_TRAIL_RADIUS, getSourceId(), (currentState == Moorche::MOVE_FOOD_TO_SOURCE));
         double prob = (double)(rand() % 100) / 100.0;
         if (targetPoint && prob < Config::ALPHA) {
             double followingTrailAngle = 0.0;
@@ -166,7 +166,7 @@ void Moorche::randomMove()
             }
 
             double additionalAngle = 0.0; // SO_LOST
-            Trail::Point* otherPoint = getColony()->getTrail()->getBestPointInCircle(targetPoint->getPose(), Config::MIN_DISTANCE_BETWEEN_TRAILS, (currentState != Moorche::MOVE_FOOD_TO_SOURCE));
+            Trail::Point* otherPoint = getColony()->getTrail()->getBestPointInCircle(targetPoint->getPose(), Config::MIN_DISTANCE_BETWEEN_TRAILS, getSourceId(), (currentState != Moorche::MOVE_FOOD_TO_SOURCE));
             if (otherPoint && otherPoint->getPose().Distance(targetPoint->getPose()) < Config::MIN_DISTANCE_BETWEEN_TRAILS && targetPoint->getPose().x != otherPoint->getPose().x) {
                 double trailsAngle = atan2((targetPoint->getPose().y - otherPoint->getPose().y), (targetPoint->getPose().x - otherPoint->getPose().x));
                 additionalAngle = (M_PI - trailsAngle) / 5.0;
@@ -265,12 +265,12 @@ void Moorche::desicion(Stg::World *world)
                 getPosition()->SetColor(Stg::Color::blue);
                 currentState = Moorche::SEARCH_FOR_FOOD;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
-                    getColony()->getTrail()->addPoints(temporaryTrail, true);
+                    getColony()->getTrail()->addPoints(temporaryTrail, getSourceId(), true);
                     std::cout << "Trail to source updated: " << temporaryTrail.size() << std::endl;
                 } else {
-                    for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
-                        getColony()->getMap()->decreasePopulation((*it));
-                    }
+//                    for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
+//                        getColony()->getMap()->decreasePopulation((*it));
+//                    }
                 }
  
                 temporaryTrail.clear();
@@ -301,12 +301,12 @@ void Moorche::desicion(Stg::World *world)
 
                 currentState = Moorche::MOVE_FOOD_TO_SOURCE;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
-                    getColony()->getTrail()->addPoints(temporaryTrail, false);
+                    getColony()->getTrail()->addPoints(temporaryTrail, getSourceId(), false);
                     std::cout << "Trail to food updated: " << temporaryTrail.size() << std::endl;
                 } else {
-                    for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
-                        getColony()->getMap()->decreasePopulation((*it));
-                    }
+//                    for (std::vector<Stg::Pose>::iterator it = temporaryTrail.begin(); it != temporaryTrail.end(); it ++) {
+//                        getColony()->getMap()->decreasePopulation((*it));
+//                    }
                 }
                 temporaryTrail.clear();
             } else {
