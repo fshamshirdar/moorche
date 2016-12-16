@@ -23,24 +23,17 @@
 %\usepackage{amssymb}  % assumes amsmath package installed
 
 \title{\LARGE \bf
-Preparation of Papers for IEEE Sponsored Conferences \& Symposia*
+An Ant Algorithm for Multi-Robot Navigation and Distributed Simultaneous Task Allocation
 }
 
 
-\author{Faraz Shamshirdar$^{1}$ and Rakesh Shrestha$^{2}$% <-this % stops a space
-\thanks{*Richard Vaughan}% <-this % stops a space
-\thanks{$^{1}$Albert Author is with Faculty of Electrical Engineering, Mathematics and Computer Science,
-        University of Twente, 7500 AE Enschede, The Netherlands
-        {\tt\small albert.author@papercept.net}}%
-\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University,
-        Dayton, OH 45435, USA
-        {\tt\small b.d.researcher@ieee.org}}%
+\author{Faraz Shamshirdar, Rakesh Shrestha and Richard Vaughan % <-this % stops a space
+\thanks{Autonomy Lab, School of Computing Science, Simon Fraser University,
+        Burnaby, BC, Canada
+     }%
 }
-
 
 \begin{document}
-
-
 
 \maketitle
 \thispagestyle{empty}
@@ -59,11 +52,23 @@ The algorithm is tested in simulation with varying number of robots and sources.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
 
-We present an algorithm for the classical \emph{resource transportation} task in an unmapped environment. Robots start from arbitrary positions and search for a supply of resources.  On reaching the source, they receive a unit of resource and return home with it, then return to fetch more resource repeatedly for the length of a trial \cite{RESOURCE_TRANSPORTATION}. Our main focus in this paper is finding task allocation that maximizes the rate of collection of the resources (our throughput) and with minimum congestion in trails. These two goals are mostly overlapping, hence we achieve the former by trying to solve the latter.
+% Task definition
+We present an algorithm for the classical \emph{resource transportation} task in an unmapped environment. Robots start from arbitrary positions and search for a supply of resources.  On reaching the source, they receive a unit of resource and return home with it, then return to fetch more resource repeatedly for the length of a trial \cite{RESOURCE_TRANSPORTATION}.
+% Problem Statement %
+Our main focus in this paper is finding task allocation that maximizes the rate of collection of the resources (our throughput) and with minimum congestion in trails. These two goals are mostly overlapping, hence we achieve the former by trying to solve the latter.
 
-The navigation is based on Spread-Out localization-space trails (SO-LOST) \cite{SO_LOST} where robots generate and share tails of waypoints labelled with their destination. This algorithm, however, converges to a single "best" trail with shortest source to home distance. This solution can be sub-optimal if we have numerous robots and multiple sources as the converged source-home trail is badly congested and allocating robots to difference sources has better throughput.
+% earlier works
+The earlier works \cite{LOST} for this task present localization-space trails which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified by reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite(DORIGO1992) of converging to  near-optimal paths from source to home.
 
-\section{PROCEDURE FOR PAPER SUBMISSION}
+% a short introduction of our approach
+In the LOST and other ant-algorithm methods, they use traveling time as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize mutual spatial interference between robots. By increasing the population size, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this train can become congested. On the other hand, the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, so in the case of multiple sources they can not perform well since they try to minimize a path to a random source (it might be the closest one). We modified the original algorithm such that it does not converge to a single source as it would result in better throughput.
+
+% short description our contribution
+In this paper we describe a modification to the existing LOST algorithm that improve performance in the case of multiple sources and a large number of robots as well as maintaining the same performance in a single-source, single-sink setting with less number of robots. We were able to get superior performance in most of the test-cases we examined.
+
+\section{RELATED WORKS}
+
+We studied Localization-Space Trails (LOST) and its versions as an ant-inspired trail following algorithm which is suitable for imperfectly localized robots. The method is to generate and share short-lived waypoints (\emph{crumbs)} by robots, which contain some information (estimated distance to target, time to target, density of waypoints, to-source or to-sink label). By following these crumbs, robots can find optimal path between source and home. In the Spread-Out Localization-Space Trail (SO-LOST) which is a modified version of LOST, it tries to increase the scalability by minimizing mutual spatial inference between robots which is done by shifting crumbs in a trail from source to home and home to source for a single source, single sink. In the Multi-Objective Localization-Space Trail (MO-LOST) it tries to reduce mutual spatial inference for paths from multiple sources, multiple sinks by shifting the crumbs of a trail which is crossing other crumbs of the other trails. In the Blinkered Localization-Space Trail (Blinkered LOST) it tries to modulate the field of the view (FOV) of the robots' trail-detecting sensor. it shows that the global throughput is a function of robot FOV, means that with narrower FOVs, it performs better in large populations, since narrrower FOV causes multiple trails to be maintained, so that the system can support larger population sizes before saturating due to inference.
 
 \subsection{Selecting a Template (Heading 2)}
 
@@ -73,6 +78,10 @@ It may be used for A4 paper size if the paper size setting is suitably modified.
 \subsection{Maintaining the Integrity of the Specifications}
 
 The template is used to format your paper and style the text. All margins, column widths, line spaces, and text fonts are prescribed; please do not alter them. You may note peculiarities. For example, the head margin in this template measures proportionately more than is customary. This measurement and others are deliberate, using specifications that anticipate your paper as one part of the entire proceedings, and not as an independent document. Please do not revise any of the current designations
+
+
+
+
 
 \section{MATH}
 
