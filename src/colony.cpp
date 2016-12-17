@@ -91,9 +91,10 @@ void Colony::run(Stg::World *world)
         moors[idx].desicion(world);
     }
 
-    if (getCycle() % 100 == 0 && false) {
-       map->print();
-        // printFoodCount();
+    if (getCycle() % 100 == 0) {
+        printFoodCount();
+/*
+        map->print();
         for (int idx = 0; idx < size; ++idx) {
             std::cout << "Moor " << idx << " assigned source " << moors[idx].getAssignedFoodId() << std::endl;
         }
@@ -102,7 +103,7 @@ void Colony::run(Stg::World *world)
             std::cout << "Robots assigned to food " << idx << " : " << this->getNoOfRobots(idx) << " ";
         }
         std::cout << std::endl << std::endl;
-
+*/
     }
 }
 
