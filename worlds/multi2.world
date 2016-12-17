@@ -7,7 +7,7 @@ include "map.inc"
 include "sick.inc"
 
 # time to pause (in GUI mode) or quit (in headless mode (-g)) the simulation
-quit_time 3600 # 1 hour of simulated time
+quit_time 600 # 1 hour of simulated time
 
 paused 1
 
@@ -61,7 +61,7 @@ zone
 
 zone
 (
-  color "yellow"
+  color "blue"
   size [ 1.000 1.000 0.001 ]
   pose [ 2.750 2.750 0.000 0.000 ]
   name "food_1"
@@ -101,20 +101,19 @@ moor( name "r12" pose [1.784 1.083 0.000 -34.880] )
 moor( name "r13" pose [1.918 0.113 0.000 -34.880] )
 moor( name "r14" pose [2.082 1.542 0.000 -34.880] )
 moor( name "r15" pose [-1.541 0.822 0.000 -34.880] )
-
-#moor( name "r16" pose [-2.001 -0.672 0.008 -175.385] )
-#moor( name "r17" pose [1.058 2.434 0.000 -98.087] )
-#moor( name "r18" pose [2.982 1.039 0.000 78.543] )
-#moor( name "r19" pose [2.572 -1.563 0.000 13.110] )
-#moor( name "r20" pose [3.327 -1.395 0.000 107.286] )
-#moor( name "r21" pose [-0.352 -1.761 0.000 149.154] )
-#moor( name "r22" pose [4.199 0.499 0.000 -34.880] )
-#moor( name "r23" pose [-0.597 -3.096 0.000 -34.880] )
-#moor( name "r24" pose [4.305 1.083 0.000 -34.880] )
-#moor( name "r25" pose [3.739 -0.241 0.000 -34.880] )
-#moor( name "r26" pose [3.817 1.229 0.000 -34.880] )
-#moor( name "r27" pose [3.000 -0.230 0.000 -34.880] )
-#moor( name "r28" pose [1.440 0.750 0.000 -34.880] )
-#moor( name "r29" pose [2.457 0.291 0.000 -34.880] )
-#moor( name "r30" pose [0.989 1.438 0.000 -34.880] )
-#moor( name "r31" pose [1.965 -0.418 0.000 -34.880] )
+moor( name "r16" pose [-2.001 -0.672 0.008 -175.385] )
+moor( name "r17" pose [1.058 2.434 0.000 -98.087] )
+moor( name "r18" pose [2.982 1.039 0.000 78.543] )
+moor( name "r19" pose [2.572 -1.563 0.000 13.110] )
+moor( name "r20" pose [3.327 -1.395 0.000 107.286] )
+moor( name "r21" pose [-0.352 -1.761 0.000 149.154] )
+moor( name "r22" pose [4.199 0.499 0.000 -34.880] )
+moor( name "r23" pose [-0.597 -3.096 0.000 -34.880] )
+moor( name "r24" pose [4.305 1.083 0.000 -34.880] )
+moor( name "r25" pose [3.739 -0.241 0.000 -34.880] )
+moor( name "r26" pose [3.817 1.229 0.000 -34.880] )
+moor( name "r27" pose [3.000 -0.230 0.000 -34.880] )
+moor( name "r28" pose [1.440 0.750 0.000 -34.880] )
+moor( name "r29" pose [2.457 0.291 0.000 -34.880] )
+moor( name "r30" pose [0.989 1.438 0.000 -34.880] )
+moor( name "r31" pose [1.965 -0.418 0.000 -34.880] )
