@@ -28,7 +28,7 @@ public:
     static const double DENSITY_WEIGHT = 0; //0.7;
     static const double STEPS_TO_TARGET_WEIGHT = 1.0;
     static const double MAX_CONGESTION_FACTOR = 1.7; // 1.2;
-    static const double CONGESTION_SWITCHING_THRESHOLD = 0.3; // .3; // switch to another source only if congestion factor drop by more than this threshold
+    static const double CONGESTION_SWITCHING_THRESHOLD = 0.0; // .3; // switch to another source only if congestion factor drop by more than this threshold
 };
 
 #endif
