@@ -30,6 +30,7 @@
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{cite}
+\usepackage{hyperref}
 
 \bibliographystyle{IEEEtran}
 
@@ -38,7 +39,7 @@
 \makeatother
 
 \title{\LARGE \bf
-An Ant Algorithm for Multi-Robot Navigation and Distributed Simultaneous Task Allocation
+An Ant-Inspired Algorithm for Multi-Robot Navigation and Distributed Simultaneous Task Allocation
 }
 
 
@@ -59,7 +60,7 @@ An Ant Algorithm for Multi-Robot Navigation and Distributed Simultaneous Task Al
 \begin{abstract}
 This paper describes multi-robot foraging in an unknown environment with an unknown number of sources and a single sink (home). The goal is to effectively allocate robots to sources with least interference and maximum rate of resource collection. The navigation between source and sink is achieved by using trails of virtual landmarks inspired from ant-like trail laying behaviour.
 
-The algorithm is tested in simulation with varying number of robots and sources. The result indicate that our method achieves near optimal allocation of robots to different sources.
+The algorithm is tested in simulation with varying number of robots and sources. The results indicate that our method achieves better performance than the original algorithm in case of multiple sources.
 
 \end{abstract}
 
@@ -73,17 +74,17 @@ We present an algorithm for the classical \emph{resource transportation} task in
 Our main focus in this paper is finding task allocation that maximizes the rate of collection of the resources (\emph{throughput}) and with minimum congestion in trails. These two goals are mostly overlapping, hence we achieve the former by trying to solve the latter.
 
 % earlier works
-The earlier works \cite{LOST} for this task present Localization-Space Trails (LOST)  which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified by reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite{dorigo1992} of converging to  near-optimal paths from source to home.
+The earlier works \cite{LOST} for this task present Localization-Space Trails (LOST)  which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified with reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite{dorigo1992} of converging to  near-optimal paths from source to home.
 
 % a short introduction of our approach
-In the LOST and other ant-algorithm based methods, time is used as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize spatial interference between robots. By increasing the population size, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this trail can become congested. Since the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, in the case of multiple sources -- which we are trying to explore -- they do not perform well since they try to minimize the path to a random source (which might be the closest one). Hence, we modify the original algorithm such that it does not converge to a single source as it would result in better throughput.
+In the LOST and other ant-algorithm based methods, time is used as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize spatial interference between robots. When the population size is increased, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this trail can become congested. Since the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, in the case of multiple sources -- which we are trying to explore -- they do not perform well as they try to minimize the path to a random source (which might be the closest one). Hence, we modify the original algorithm such that it does not converge to a single source leading to better throughput.
 
 % short description our contribution
-In this paper we describe two modifications to the existing LOST algorithm that improve performance in the case of multiple sources and a large number of robots as well as maintaining the same performance in a single-source, single-sink setting with less number of robots. We were able to get superior performance in most of the test-cases we examined.
+In this paper we describe two modifications to the existing LOST algorithm that improve performance in the case of multiple sources and a large number of robots as well as maintaining similar performance in a single-source, single-sink setting with less number of robots. We were able to get superior performance in most of the test-cases we examined.
 
 \begin{figure}
    \includegraphics[width=0.49\linewidth]{embodied.png}
-   \includegraphics[width=0.49\linewidth]{SO_LOST.png}
+   \includegraphics[width=0.49\linewidth]{Obtain.png}
    \centering
    \caption{Trails formed in an empty environment using our embodied apprach outlined in section \ref{sec:embodied_approach} (left) and SO-LOST (right)}
    \label{fig:grid_visualization}
@@ -92,20 +93,20 @@ In this paper we describe two modifications to the existing LOST algorithm that 
 \section{RELATED WORKS}
 Various works of ant-inspired trail following algorithms have been published, ranging from leaving real chemical trails \cite{RussellOdour1994} to infra-red message transmission \cite{payton2001pheromone}. 
 
-Our work closely follows from Localization-Space Trails (LOST) \cite{LOST} and its variants which is suitable for imperfectly localized robots. A brief review of LOST will be provided in subsection \ref{ssection:LOST_review}. The method is to generate and share short-lived waypoints (\emph{crumbs)} by robots, which contain some information (estimated distance to target, time to target, density of waypoints, to-source or to-sink label). By following these crumbs, robots can find optimal path between source and home. In the Spread-Out LOST (SO-LOST) \cite{SO_LOST} which is a modified version of LOST, it tries to increase the scalability by minimizing mutual spatial inference between robots which is done by shifting crumbs in a trail from source to home and home to source for a single source, single sink. 
+Our work closely follows from Localization-Space Trails (LOST) \cite{LOST} and its variants which is suitable for imperfectly localized robots. A brief review of LOST will be provided in subsection \ref{ssection:LOST_review}. The method is to generate and share short-lived waypoints (\emph{crumbs)} by robots, which contain some information (estimated distance to target, time to target, density of waypoints, to-source or to-sink label). By following these crumbs, robots can find optimal path between source and home. In the Spread-Out LOST (SO-LOST) \cite{SO_LOST} which is a modified version of LOST, scalability is increased by minimizing mutual spatial inference between robots which is done by shifting crumbs in a trail from source to home and home to source for a single source, single sink. 
 
-The Multi-Objective LOST (MO-LOST) \cite{MO_LOST} tries to reduce mutual spatial inference for paths with multiple sources, multiple sinks by shifting the crumbs of a trail which is crossing other crumbs of the other trails. In the Blinkered LOST \cite{BLINKERED_LOST} it tries to modulate the field of the view (FOV) of the robots' trail-detecting sensor. it shows that the global throughput is a function of robot FOV, means that with narrower FOVs, it performs better in large populations, since narrrower FOV causes multiple trails to be maintained, so that the system can support larger population sizes before saturating due to inference.
+The Multi-Objective LOST (MO-LOST) \cite{MO_LOST} tries to reduce mutual spatial inference for paths with multiple sources, multiple sinks by shifting the crumbs of a trail which is crossing other crumbs of the other trails. Blinkered LOST \cite{BLINKERED_LOST} modulates the field of the view (FOV) of the robots' trail-detecting sensor. It shows that the global throughput is a function of robot FOV, means that with narrower FOVs, it performs better in large populations, since narrrower FOV causes multiple trails to be maintained, so that the system can support larger population sizes before saturating due to inference.
 
 \subsection{LOCALIZATION-SPACE TRAILS REVIEW} \label{ssection:LOST_review}
 
 \begin{figure}
    \includegraphics[width=0.9\linewidth]{SO_LOST_crumb_laying.png}
    \centering
-   \caption{Trail laying behavior in SO-LOST. The robot is following trail to source (filled circle) and changes its direction to new point (empty circle) to keep distance from trail leading to home (triangles).}
-   \label{fig:SO_LOST_crumbnexist_laying}
+   \caption{Trail laying behavior in SO-LOST. The robot is following trail to source (filled circle) and changes its direction to new point (empty circle) to keep distance from trail leading to home (triangles). Obtained from \cite{SO_LOST}}
+   \label{fig:SO_LOST_crumb_laying}
 \end{figure}
 
-LOST generates trails between the locations of \emph{Events} which in our case is reaching source and reaching home. When an Event occurs to robot, its pose in localization space is recorded as \emph{Place} represented by tuple $[Event, Pose]$. Other robots can interpret the coordinates of a place in their own frame of reference. To guide robots between these Events, waypoints called \emph{Crumbs} are laid in every $S$ seconds. A Crumb is a four-tuple $[P_c, L_c, d_c, D_c, t_c]$ containing Place name $P_c$ of place of interest, Localization-space pose $L_c$, estimated distance (in some distance function) between $P_c$ and $L_c$, and $t_c$ the Crumb creation time. A series of Crumbs that lead to the place $P_c$ is referred to as a $Trail$. A robot broadcasts its Trail when an even occurs to it (i.e. when it reaches source or home). All trails are periodically scanned and Crumbs with timestamp older than age threshold $a$ seconds are discarded. This is analogous to ant's pheromone trails evaporating over time.
+LOST generates trails between the locations of \emph{Events} which in our case is reaching source and reaching home. When an Event occurs to robot, its pose in localization space is recorded as \emph{Place} represented by tuple $[Event, Pose]$. Other robots can interpret the coordinates of a Place in their own frame of reference. To guide robots between these Events, waypoints called \emph{Crumbs} are laid in every $S$ seconds. A Crumb is a four-tuple $[P_c, L_c, d_c, D_c, t_c]$ containing Place name $P_c$ of place of interest, Localization-space pose $L_c$, estimated distance (in some distance function) between $P_c$ and $L_c$, and $t_c$ the Crumb creation time. A series of Crumbs that lead to the place $P_c$ is referred to as a $Trail$. A robot broadcasts its Trail when an Event occurs to it (i.e. when it reaches source or home). All trails are periodically scanned and Crumbs with timestamp older than age threshold $a$ seconds are discarded. This is analogous to ant's pheromone trails evaporating over time.
 
 A robot follows trail to a destination place $P_g$ by heading towards the best crumb $C_L$ within its \emph{field of view}, i.e. within radius $d_f$ of its current position. We use the modified version of this algorithm SO-LOST which lays crumbs certain distance $\lambda$ away from crumbs leading to a different place. Figure \ref{fig:SO_LOST_crumb_laying} shows the crumb laying behavior of the SO-LOST algorithm. 
 
@@ -115,10 +116,10 @@ The main contribution of this paper is modification of LOST algorithm to have a 
 
 \begin{enumerate}
   \item Embodied approach: Subtle modification to LOST using trail density as a proxy for congestion which has the emergent effect of maintaining multiple trails leading to different sources
-  \item Explicit allocation approach: Allocate robots to different sources with a goal of uniform distribution of robots along different trails (with consideration of the distances of the sources).
+  \item Explicit allocation approach: Allocate robots to different sources with a goal of uniform distribution of robots along different trails (with consideration of the distances of the sources from home).
 \end{enumerate}
 
-In the following sections, we will describe these approaches with quantitave evaluations.
+In the following sections, we will describe these approaches with quantitave and qualitative evaluations.
 
 \section{EMBODIED APPROACH} \label{sec:embodied_approach}
 % what is the reason LOST fails, and how did you mitigate it
@@ -136,7 +137,7 @@ This approach maintains trails to multiple sources without keeping track of the 
 
 The reason LOST and its other variants converge to a single congested trail is that the robots try to minimize the distance to the trail without considering the congestion in the trail. Even when time to target is using as distance metric instead of physical distance, the final trail is still congested for large population sizes. 
 
-This conflict here is whether to follow the shortest path discovered so far or avoid following congested trail which potentially leading to the target with shortest distance. To make a better decision, we take both these factors into account and make decision based on both factors. For this, the distance function is formulated as follows:
+The conflict here is whether to follow the shortest path discovered so far or avoid following congested trail potentially leading to the target with shortest distance. To make a better decision, we take both these factors into account and make decision based on both. For this, the distance function is formulated as follows:
 
 \begin{equation}
 \begin{split}
@@ -145,11 +146,13 @@ This conflict here is whether to follow the shortest path discovered so far or a
 \end{split}
 \end{equation}
 
-where $time\_to\_target$ is the time to target encoded in the crumbs and $crumb\_density$ local density of trail around a crumb (to be discussed shortly).
+where $time\_to\_target$ is the estimated time to target encoded in the crumbs and $crumb\_density$ local density of trail around a crumb (to be discussed shortly).
 
 The best values of $w_{time\_to\_target}$ and $w_{crumb\_density}$ were found to be  $0.3$ and $0.7$ respectively from experiments\footnote{The scaling of the weights does not affect the performance. So experiments were done with weights that summed to one}. Note that when $w_{crumb\_density}$ is set to $0$, the algorithm is the same as SO-LOST.
 
 This method not only maintains trails leading to multiple sources, each trail isn't just a single curve of crumbs (Figure \ref{fig:grid_visualization}). Hence, there are multiple side trails that lead to the same source.
+
+The main part of our approach is outined in Algorithm \ref{algorithm:1}
 
 \begin{algorithm}
 \caption{Embodied Approach}\label{algorithm:1}
@@ -182,18 +185,18 @@ This method not only maintains trails leading to multiple sources, each trail is
 % algorithm: whenever a crumb is created, increment corresponding cell in the grid. when a crumb is destroyed, decrease the corresponding cell
 % the size of cell chosen 0.25 m (talk about effects of changing this?)
 
-For finding crumb density, we implemented an additional data structure which is a 2D grid that spans the simulation world. Each cell of the grid contains the number of crumbs within it. Hence, the grid represent a histogram of crumbs. The $crumb\_density$ around a crumb is then the number of crumbs in the cell it belongs to divided by total number of crumbs present. We used cells of size $0.25$ x $ 0.25$  m. This is approximation of a robot's size. Figure \ref{fig:grid_visualization} shows a visualization of our grid data structure. A brighter value means higher number of crumbs. The fact that SO-LOST implementation converges to a single source is clearly visible while our approach maintains trails leading to both the sources.
+For finding crumb density, we implemented an additional data structure which is a 2D grid that spans the simulation world. Each cell of the grid contains the number of crumbs within it. Hence, the grid represent a histogram of crumbs. The $crumb\_density$ around a crumb is then the number of crumbs in the cell it belongs to divided by total number of crumbs present. We used cells of size $0.25$ x $ 0.25$  m. This is approximation of a robot's size. Figure \ref{fig:grid_visualization} shows a visualization of our grid data structure. A brighter value represents higher number of crumbs. The fact that SO-LOST implementation converges to a single source is clearly visible while our approach maintains trails leading to both the sources.
 
 \subsection{DRAWBACKS OF THIS APPROACH} \label{ssec:drawbacks_of_1}
 % a lot of parameters, need to set it manually
 % paradox: avoiding congested trail and exploiting the nearest source
 % no guarantee of convergence to multiple sources: if by chance all the robots discover the same source, they stick with it. Redeeming factor: with large population size, they tend to find multiple sources
 
-A major drawbacks of this approach is that there are a lot of parameters that needed to be handtuned. These parameters are evaporation rate of crumbs, grid size and weights of density and time to target in distance function. Even though we were able to get moderate invariance to size of the world, number of robots, number of sources and distances of the sources, these parameters still need fine tuning when used in drastically different setting.
+A major drawbacks of this approach is that there are a lot of parameters that need to be handtuned. These parameters are evaporation rate of crumbs, grid size and weights of density and time to target in distance function. Even though we were able to get moderate invariance to size of the world, number of robots, number of sources and distances of the sources, these parameters still need fine tuning when used in drastically different setting.
 
 A future extension would be to change these parameters dynamically. For example, we can set evaporation rate based on distance between source and home such that multiple cycles on the same trail does not give a false impression of congestion. We would also like to note that the need to finetune the evaporation rate on different distances between source and home is not inherent to our approach and almost all ant-trail based algorithms would require this. But  performance our method is particularly sensitive to this parameter.
 
-Also, there is also no guarantee of convergence to multiple sources. If by chance all the robots discover the same source, there will only be a single trail leading to that source (although this is highly unlikely if we have large number of robot).
+Also, there is no guarantee of convergence to multiple sources. If by chance all the robots discover the same source, there will only be a single trail leading to that source (although this is highly unlikely if we have large number of robot).
 
 \section{EXPLICIT ALLOCATION APPROACH} 
 % To mitigate the shortcomings of our previous approach
@@ -201,7 +204,7 @@ Also, there is also no guarantee of convergence to multiple sources. If by chanc
 % Ensure that the spatial interference between the robots is minimum (allocate robots to source such that there is enough space per robot)
 % Our nice equation
 
-This method was explored to mitigate the shortcomings of our previous approach. Using crumb density as a heuristic of congestion introduces unwanted dependence on evaporation rate and trail length as discussed in the previous subsection \ref{ssec:drawbacks_of_1}. This approach, instead of using approximation, utilizes the actual congestion in different trails. It also modifies the crumb data structure to include the source the crumb is leading to and the total euclidean distance from that crumb to the target, so the new crumb data structure with respect to the its definition in the LOST review section is a tuple $C = [P_c, S_c, L_c, d_c, D_c, t_c]$ which contains the name of the Place $P_c$ to which it refers [source or sink], source id that the crumb is leading to $S_c$, a localization space pose $L_c$, an estimate $d_c$ of the distance from $L_c$ to the target $P_c$ which comes from a distance function that assume time as distance in the original version of LOST, an estimate of total euclidean distance from the crumb to the target, and the time $t_c$ containing the creation time of the crumb.
+This method was explored to mitigate the shortcomings of our previous approach. Using crumb density as a heuristic of congestion introduces unwanted dependence on evaporation rate and trail length as discussed in subsection \ref{ssec:drawbacks_of_1}. This approach, instead of using approximation, utilizes the actual congestion in different trails. It also modifies the crumb data structure to include the source the crumb is leading to and the total Euclidean Distance from that crumb to the target, so the new crumb data structure with respect to its definition in the LOST review section is a tuple $C = [P_c, S_c, L_c, d_c, D_c, t_c]$ which contains the name of the Place $P_c$ to which it lead to (source or sink), Source Id that the crumb is leading to $S_c$ (when $P_c$ is source), a localization space pose $L_c$, an estimate $d_c$ of the distance from $L_c$ to the target $P_c$ which comes from a distance function that assume time as distance in the original version of LOST, an estimate of total Euclidean Distance from the crumb to the target $D_c$s, and the time $t_c$ containing the creation time of the crumb.
 
 We also maintain a global data structure to keep track of numbers of robot currently following different sources. It is implemented as a hash table with all the discovered sources as its key and the number of robots in trail leading to a source as its value. This structure is updated every time a robot reaches home and is allocated to a source.
 
@@ -215,11 +218,11 @@ When a robot reaches home, it checks congestion in every trail. We formulation o
 
 where $R_{SIZE}$ is the size of robot (diameter) in meters, $D_{SAFE}$ is a safe distance (meters) we need to maintain between the robots, $n_t$ is the number of robots currently in that trail and $d_t$ is the length of the trail (meters)
 
-The ideal $congestion\_factor$ is $1$ where the robots form a tight loop in the trail with a safety distance  $D_{SAFE}$ between each other. Whenever a robot reaches home, it calculates $congestion\_factor$ for each source and decides to choose the source with minimum $congestion\_factor$ that is less than $1$. If no trail is available that has $congestion\_factor$ less than 1, the robot decides not to follow any trail and move randomly to find other food sources. After choosing the source (or deciding to explore randomly), the hash table is updated if needed.
+The ideal $congestion\_factor$ is $1$ where the robots form a tight loop in the trail with a safety distance  $D_{SAFE}$ between each other. Whenever a robot reaches home, it calculates $congestion\_factor$ for each source and decides to choose the source with minimum $congestion\_factor$ that is less than $1$. If no trail is available that has $congestion\_factor$ less than 1, the robot decides not to follow any trail and moves randomly to find other food sources. After choosing the source (or deciding to explore randomly), the hash table is updated if needed.
 
-Although this method maintains trail leading to multiple sources and increases our throughput, but in the case of having paths that are almost equally congested, robots can switch back and forth between sources. We introduce an \emph{inertia} factor for convergence of robots to a particular source; a robot decides to switch from one source to another only if the $congestion\_factor$ is better than that of previous source by a fixed threshold.
+Although this method maintains trail leading to multiple sources and increases our throughput, in the case of having paths that are almost equally congested, robots can switch back and forth between sources. We introduce an \emph{inertia} factor for convergence of robots to a particular source; a robot decides to switch from one source to another only if the $congestion\_factor$ is better than that of previous source by a fixed threshold. Our method is outlines in Algorithm \ref{algorithm:2}.
 
-This approach will have a better performance even in single source setting as the trail between source and home is maintained such that there is minimum change of interference between the robots. Experimental results showing this will be provided in the following section. 
+This approach will have a competitive performance even in single source setting as the trail between source and home is maintained such that there is minimum change of interference between the robots. Experimental results showing this will be provided in the following section. 
 
 In our implementation, we do not restrict the wandering robots that were not assigned to any known source to cross existing trails. A better performance will likely be achieved by having such restrictions.
 
@@ -255,7 +258,7 @@ In our implementation, we do not restrict the wandering robots that were not ass
 \subsection{POSSIBLE MODIFICATIONS FOR DISTRIBUTEDNESS}
 % one robot decides to stay home doing the book-keeping and allocates robots to different source 
 % robots communicate with each other and update information of the number of robots in different trails
-In the previous section we mentioned a new data structure that used to keep number of robots in each path, which makes this approach centralized, the following defintion of crumbs is suggested: $C = [P_c, S_c, L_c, d_c, D_c, t_c, R_{UDID}]$ in which we have a new information containing a random constant unique identity for each robot that is generated when they start working, in this case, instead of having a hash table which stores the number of robots in each path, each robot can read crumbs and see how many unique identity are in this path. However, persistence of the crumbs still depend on the evaporation rate and the length of the trail. In order to solve this issue, since the path converges after a while, each robot knows an estimate of traveling time, so they can count the number of robots based on the crumbs where the creation timestamp is greater than the average traveling time.
+In the previous section we mentioned a new data structure that is used to keep number of robots in each path, which makes this approach centralized. The following defintion of crumbs is suggested: $C = [P_c, S_c, L_c, d_c, D_c, t_c, R_{UDID}]$ in which we have a new information containing a random constant unique identity for each robot that is generated when they start working. In this case, instead of having a hash table which stores the number of robots in each path, each robot can read crumbs and see how many unique robots are in this path. However, persistence of the crumbs still depend on the evaporation rate and the length of the trail. In order to solve this issue, since the path converges after a while, each robot knows an estimate of traveling time, so they can count the number of robots based on the crumbs where the creation timestamp is greater than the average traveling time.
 
 Another way of making this approach distributed is having an agent at home which is incharge of maintaining the hash table and relays the information when a robot reaches home, based on which the robot decides the source to pursue. For this, we can either place a server like setup near home or arbitrarily have one of the robots stay at home to assume the role of conductor.
 
@@ -298,10 +301,12 @@ The experiments we conducted used the following parameter settings:
   \end{center}
 \end{table}
 
+Our source code is available at \footnote{\url{https://github.com/fshamshirdar/moorche}}.
+
 \subsection{RESULTS AND DISCUSSION}
 
 \begin{figure}
-   \includegraphics[width=.9\linewidth]{comparison.png}
+   \includegraphics[width=.81\linewidth]{comparison.png}
    \centering
    \caption{Comparison in performance between Explicit Allocation, Embodied and SO-LOST algorithms}
    \label{fig:comparison}
@@ -321,9 +326,7 @@ The performance of Embodied Approach is highly dependent on values of parameters
 
 In this paper, we outlined two approaches for improving LOST algorithm for better throughput in a multiple-source, single-home setting. We have provided experimental results showing improved performance compared to a variant of LOST (SO-LOST) both quantitavely and qualititavely.  The robots take into account the congestion in the trails either explicitly or implicitly to make better decisions regarding which trail to follow. 
 
-In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_Hjor1933} where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{songmulti} and \cite{zhangmaximum} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. 
-
-We will also improve our navigation strategies. There are lot of room for improvement in our obstacle avoidance and trail-following behavior which could lead to better performance. 
+In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_Hjor1933} where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{songmulti} and \cite{zhangmaximum} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. We also plan to improve our navigation strategies. There are lot of room for improvement in our obstacle avoidance and trail-following behavior which could lead to better performance. 
 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
@@ -344,18 +347,18 @@ We will also improve our navigation strategies. There are lot of room for improv
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure}[h]
-  \begin{subfigure}{.25\textwidth}
+  \begin{subfigure}{.23\textwidth}
       \includegraphics[width=0.7\linewidth]{images/explicit/1/raw/16.png}
          \centering
          \caption{Explicit Allocation Approach}
    \end{subfigure}%
-     \begin{subfigure}{.25\textwidth}
+     \begin{subfigure}{.23\textwidth}
        \includegraphics[width=0.7\linewidth]{images/embodied/1/raw/16.png}
           \centering
           \caption{Embodied Approach}
      \end{subfigure}
     \centering
-     \begin{subfigure}{.25\textwidth}
+     \begin{subfigure}{.23\textwidth}
        \includegraphics[width=0.7\linewidth]{images/so-lost/1/raw/16.png}
           \centering
           \caption{SO-LOST}

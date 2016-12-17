@@ -1,0 +1,7 @@
+python plot_food.py ../results/experiments/so-lost/1/4.txt "SO-LOST (1 source, 4 robots)"
+python plot_food.py ../results/experiments/so-lost/1/4.txt "SO-LOST (1 source, 4 robots)"
+python plot_food.py ../results/experiments/so-lost/1/4.txt "SO-LOST (1 source, 4 robots)"
+
+python plot_food.py ../results/experiments/so-lost/1/4.txt "SO-LOST (1 source, 4 robots)"
+python plot_food.py ../results/experiments/so-lost/1/4.txt "SO-LOST (1 source, 4 robots)"
+python plot_food.py ../results/experiments/so-lost/1/4.txt "SO-LOST (1 source, 4 robots)"

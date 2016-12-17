@@ -33,24 +33,23 @@ except:
 fig = plt.figure()
 if no_of_sources == 1:
 	x = np.linspace(0, 30, len(data[:]))
-	plt.plot(x, data[:], color=colors[0], linewidth=3)	
+	food = data[:]
+	
 else:
 	x = np.linspace(0, 30, len(data[:, 0]))
-	for i in range(no_of_sources):
-		plt.plot(x, data[:, i], color=colors[i], linewidth=3)
+	food = data[:, 0]
+	for i in range(1, no_of_sources):
+		food += data[:, i]
 
-#plt.plot(data[:, 1], color="orange")
+plt.plot(x, food, color=colors[0], linewidth=3)	
 
 
 
 plt.xlabel("Time (seconds)")
 plt.ylabel("Collected Resources")
-plt.title("Collected Resources for " + sys.argv[2])
+plt.title("Total Collected Resources for " + sys.argv[2])
 
-legends = []
-for i in range(no_of_sources):
-	legends.append("Source " + str(i+1))
-plt.legend( tuple(legends) )
+# plt.legend( "Total resource collected" ) 
 fig.savefig(sys.argv[2])
 
 
