@@ -68,7 +68,7 @@ The algorithm is tested in simulation with varying number of robots and sources.
 \section{INTRODUCTION}
 
 % Task definition
-We present an algorithm for the classical \emph{resource transportation} task in an unmapped environment. Robots start from arbitrary positions and search for a supply of resources.  On reaching the source, they receive a unit of resource and return home with it, then return to fetch more resource repeatedly for the length of a triaL.
+We present an algorithm for the classical \emph{resource transportation} task in an unmapped environment. Robots start from arbitrary positions and search for a supply of resources.  On reaching the source, they receive a unit of resource and return home with it, then return back to fetch more resource repeatedly for the length of a trial.
 % Problem Statement %
 Our main focus in this paper is finding task allocation that maximizes the rate of collection of the resources (\emph{throughput}) and with minimum congestion in trails. These two goals are mostly overlapping, hence we achieve the former by trying to solve the latter.
 
@@ -76,7 +76,7 @@ Our main focus in this paper is finding task allocation that maximizes the rate 
 The earlier works \cite{LOST} for this task present Localization-Space Trails (LOST)  which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified by reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite{dorigo1992} of converging to  near-optimal paths from source to home.
 
 % a short introduction of our approach
-In the LOST and other ant-algorithm based methods, time is used as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize spatial interference between robots. By increasing the population size, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this train can become congested. Since the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, in the case of multiple sources -- which we are trying to explore -- they do not perform well since they try to minimize the path to a random source (which might be the closest one). Hence, we modify the original algorithm such that it does not converge to a single source as it would result in better throughput.
+In the LOST and other ant-algorithm based methods, time is used as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize spatial interference between robots. By increasing the population size, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this trail can become congested. Since the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, in the case of multiple sources -- which we are trying to explore -- they do not perform well since they try to minimize the path to a random source (which might be the closest one). Hence, we modify the original algorithm such that it does not converge to a single source as it would result in better throughput.
 
 % short description our contribution
 In this paper we describe two modifications to the existing LOST algorithm that improve performance in the case of multiple sources and a large number of robots as well as maintaining the same performance in a single-source, single-sink setting with less number of robots. We were able to get superior performance in most of the test-cases we examined.
@@ -298,81 +298,22 @@ The experiments we conducted used the following parameter settings:
   \end{center}
 \end{table}
 
-\subsection{RESULTS}
+\subsection{RESULTS AND DISCUSSION}
 
-\begin{figure}[h]
-  \begin{subfigure}{.25\textwidth}
-      \includegraphics[width=0.9\linewidth]{images/explicit/1/raw/8.png}
-         \centering
-         \caption{Explicit Approach}
-   \end{subfigure}%
-     \begin{subfigure}{.25\textwidth}
-       \includegraphics[width=0.9\linewidth]{images/embodied/1/raw/8.png}
-          \centering
-          \caption{Embodied Approach}
-     \end{subfigure}
-    \centering
-     \begin{subfigure}{.25\textwidth}
-       \includegraphics[width=0.9\linewidth]{images/so-lost/1/raw/8.png}
-          \centering
-          \caption{SO-LOST}
-     \end{subfigure}
-   
+\begin{figure}
+   \includegraphics[width=.9\linewidth]{comparison.png}
    \centering
-   \caption{Screenshot after 10 minutes of simulation time: single source, 8 robots}
-   \label{fig:screenshot_1_source}
+   \caption{Comparison in performance between Explicit Allocation, Embodied and SO-LOST algorithms}
+   \label{fig:comparison}
 \end{figure}
 
-\begin{figure}[h]
-  \begin{subfigure}{.25\textwidth}
-      \includegraphics[width=0.9\linewidth]{images/explicit/2/raw/8.png}
-         \centering
-         \caption{Explicit Approach}
-   \end{subfigure}%
-     \begin{subfigure}{.25\textwidth}
-       \includegraphics[width=0.9\linewidth]{images/embodied/2/raw/8.png}
-          \centering
-          \caption{Embodied Approach}
-     \end{subfigure}
-    \centering
-     \begin{subfigure}{.25\textwidth}
-       \includegraphics[width=0.9\linewidth]{images/so-lost/2/raw/8.png}
-          \centering
-          \caption{SO-LOST}
-     \end{subfigure}
-   
-   \centering
-   \caption{Screenshot after 10 minutes of simulation time: 2 sources, 8 robots}
-   \label{fig:screenshot_2_source}
-\end{figure}
+In figures \ref{fig:screenshot_1_source}, \ref{fig:screenshot_2_source} and \ref{fig:screenshot_3_source}, we show the screenshots of three algorithms Explicit Allocation Approach, Embodied Approach and SO-LOST with 1, 2 and 3 sources respectively (with 16 robots). This gives us qualitative evaluation of our these three algorithms. 
 
-\begin{figure}[h]
-  \begin{subfigure}{.25\textwidth}
-      \includegraphics[width=0.9\linewidth]{images/explicit/3/raw/8.png}
-         \centering
-         \caption{Explicit Approach}
-   \end{subfigure}%
-     \begin{subfigure}{.25\textwidth}
-       \includegraphics[width=0.9\linewidth]{images/embodied/3/raw/8.png}
-          \centering
-          \caption{Embodied Approach}
-     \end{subfigure}
-    \centering
-     \begin{subfigure}{.25\textwidth}
-       \includegraphics[width=0.9\linewidth]{images/so-lost/3/raw/8.png}
-          \centering
-          \caption{SO-LOST}
-     \end{subfigure}
-   
-   \centering
-   \caption{Screenshot after 10 minutes of simulation time: 3 sources, 8 robots}
-   \label{fig:screenshot_3_source}
-\end{figure}
+Figure \ref{fig:comparison} shows the performance of the three algorithms in terms of total collected resources at the end of 10 minutes of simulation time with respect to population size. All of the methods scale in similar manner with the population size. In the case of only one source, SO-LOST performs slightly better than both our approaches since in our methods some robots do not follow trail to known source to find other sources (which are not present). With 2 sources, both of our methods perform better with larger population size as they exploit both the sources and have less congested trails. We see the same trend with 3 sources.
 
-\subsection{DISCUSSION}
-% increasing the number of robots, more robots won't be assigned to any source and left to wander. But these wandering robots interfere with the robots in existing trails and degrade the performance. 
+Comparing Explicit Allocation and Embodied Approach, we find that the performance of Embodied Approach is superior at higher number of robots. This can be attributed to the fact that increasing the number of robots, more robots won't be assigned to any source and left to wander. But these wandering robots eventually interfere with the robots in existing trails and degrade the performance. 
 
-% The first approach is highly dependent on number of parameters. It has high variance when number of robots large
+The performance of Embodied Approach is highly dependent on values of parameters (especially the evaporation rate and distance between source and home). It has higher variance in performance compared to other methods. Also, the fact that it performs significantly better in larger population size (except when there is only one source) and consistently lower in smaller population size compared to other approaches can be partly explained by the parameters setting.
 
 % 12 robots, 3 sources: In some cases the robots can't find the third source for a longer time. 
 
@@ -383,6 +324,7 @@ In this paper, we outlined two approaches for improving LOST algorithm for bette
 In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_Hjor1933} where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{songmulti} and \cite{zhangmaximum} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. 
 
 We will also improve our navigation strategies. There are lot of room for improvement in our obstacle avoidance and trail-following behavior which could lead to better performance. 
+
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
@@ -400,23 +342,81 @@ We will also improve our navigation strategies. There are lot of room for improv
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{APPENDIX}
 
-Appendixes should appear before the acknowledgment.
-
-\section*{ACKNOWLEDGMENT}
-
-The preferred spelling of the word �acknowledgment� in America is without an �e� after the �g�. Avoid the stilted expression, �One of us (R. B. G.) thanks . . .�  Instead, try �R. B. G. thanks�. Put sponsor acknowledgments in the unnumbered footnote on the first page.
-
+\begin{figure}[h]
+  \begin{subfigure}{.25\textwidth}
+      \includegraphics[width=0.7\linewidth]{images/explicit/1/raw/16.png}
+         \centering
+         \caption{Explicit Allocation Approach}
+   \end{subfigure}%
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.7\linewidth]{images/embodied/1/raw/16.png}
+          \centering
+          \caption{Embodied Approach}
+     \end{subfigure}
+    \centering
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.7\linewidth]{images/so-lost/1/raw/16.png}
+          \centering
+          \caption{SO-LOST}
+     \end{subfigure}
+   
+   \centering
+   \caption{Screenshot after 10 minutes of simulation time: single source, 16 robots}
+   \label{fig:screenshot_1_source}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
-
 % references section 
 \bibliography{root}
 
+\begin{figure}[H]
+  \begin{subfigure}{.25\textwidth}
+      \includegraphics[width=0.9\linewidth]{images/explicit/2/raw/16.png}
+         \centering
+         \caption{Explicit Allocation Approach}
+   \end{subfigure}%
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/embodied/2/raw/16.png}
+          \centering
+          \caption{Embodied Approach}
+     \end{subfigure}
+    \centering
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/so-lost/2/raw/16.png}
+          \centering
+          \caption{SO-LOST}
+     \end{subfigure}
+   
+   \centering
+   \caption{Screenshot after 10 minutes of simulation time: 2 sources, 16 robots}
+   \label{fig:screenshot_2_source}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{subfigure}{.25\textwidth}
+      \includegraphics[width=0.9\linewidth]{images/explicit/3/raw/16.png}
+         \centering
+         \caption{Explicit Allocation Approach}
+   \end{subfigure}%
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/embodied/3/raw/16.png}
+          \centering
+          \caption{Embodied Approach}
+     \end{subfigure}
+    \centering
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/so-lost/3/raw/16.png}
+          \centering
+          \caption{SO-LOST}
+     \end{subfigure}
+   
+   \centering
+   \caption{Screenshot after 10 minutes of simulation time: 3 sources, 16 robots}
+   \label{fig:screenshot_3_source}
+\end{figure}
 
 
 

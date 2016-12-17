@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.12.7)  17 DEC 2016 08:08
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.12.7)  17 DEC 2016 11:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**root
+**root.tex
 (./root.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 78 languages loaded.
@@ -472,13 +472,13 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 54.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<embodied.png, id=64, 599.23875pt x 595.22375pt>
+<embodied.png, id=60, 599.23875pt x 595.22375pt>
 File: embodied.png Graphic file (type png)
  <use embodied.png>
 Package pdftex.def Info: embodied.png used on input line 85.
 (pdftex.def)             Requested size: 120.40321pt x 119.59666pt.
 
-<SO_LOST.png, id=66, 600.2425pt x 597.23125pt>
+<SO_LOST.png, id=62, 600.2425pt x 597.23125pt>
 File: SO_LOST.png Graphic file (type png)
  <use SO_LOST.png>
 Package pdftex.def Info: SO_LOST.png used on input line 86.
@@ -487,7 +487,7 @@ Package pdftex.def Info: SO_LOST.png used on input line 86.
 
 
  <./embodied.png> <./SO_LOST.png>]
-<SO_LOST_crumb_laying.png, id=82, 1129.21875pt x 805.0075pt>
+<SO_LOST_crumb_laying.png, id=78, 1129.21875pt x 805.0075pt>
 File: SO_LOST_crumb_laying.png Graphic file (type png)
 
 <use SO_LOST_crumb_laying.png>
@@ -498,13 +498,13 @@ Package pdftex.def Info: SO_LOST_crumb_laying.png used on input line 102.
 LaTeX Warning: Reference `fig:SO_LOST_crumb_laying' on page 2 undefined on inpu
 t line 110.
 
-<grid1.png, id=83, 418.4433pt x 432.8973pt>
+<grid1.png, id=79, 418.4433pt x 432.8973pt>
 File: grid1.png Graphic file (type png)
  <use grid1.png>
 Package pdftex.def Info: grid1.png used on input line 128.
 (pdftex.def)             Requested size: 120.40321pt x 124.55939pt.
 
-<grid2.png, id=84, 426.393pt x 438.6789pt>
+<grid2.png, id=80, 426.393pt x 438.6789pt>
 File: grid2.png Graphic file (type png)
  <use grid2.png>
 Package pdftex.def Info: grid2.png used on input line 129.
@@ -517,122 +517,93 @@ put line 155.
 Package amsfonts Warning: Obsolete command \bold; \mathbf should be used instea
 d on input line 158.
 
-[3] <images/explicit/1/raw/8.png, id=115, 596.2275pt x 595.22375pt>
-File: images/explicit/1/raw/8.png Graphic file (type png)
+[3] <comparison.png, id=111, 780.9175pt x 873.2625pt>
+File: comparison.png Graphic file (type png)
+ <use comparison.png>
+Package pdftex.def Info: comparison.png used on input line 304.
+(pdftex.def)             Requested size: 221.14479pt x 247.29674pt.
 
-<use images/explicit/1/raw/8.png>
-Package pdftex.def Info: images/explicit/1/raw/8.png used on input line 305.
-(pdftex.def)             Requested size: 113.82446pt x 113.62955pt.
+[4] <images/explicit/1/raw/16.png, id=128, 657.45625pt x 657.45625pt>
+File: images/explicit/1/raw/16.png Graphic file (type png)
 
-<images/embodied/1/raw/8.png, id=116, 655.44875pt x 655.44875pt>
-File: images/embodied/1/raw/8.png Graphic file (type png)
+<use images/explicit/1/raw/16.png>
+Package pdftex.def Info: images/explicit/1/raw/16.png used on input line 348.
+(pdftex.def)             Requested size: 88.53035pt x 88.52202pt.
 
-<use images/embodied/1/raw/8.png>
-Package pdftex.def Info: images/embodied/1/raw/8.png used on input line 310.
-(pdftex.def)             Requested size: 113.82446pt x 113.81512pt.
+<images/embodied/1/raw/16.png, id=129, 596.2275pt x 597.23125pt>
+File: images/embodied/1/raw/16.png Graphic file (type png)
 
-<images/so-lost/1/raw/8.png, id=117, 658.46pt x 658.46pt>
-File: images/so-lost/1/raw/8.png Graphic file (type png)
+<use images/embodied/1/raw/16.png>
+Package pdftex.def Info: images/embodied/1/raw/16.png used on input line 353.
+(pdftex.def)             Requested size: 88.53035pt x 88.67863pt.
 
-<use images/so-lost/1/raw/8.png>
-Package pdftex.def Info: images/so-lost/1/raw/8.png used on input line 316.
-(pdftex.def)             Requested size: 113.82446pt x 113.81555pt.
+<images/so-lost/1/raw/16.png, id=130, 655.44875pt x 657.45625pt>
+File: images/so-lost/1/raw/16.png Graphic file (type png)
 
-Overfull \hbox (7.22687pt too wide) in paragraph at lines 304--320
+<use images/so-lost/1/raw/16.png>
+Package pdftex.def Info: images/so-lost/1/raw/16.png used on input line 359.
+(pdftex.def)             Requested size: 88.53035pt x 88.7929pt.
+
+Overfull \hbox (7.22687pt too wide) in paragraph at lines 347--363
+ []$[]$$[]$ 
+ []
+
+(./root.bbl) <images/explicit/2/raw/16.png, id=131, 657.45625pt x 654.445pt>
+File: images/explicit/2/raw/16.png Graphic file (type png)
+
+<use images/explicit/2/raw/16.png>
+Package pdftex.def Info: images/explicit/2/raw/16.png used on input line 377.
+(pdftex.def)             Requested size: 113.82446pt x 113.3013pt.
+
+<images/embodied/2/raw/16.png, id=132, 603.25375pt x 603.25375pt>
+File: images/embodied/2/raw/16.png Graphic file (type png)
+
+<use images/embodied/2/raw/16.png>
+Package pdftex.def Info: images/embodied/2/raw/16.png used on input line 382.
+(pdftex.def)             Requested size: 113.82446pt x 113.81857pt.
+
+<images/so-lost/2/raw/16.png, id=133, 601.24625pt x 602.25pt>
+File: images/so-lost/2/raw/16.png Graphic file (type png)
+
+<use images/so-lost/2/raw/16.png>
+Package pdftex.def Info: images/so-lost/2/raw/16.png used on input line 388.
+(pdftex.def)             Requested size: 113.82446pt x 114.00597pt.
+
+Overfull \hbox (7.22687pt too wide) in paragraph at lines 376--392
+ []$[]$$[]$ 
+ []
+
+[5 <./comparison.png> <./images/explicit/1/raw/16.png> <./images/embodied/1/raw
+/16.png> <./images/so-lost/1/raw/16.png>]
+<images/explicit/3/raw/16.png, id=152, 657.45625pt x 656.4525pt>
+File: images/explicit/3/raw/16.png Graphic file (type png)
+
+<use images/explicit/3/raw/16.png>
+Package pdftex.def Info: images/explicit/3/raw/16.png used on input line 400.
+(pdftex.def)             Requested size: 113.82446pt x 113.64885pt.
+
+<images/embodied/3/raw/16.png, id=153, 654.445pt x 654.445pt>
+File: images/embodied/3/raw/16.png Graphic file (type png)
+
+<use images/embodied/3/raw/16.png>
+Package pdftex.def Info: images/embodied/3/raw/16.png used on input line 405.
+(pdftex.def)             Requested size: 113.82446pt x 113.82057pt.
+
+<images/so-lost/3/raw/16.png, id=154, 635.37375pt x 635.37375pt>
+File: images/so-lost/3/raw/16.png Graphic file (type png)
+
+<use images/so-lost/3/raw/16.png>
+Package pdftex.def Info: images/so-lost/3/raw/16.png used on input line 411.
+(pdftex.def)             Requested size: 113.82446pt x 113.81941pt.
+
+Overfull \hbox (7.22687pt too wide) in paragraph at lines 399--415
  []$[]$$[]$ 
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/explicit/2/raw/8.png, id=118, 655.44875pt x 655.44875pt>
-File: images/explicit/2/raw/8.png Graphic file (type png)
-
-<use images/explicit/2/raw/8.png>
-Package pdftex.def Info: images/explicit/2/raw/8.png used on input line 328.
-(pdftex.def)             Requested size: 113.82446pt x 113.81512pt.
-
-<images/embodied/2/raw/8.png, id=119, 552.0625pt x 551.05875pt>
-File: images/embodied/2/raw/8.png Graphic file (type png)
-
-<use images/embodied/2/raw/8.png>
-Package pdftex.def Info: images/embodied/2/raw/8.png used on input line 333.
-(pdftex.def)             Requested size: 113.82446pt x 113.61522pt.
-
-<images/so-lost/2/raw/8.png, id=120, 570.13pt x 571.13374pt>
-File: images/so-lost/2/raw/8.png Graphic file (type png)
-
-<use images/so-lost/2/raw/8.png>
-Package pdftex.def Info: images/so-lost/2/raw/8.png used on input line 339.
-(pdftex.def)             Requested size: 113.82446pt x 114.02428pt.
-
-Overfull \hbox (7.22687pt too wide) in paragraph at lines 327--343
- []$[]$$[]$ 
- []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/explicit/3/raw/8.png, id=121, 656.4525pt x 657.45625pt>
-File: images/explicit/3/raw/8.png Graphic file (type png)
-
-<use images/explicit/3/raw/8.png>
-Package pdftex.def Info: images/explicit/3/raw/8.png used on input line 351.
-(pdftex.def)             Requested size: 113.82446pt x 113.99318pt.
-
-<images/embodied/3/raw/8.png, id=122, 656.4525pt x 656.4525pt>
-File: images/embodied/3/raw/8.png Graphic file (type png)
-
-<use images/embodied/3/raw/8.png>
-Package pdftex.def Info: images/embodied/3/raw/8.png used on input line 356.
-(pdftex.def)             Requested size: 113.82446pt x 113.81914pt.
-
-<images/so-lost/3/raw/8.png, id=123, 611.28375pt x 611.28375pt>
-File: images/so-lost/3/raw/8.png Graphic file (type png)
-
-<use images/so-lost/3/raw/8.png>
-Package pdftex.def Info: images/so-lost/3/raw/8.png used on input line 362.
-(pdftex.def)             Requested size: 113.82446pt x 113.82259pt.
-
-Overfull \hbox (7.22687pt too wide) in paragraph at lines 350--366
- []$[]$$[]$ 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4]
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
-Missing character: There is no ï in font ptmr7t!
-Missing character: There is no ¿ in font ptmr7t!
-Missing character: There is no ½ in font ptmr7t!
- (./root.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -645,18 +616,15 @@ Before submitting the final camera ready copy, remember to:
  process uses the US letter (8.5in X 11in) paper size.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 423.
-[5 <./images/explicit/1/raw/8.png> <./images/embodied/1/raw/8.png> <./images/so
--lost/1/raw/8.png> <./images/explicit/2/raw/8.png> <./images/embodied/2/raw/8.p
-ng> <./images/so-lost/2/raw/8.png>] [6
-
- <./images/explicit/3/raw/8.png> <./images/embodied/3/raw/8.png> <./images/so-l
-ost/3/raw/8.png>]
+[6 <./images/explicit/2/raw/16.png> <./images/embodied/2/raw/16.png> <./images/
+so-lost/2/raw/16.png> <./images/explicit/3/raw/16.png> <./images/embodied/3/raw
+/16.png> <./images/so-lost/3/raw/16.png>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 423.
  (./root.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 423.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 423.
 Package rerunfilecheck Info: File `root.out' has not changed.
-(rerunfilecheck)             Checksum: 053D4AC620414ADF5E9DE5860C780814;923.
+(rerunfilecheck)             Checksum: 1B9B03A56AB0CABD46B0A75274322A66;877.
 
 
 LaTeX Warning: There were undefined references.
@@ -667,13 +635,13 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 423.
  ) 
 Here is how much of TeX's memory you used:
- 8455 strings out of 493304
- 128367 string characters out of 6139871
- 228432 words of memory out of 5000000
- 11752 multiletter control sequences out of 15000+600000
+ 8459 strings out of 493304
+ 128483 string characters out of 6139871
+ 225552 words of memory out of 5000000
+ 11757 multiletter control sequences out of 15000+600000
  45367 words of font info for 93 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,19n,38p,1140b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,19n,38p,1144b,418s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
@@ -688,10 +656,10 @@ y10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 live/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/times/utmri8a.pfb>
-Output written on root.pdf (6 pages, 1079814 bytes).
+Output written on root.pdf (6 pages, 1482463 bytes).
 PDF statistics:
- 225 PDF objects out of 1000 (max. 8388607)
- 173 compressed objects within 2 object streams
- 49 named destinations out of 1000 (max. 500000)
- 191 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 224 PDF objects out of 1000 (max. 8388607)
+ 171 compressed objects within 2 object streams
+ 47 named destinations out of 1000 (max. 500000)
+ 188 words of extra memory for PDF output out of 10000 (max. 10000000)
 
