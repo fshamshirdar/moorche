@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.12.7)  16 DEC 2016 22:14
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.12.7)  17 DEC 2016 04:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -218,6 +218,54 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 \mathdisplay@stack=\toks20
 LaTeX Info: Redefining \[ on input line 2665.
 LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count105
+\float@exts=\toks21
+\float@box=\box29
+\@float@everytoks=\toks22
+\@floatcapt=\box30
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks23
+\c@algorithm=\count106
+)
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count107
+\c@ALG@rem=\count108
+\c@ALG@nested=\count109
+\ALG@tlm=\skip50
+\ALG@thistlm=\skip51
+\c@ALG@Lnr=\count110
+\c@ALG@blocknr=\count111
+\c@ALG@storecount=\count112
+\c@ALG@tmpcounter=\count113
+\ALG@tmplength=\skip52
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (./root.aux
 
 LaTeX Warning: Label `fig:grid_visualization' multiply defined.
@@ -225,31 +273,31 @@ LaTeX Warning: Label `fig:grid_visualization' multiply defined.
 )
 \openout1 = `root.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
  (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count105
+\scratchcounter=\count114
 \scratchdimen=\dimen131
-\scratchbox=\box29
-\nofMPsegments=\count106
-\nofMParguments=\count107
-\everyMPshowfont=\toks21
-\MPscratchCnt=\count108
+\scratchbox=\box31
+\nofMPsegments=\count115
+\nofMParguments=\count116
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count117
 \MPscratchDim=\dimen132
-\MPnumerator=\count109
-\makeMPintoPDFobject=\count110
-\everyMPtoPDFconversion=\toks22
+\MPnumerator=\count118
+\makeMPintoPDFobject=\count119
+\everyMPtoPDFconversion=\toks25
 ) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -299,40 +347,50 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for U+msa on input line 48.
 
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 48.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 
 LaTeX Warning: Citation `RESOURCE_TRANSPORTATION' on page 1 undefined on input 
-line 59.
+line 66.
 
 
-LaTeX Warning: Citation `LOST' on page 1 undefined on input line 64.
+LaTeX Warning: Citation `LOST' on page 1 undefined on input line 71.
 
 
-LaTeX Warning: Citation `(' on page 1 undefined on input line 64.
+LaTeX Warning: Citation `(' on page 1 undefined on input line 71.
 
 <embodied.png, id=1, 599.23875pt x 595.22375pt>
 File: embodied.png Graphic file (type png)
  <use embodied.png>
-Package pdftex.def Info: embodied.png used on input line 73.
+Package pdftex.def Info: embodied.png used on input line 80.
 (pdftex.def)             Requested size: 120.40321pt x 119.59666pt.
 
 <SO_LOST.png, id=3, 600.2425pt x 597.23125pt>
 File: SO_LOST.png Graphic file (type png)
  <use SO_LOST.png>
-Package pdftex.def Info: SO_LOST.png used on input line 74.
+Package pdftex.def Info: SO_LOST.png used on input line 81.
 (pdftex.def)             Requested size: 120.40321pt x 119.79953pt.
 
 
 LaTeX Warning: Citation `Rus- sell et al. (1994)' on page 1 undefined on input 
-line 82.
+line 89.
 
 
 LaTeX Warning: Citation `Payton et al. (2001)' on page 1 undefined on input lin
-e 82.
+e 89.
 
 
-LaTeX Warning: Citation `LOST' on page 1 undefined on input line 84.
+LaTeX Warning: Citation `LOST' on page 1 undefined on input line 91.
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
@@ -342,32 +400,41 @@ pt x 805.0075pt>
 File: SO_LOST_crumb_laying.png Graphic file (type png)
 
 <use SO_LOST_crumb_laying.png>
-Package pdftex.def Info: SO_LOST_crumb_laying.png used on input line 91.
+Package pdftex.def Info: SO_LOST_crumb_laying.png used on input line 98.
 (pdftex.def)             Requested size: 221.14479pt x 157.64528pt.
- <grid1.png, id=16, 418.4433pt x 432.8973pt>
-File: grid1.png Graphic file (type png)
 
-<use grid1.png>
-Package pdftex.def Info: grid1.png used on input line 117.
+
+LaTeX Warning: Reference `fig:SO_LOST_crumb_laying' on page 2 undefined on inpu
+t line 106.
+
+<grid1.png, id=16, 418.4433pt x 432.8973pt>
+File: grid1.png Graphic file (type png)
+ <use grid1.png>
+Package pdftex.def Info: grid1.png used on input line 124.
 (pdftex.def)             Requested size: 120.40321pt x 124.55939pt.
- <grid2.png, id=17, 426.393pt x 438.6789pt>
+
+<grid2.png, id=17, 426.393pt x 438.6789pt>
 File: grid2.png Graphic file (type png)
  <use grid2.png>
-Package pdftex.def Info: grid2.png used on input line 118.
+Package pdftex.def Info: grid2.png used on input line 125.
 (pdftex.def)             Requested size: 120.40321pt x 123.86676pt.
+ [2 <./SO_LOST_crumb_laying.png> <./grid1.png> <./grid2.png>]
 
-[2 <./SO_LOST_crumb_laying.png> <./grid1.png> <./grid2.png>] [3]
+Package amsfonts Warning: Obsolete command \bold; \mathbf should be used instea
+d on input line 154.
+
+[3]
 
 LaTeX Warning: Citation `MSY_PAPER Hjort et al. 1933 ' on page 4 undefined on i
-nput line 201.
+nput line 303.
 
 
 LaTeX Warning: Citation `Song and Vaughan 2013' on page 4 undefined on input li
-ne 201.
+ne 303.
 
 
 LaTeX Warning: Citation `Zhang and Zhao Song 2016' on page 4 undefined on input
- line 202.
+ line 303.
 
 Missing character: There is no ï in font ptmr7t!
 Missing character: There is no ¿ in font ptmr7t!
@@ -408,6 +475,7 @@ Missing character: There is no ½ in font ptmr7t!
 Missing character: There is no ï in font ptmr7t!
 Missing character: There is no ¿ in font ptmr7t!
 Missing character: There is no ½ in font ptmr7t!
+[4]
 Missing character: There is no ï in font ptmr7t!
 Missing character: There is no ¿ in font ptmr7t!
 Missing character: There is no ½ in font ptmr7t!
@@ -534,6 +602,7 @@ Missing character: There is no ½ in font ptmr7t!
 Missing character: There is no ï in font ptmr7t!
 Missing character: There is no ¿ in font ptmr7t!
 Missing character: There is no ½ in font ptmr7t!
+
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -545,7 +614,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[4] (./root.aux)
+[5] (./root.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -554,25 +623,31 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3771 strings out of 493304
- 58551 string characters out of 6139871
- 129762 words of memory out of 5000000
- 7202 multiletter control sequences out of 15000+600000
- 39533 words of font info for 76 fonts, out of 8000000 for 9000
+ 4691 strings out of 493304
+ 70786 string characters out of 6139871
+ 144076 words of memory out of 5000000
+ 8080 multiletter control sequences out of 15000+600000
+ 43153 words of font info for 91 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,19n,38p,1144b,287s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,19n,38p,1144b,340s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
-rw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8
-a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on root.pdf (4 pages, 474628 bytes).
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/times/utmri8a.pfb>
+Output written on root.pdf (5 pages, 534341 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 87 PDF objects out of 1000 (max. 8388607)
+ 56 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

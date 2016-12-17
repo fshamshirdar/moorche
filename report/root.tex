@@ -22,7 +22,14 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{caption}
 \usepackage{amsmath} % assumes amsmath package installed
-%\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage[pdftex]{graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
 
 
 \title{\LARGE \bf
@@ -91,7 +98,7 @@ the Multi-Objective LOST (MO-LOST) tries to reduce mutual spatial inference for 
    \includegraphics[width=0.9\linewidth]{SO_LOST_crumb_laying.png}
    \centering
    \caption{Trail laying behavior in SO-LOST. The robot is following trail to source (filled circle) and changes its direction to new point (empty circle) to keep distance from trail leading to home (triangles).}
-   \label{fig:SO_LOST_crumb_laying}
+   \label{fig:SO_LOST_crumbnexist_laying}
 \end{figure}
 
 LOST generates trails between the locations of \emph{Events} which in our case is reaching source and reaching home. When an Event occurs to robot, its pose in localization space is recorded as \emph{Place} represented by tuple $[Event, Pose]$. Other robots can interpret the coordinates of a place in their own frame of reference. To guide robots between these Events, waypoints called \emph{Crumbs} are laid in every $S$ seconds. A Crumb is a four-tuple $[P_c, L_c, d_c, D_c, t_c]$ containing Place name $P_c$ of place of interest, Localization-space pose $L_c$, estimated distance (in some distance function) between $P_c$ and $L_c$, and $t_c$ the Crumb creation time. A series of Crumbs that lead to the place $P_c$ is referred to as a $Trail$. A robot broadcasts its Trail when an even occurs to it (i.e. when it reaches source or home). All trails are periodically scanned and Crumbs with timestamp older than age threshold $a$ seconds are discarded. This is analogous to ant's pheromone trails evaporating over time.
@@ -140,6 +147,31 @@ The best values of $w_{time\_to\_target}$ and $w_{crumb\_density}$ were found to
 
 This method not only maintains trails leading to multiple sources, each trail isn't just a single curve of crumbs (Figure \ref{fig:grid_visualization}). Hence, there are multiple side trails that lead to the same source.
 
+\begin{algorithm}
+\caption{Embodied Approach}\label{algorithm:1}
+\begin{algorithmic}
+\Procedure{DIST(c)}{}
+  \State $\bold{return} \text{ } w_{d_c} \cdot c.d_c + w_{density} \cdot c.density$
+\EndProcedure
+\BState
+\State $\Theta = \text{all the crumbs in the robot's FOV}$
+\State $\Sigma =\{ c | c \in \Theta \text{ } \Lambda \text{ } (c \cdot p_c = robot \cdot goal) \}$
+\State $\Pi =\{ c | c \in \Theta \text{ } \Lambda \text{ } (c \cdot p_c \neq robot \cdot goal) \}$
+\\
+\State $\lambda = Min(crumb\_avoid, \text{ } dist\_obstacle)$
+\\
+\State $c_{best} = c \text{ s.t. } (c \in \Sigma) \text{ } \Lambda \text{ } (\nexists c' \in \Sigma \text{ s.t. } DIST(c) > DIST(c'))$
+
+\\
+\If {$(\exists c_{anti} \in \Pi \text{ s.t. } dist(c_{anti}, robot) < crumb\_avoid) $}
+  \State $\text{Shift direction } \lambda \text{ orthogonal to current trail}$
+\Else
+   \State $\text{Follow the } c_{best}$
+\EndIf
+
+\end{algorithmic}
+\end{algorithm}
+
 \subsection{CRUMB DENSITY IMPLEMENTATION}
 % 2D histogram of crumbs
 % world divided to 2D grids. Each cell contains number of crumbs within it
@@ -155,9 +187,9 @@ For finding crumb density, we implemented an additional data structure which is 
 
 A major drawbacks of this approach is that there are a lot of parameters that needed to be handtuned. These parameters are evaporation rate of crumbs, grid size and weights of density and time to target in distance function. Even though we were able to get moderate invariance to size of the world, number of robots, number of sources and distances of the sources, these parameters still need fine tuning when used in drastically different setting.
 
-A future extension would be to change these parameters dynamically. For example, we can set evaporation rate based on distance between source and home such that multiple cycles on the same trail does not give a false impression of congestion.
+A future extension would be to change these parameters dynamically. For example, we can set evaporation rate based on distance between source and home such that multiple cycles on the same trail does not give a false impression of congestion. We would also like to note that the need to finetune the evaporation rate on different distances between source and home is not inherent to our approach and almost all ant-trail based algorithms would require this. But  performance our method is particularly sensitive to this parameter.
 
-Also, there is also no guarantee of convergence to multiple sources. If by chance all the robots discover the same source, there will only be a single trail leading to that source (although this is highly unlikely if we have large number of robots).
+Also, there is also no guarantee of convergence to multiple sources. If by chance all the robots discover the same source, there will only be a single trail leading to that source (although this is highly unlikely if we have large number of robot).
 
 \section{EXPLICIT ALLOCATION APPROACH} 
 % To mitigate the shortcomings of our previous approach
@@ -183,7 +215,37 @@ The ideal $congestion\_factor$ is $1$ where the robots form a tight loop in the 
 
 Although this method maintains trail leading to multiple sources and increases our throughput, but in the case of having paths that are almost equally congested, robots can switch back and forth between sources. We introduce an \emph{inertia} factor for convergence of robots to a particular source; a robot decides to switch from one source to another only if the $congestion\_factor$ is better than that of previous source by a fixed threshold.
 
-This approach will have a better performance even in single source setting as the trail between source and home is maintained such that there is minimum change of interference between the robots. Experimental results showing this will be provided in the following section (Section \ref{section:experiments}). In our implementation, we do not restrict the wandering robots that were not assigned to any known source to cross existing trails. A better performance will likely be achieved by having such restrictions.
+This approach will have a better performance even in single source setting as the trail between source and home is maintained such that there is minimum change of interference between the robots. Experimental results showing this will be provided in the following section. 
+
+In our implementation, we do not restrict the wandering robots that were not assigned to any known source to cross existing trails. A better performance will likely be achieved by having such restrictions.
+
+\begin{algorithm}
+\caption{Explicit Allocation Approach}\label{algorithm:2}
+\begin{algorithmic}
+\State $\text{\# Congestion factor of a source}$
+\Procedure{$C_f(s)$}{}
+  \State $c_{farthest} =  c \text{ s.t. } (c.Sc=s) \text{ } \Lambda$
+  \State  $\text{                                                 }(\nexists c' { s.t. } dist(c', home) < dist(c, home))$
+  \\
+  \State $\bold{return} \text{ } \dfrac{(R_{SIZE} + D_{SAFE})  s.num\_robots}{ c_{farthest}.d_t }$
+\EndProcedure
+\State $\Theta = \text{Known sources}$
+\State $s_{prev} = \text{previous source the robot was following}$
+\State $s_{best} = s \text{ s.t. } (s \in \Theta) \text{ } \Lambda \text{ } (\nexists s' \in \Theta \text{ s.t. } C_f(s') < C_f(s))$
+
+\\
+\If {$(s \neq \phi) $}
+  \If {$(C_f(s_{best}) - C_f(s_{prev}) < threshold)$}
+     \State $s_{chosen} = s_{best}$
+  \Else
+     \State $s_{chosen} = s_{previous}$
+  \EndIf
+\Else
+   \State $\text{Random move}$
+\EndIf
+
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{POSSIBLE MODIFICATIONS FOR DISTRIBUTEDNESS}
 % one robot decides to stay home doing the book-keeping and allocates robots to different source 
@@ -194,12 +256,53 @@ Another way of making this approach distributed is having an agent at home which
 
 \section{EXPERIMENTS} \label{section:experiments}
 
+The experiments we conducted used the following parameter settings:
+
+\begin{table}[ht]                                                              
+  \begin{center}
+  % \scalebox{0.9}{
+    \begin{tabular}{|c|c|c|c|}                                                
+    \hline
+      Parameter & Embodied & Explicit & SO-LOST\\                                  
+    \hline                                                                    
+      $Evaporation\ rate$ & 10Hz & 10Hz & 10Hz\\ % evaporation rate
+    \hline
+      $d_f$ & 1.5m & 1.5m & 1.5m\\ % trail detector sensor range              
+    \hline
+      $S$ & .2s & .2s & .2s\\ % frequency of dropping a crumb on the map    
+    \hline
+      $Minimum\ Trail\ Distance$ & 0.75m & 0.75m & 0.75m\\ % expected distance between trails in SO-LOST      
+    \hline
+      $Grid\ Cell\ Size$ & 0.25 & N/A & N/A\\ % Cell size in Grid (embodied approach)      
+    \hline
+      $W_{crumb\_density}$ & 0.7 & N/A & 0.0\\ % weight corresponding to density            
+    \hline
+      $W_{time\_to\_target}$ & 0.3 & N/A & 1.0\\ % weight corresponding to distance            
+    \hline
+      $Inertia\ Factor$ & N/A & 0.3 & N/A\\ % inertia factor (explicit approach)          
+    \hline
+      $Max\ Congestion\ Factor$ & N/A & 1.2 & N/A\\ % congestion factor (explicit approach)        
+    \hline
+    \end{tabular}
+   \caption{Parameters Settings for Experiments}                                
+    \label{table:parameter_settings}
+  \end{center}
+\end{table}
+
+\section{DISCUSSION}
+% increasing the number of robots, more robots won't be assigned to any source and left to wander. But these wandering robots interfere with the robots in existing trails and degrade the performance. 
+
+% incre
+
+% 12 robots, 3 sources: In some cases the robots can't find the third source for a longer time. 
+
 \section{CONCLUSIONS AND FUTURE WORKS}
 
-In this paper, we outlined two approaches for improving LOST algorithm for better throughput in a multiple-source, single-home setting. We have provided experimental results showing improved performance compared to a variant of LOST (SO-LOST) both quantitavely and qualititavely.  
+In this paper, we outlined two approaches for improving LOST algorithm for better throughput in a multiple-source, single-home setting. We have provided experimental results showing improved performance compared to a variant of LOST (SO-LOST) both quantitavely and qualititavely.  The robots take into account the congestion in the trails either explicitly or implicitly to make better decisions regarding which trail to follow. 
 
-In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_PAPER Hjort et al. 1933 } where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{Song and Vaughan 2013} and \cite{Zhang
-and Zhao Song 2016} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. 
+In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_PAPER Hjort et al. 1933 } where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{Song and Vaughan 2013} and \cite{Zhang and Zhao Song 2016} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. 
+
+We will also improve our navigation strategies. There are lot of room for improvement in our obstacle avoidance and trail-following behavior which could lead to better performance. 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
