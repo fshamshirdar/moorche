@@ -15,12 +15,15 @@
 % on the last page of the document
 
 % The following packages can be found on http:\\www.ctan.org
-%\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{graphics} % for pdf, bitmapped graphics files
 %\usepackage{epsfig} % for postscript graphics files
 %\usepackage{mathptmx} % assumes new font selection scheme installed
 %\usepackage{times} % assumes new font selection scheme installed
-%\usepackage{amsmath} % assumes amsmath package installed
+\usepackage[pdftex]{graphicx}
+\usepackage{caption}
+\usepackage{amsmath} % assumes amsmath package installed
 %\usepackage{amssymb}  % assumes amsmath package installed
+
 
 \title{\LARGE \bf
 An Ant Algorithm for Multi-Robot Navigation and Distributed Simultaneous Task Allocation
@@ -42,7 +45,7 @@ An Ant Algorithm for Multi-Robot Navigation and Distributed Simultaneous Task Al
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This paper describes multi-robot foraging in an unknown environment with an unknown number of sources and single sink (home). The goal is to effectively allocate robots to sources with least interference and maximum rate of resource collection. The navigation between source and sink is achieved by using trails of virtual landmarks inspired from ant-like trail laying behaviour.
+This paper describes multi-robot foraging in an unknown environment with an unknown number of sources and a single sink (home). The goal is to effectively allocate robots to sources with least interference and maximum rate of resource collection. The navigation between source and sink is achieved by using trails of virtual landmarks inspired from ant-like trail laying behaviour.
 
 The algorithm is tested in simulation with varying number of robots and sources. The result indicate that our method achieves near optimal allocation of robots to different sources.
 
@@ -55,128 +58,148 @@ The algorithm is tested in simulation with varying number of robots and sources.
 % Task definition
 We present an algorithm for the classical \emph{resource transportation} task in an unmapped environment. Robots start from arbitrary positions and search for a supply of resources.  On reaching the source, they receive a unit of resource and return home with it, then return to fetch more resource repeatedly for the length of a trial \cite{RESOURCE_TRANSPORTATION}.
 % Problem Statement %
-Our main focus in this paper is finding task allocation that maximizes the rate of collection of the resources (our throughput) and with minimum congestion in trails. These two goals are mostly overlapping, hence we achieve the former by trying to solve the latter.
+Our main focus in this paper is finding task allocation that maximizes the rate of collection of the resources (\emph{throughput}) and with minimum congestion in trails. These two goals are mostly overlapping, hence we achieve the former by trying to solve the latter.
 
 % earlier works
-The earlier works \cite{LOST} for this task present localization-space trails which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified by reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite(DORIGO1992) of converging to  near-optimal paths from source to home.
+The earlier works \cite{LOST} for this task present Localization-Space Trails (LOST)  which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified by reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite(DORIGO1992) of converging to  near-optimal paths from source to home.
 
 % a short introduction of our approach
-In the LOST and other ant-algorithm methods, they use traveling time as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize mutual spatial interference between robots. By increasing the population size, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this train can become congested. On the other hand, the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, so in the case of multiple sources they can not perform well since they try to minimize a path to a random source (it might be the closest one). We modified the original algorithm such that it does not converge to a single source as it would result in better throughput.
+In the LOST and other ant-algorithm based methods, time is used as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize spatial interference between robots. By increasing the population size, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this train can become congested. Since the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, in the case of multiple sources -- which we are trying to explore -- they do not perform well since they try to minimize the path to a random source (which might be the closest one). Hence, we modify the original algorithm such that it does not converge to a single source as it would result in better throughput.
 
 % short description our contribution
-In this paper we describe a modification to the existing LOST algorithm that improve performance in the case of multiple sources and a large number of robots as well as maintaining the same performance in a single-source, single-sink setting with less number of robots. We were able to get superior performance in most of the test-cases we examined.
+In this paper we describe two modifications to the existing LOST algorithm that improve performance in the case of multiple sources and a large number of robots as well as maintaining the same performance in a single-source, single-sink setting with less number of robots. We were able to get superior performance in most of the test-cases we examined.
+
+\begin{figure}
+   \includegraphics[width=0.49\linewidth]{embodied.png}
+   \includegraphics[width=0.49\linewidth]{SO_LOST.png}
+   \centering
+   \caption{Trails formed in an empty environment using our embodied apprach outlined in section \ref{sec:embodied_approach} (left) and SO-LOST (right)}
+   \label{fig:grid_visualization}
+\end{figure}
 
 \section{RELATED WORKS}
+Various works of ant-inspired trail following algorithms have been published, ranging from leaving real chemical trails \cite{Rus-
+sell et al. (1994)} to infra-red message transmission \cite{Payton et al. (2001)}. 
 
-We studied Localization-Space Trails (LOST) and its versions as an ant-inspired trail following algorithm which is suitable for imperfectly localized robots. The method is to generate and share short-lived waypoints (\emph{crumbs)} by robots, which contain some information (estimated distance to target, time to target, density of waypoints, to-source or to-sink label). By following these crumbs, robots can find optimal path between source and home. In the Spread-Out Localization-Space Trail (SO-LOST) which is a modified version of LOST, it tries to increase the scalability by minimizing mutual spatial inference between robots which is done by shifting crumbs in a trail from source to home and home to source for a single source, single sink. In the Multi-Objective Localization-Space Trail (MO-LOST) it tries to reduce mutual spatial inference for paths from multiple sources, multiple sinks by shifting the crumbs of a trail which is crossing other crumbs of the other trails. In the Blinkered Localization-Space Trail (Blinkered LOST) it tries to modulate the field of the view (FOV) of the robots' trail-detecting sensor. it shows that the global throughput is a function of robot FOV, means that with narrower FOVs, it performs better in large populations, since narrrower FOV causes multiple trails to be maintained, so that the system can support larger population sizes before saturating due to inference.
+Our work closely follows from Localization-Space Trails (LOST) \cite{LOST} and its variants which is suitable for imperfectly localized robots. A brief review of LOST will be provided in subsection \ref{ssection:LOST_review}. The method is to generate and share short-lived waypoints (\emph{crumbs)} by robots, which contain some information (estimated distance to target, time to target, density of waypoints, to-source or to-sink label). By following these crumbs, robots can find optimal path between source and home. In the Spread-Out LOST (SO-LOST) which is a modified version of LOST, it tries to increase the scalability by minimizing mutual spatial inference between robots which is done by shifting crumbs in a trail from source to home and home to source for a single source, single sink. 
 
-\subsection{Selecting a Template (Heading 2)}
+the Multi-Objective LOST (MO-LOST) tries to reduce mutual spatial inference for paths with multiple sources, multiple sinks by shifting the crumbs of a trail which is crossing other crumbs of the other trails. In the Blinkered LOST (Blinkered LOST) it tries to modulate the field of the view (FOV) of the robots' trail-detecting sensor. it shows that the global throughput is a function of robot FOV, means that with narrower FOVs, it performs better in large populations, since narrrower FOV causes multiple trails to be maintained, so that the system can support larger population sizes before saturating due to inference.
 
-First, confirm that you have the correct template for your paper size. This template has been tailored for output on the US-letter paper size. 
-It may be used for A4 paper size if the paper size setting is suitably modified.
+\subsection{LOCALIZATION-SPACE TRAILS REVIEW} \label{ssection:LOST_review}
 
-\subsection{Maintaining the Integrity of the Specifications}
+\begin{figure}
+   \includegraphics[width=0.9\linewidth]{SO_LOST_crumb_laying.png}
+   \centering
+   \caption{Trail laying behavior in SO-LOST. The robot is following trail to source (filled circle) and changes its direction to new point (empty circle) to keep distance from trail leading to home (triangles).}
+   \label{fig:SO_LOST_crumb_laying}
+\end{figure}
 
-The template is used to format your paper and style the text. All margins, column widths, line spaces, and text fonts are prescribed; please do not alter them. You may note peculiarities. For example, the head margin in this template measures proportionately more than is customary. This measurement and others are deliberate, using specifications that anticipate your paper as one part of the entire proceedings, and not as an independent document. Please do not revise any of the current designations
+LOST generates trails between the locations of \emph{Events} which in our case is reaching source and reaching home. When an Event occurs to robot, its pose in localization space is recorded as \emph{Place} represented by tuple $[Event, Pose]$. Other robots can interpret the coordinates of a place in their own frame of reference. To guide robots between these Events, waypoints called \emph{Crumbs} are laid in every $S$ seconds. A Crumb is a four-tuple $[P_c, L_c, d_c, D_c, t_c]$ containing Place name $P_c$ of place of interest, Localization-space pose $L_c$, estimated distance (in some distance function) between $P_c$ and $L_c$, and $t_c$ the Crumb creation time. A series of Crumbs that lead to the place $P_c$ is referred to as a $Trail$. A robot broadcasts its Trail when an even occurs to it (i.e. when it reaches source or home). All trails are periodically scanned and Crumbs with timestamp older than age threshold $a$ seconds are discarded. This is analogous to ant's pheromone trails evaporating over time.
 
+A robot follows trail to a destination place $P_g$ by heading towards the best crumb $C_L$ within its \emph{field of view}, i.e. within radius $d_f$ of its current position. We use the modified version of this algorithm SO-LOST which lays crumbs certain distance $\lambda$ away from crumbs leading to a different place. Figure \ref{fig:SO_LOST_crumb_laying} shows the crumb laying behavior of the SO-LOST algorithm. 
 
+\section{CONTRIBUTION}
 
+The main contribution of this paper is modification of LOST algorithm to have a simultaneous task allocation which performs better in multiple-source, single-home setting in both large and small population sizes. Two approaches were explored:
 
+\begin{enumerate}
+  \item Embodied approach: Subtle modification to LOST using trail density as a proxy for congestion which has the emergent effect of maintaining multiple trails leading to different sources
+  \item Explicit allocation approach: Allocate robots to different sources with a goal of uniform distribution of robots along different trails (with consideration of the distances of the sources).
+\end{enumerate}
 
-\section{MATH}
+In the following sections, we will describe these approaches with quantitave evaluations.
 
-Before you begin to format your paper, first write and save the content as a separate text file. Keep your text and graphic files separate until after the text has been formatted and styled. Do not use hard tabs, and limit use of hard returns to only one return at the end of a paragraph. Do not add any kind of pagination anywhere in the paper. Do not number text heads-the template will do that for you.
+\section{EMBODIED APPROACH} \label{sec:embodied_approach}
+% what is the reason LOST fails, and how did you mitigate it
+% Implementation details
 
-Finally, complete content and organizational editing before formatting. Please take note of the following items when proofreading spelling and grammar:
+\begin{figure}
+   \includegraphics[width=0.49\linewidth]{grid1.png}
+   \includegraphics[width=0.49\linewidth]{grid2.png}
+   \centering
+   \caption{Grid visualization in embodies approach (left) and original version of SO-LOST (right). The home is at center while the sources are at top-right and bottom-left}
+   \label{fig:grid_visualization}
+\end{figure}
 
-\subsection{Abbreviations and Acronyms} Define abbreviations and acronyms the first time they are used in the text, even after they have been defined in the abstract. Abbreviations such as IEEE, SI, MKS, CGS, sc, dc, and rms do not have to be defined. Do not use abbreviations in the title or heads unless they are unavoidable.
+This approach maintains trails to multiple sources without keeping track of the number of sources discovered so far. The general workings of this approach is same as that of LOST algorithm where the robots try to follow the best crumb in their immediate neighbourhood. The crumbs are not labelled with source identification and the robots still make local decision without explicitly considering the multiple sources available. 
 
-\subsection{Units}
+The reason LOST and its other variants converge to a single congested trail is that the robots try to minimize the distance to the trail without considering the congestion in the trail. Even when time to target is using as distance metric instead of physical distance, the final trail is still congested for large population sizes. 
 
-\begin{itemize}
+This conflict here is whether to follow the shortest path discovered so far or avoid following congested trail which potentially leading to the target with shortest distance. To make a better decision, we take both these factors into account and make decision based on both factors. For this, the distance function is formulated as follows:
 
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as �3.5-inch disk drive�.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: �Wb/m2� or �webers per square meter�, not �webers/m2�.  Spell out units when they appear in text: �. . . a few henries�, not �. . . a few H�.
-\item Use a zero before decimal points: �0.25�, not �.25�. Use �cm3�, not �cc�. (bullet list)
+\begin{equation}
+\begin{split}
+   d = w_{time\_to\_target}  \cdot time\_to\_target + \\
+          w_{crumb\_density} \cdot crumb\_density
+\end{split}
+\end{equation}
 
-\end{itemize}
+where $time\_to\_target$ is the time to target encoded in the crumbs and $crumb\_density$ local density of trail around a crumb (to be discussed shortly).
 
+The best values of $w_{time\_to\_target}$ and $w_{crumb\_density}$ were found to be  $0.3$ and $0.7$ respectively from experiments\footnote{The scaling of the weights does not affect the performance. So experiments were done with weights that summed to one}. Note that when $w_{crumb\_density}$ is set to $0$, the algorithm is the same as SO-LOST.
 
-\subsection{Equations}
+This method not only maintains trails leading to multiple sources, each trail isn't just a single curve of crumbs (Figure \ref{fig:grid_visualization}). Hence, there are multiple side trails that lead to the same source.
 
-The equations are an exception to the prescribed specifications of this template. You will need to determine whether or not your equation should be typed using either the Times New Roman or the Symbol font (please no other font). To create multileveled equations, it may be necessary to treat the equation as a graphic and insert it into the text after your paper is styled. Number equations consecutively. Equation numbers, within parentheses, are to position flush right, as in (1), using a right tab stop. To make your equations more compact, you may use the solidus ( / ), the exp function, or appropriate exponents. Italicize Roman symbols for quantities and variables, but not Greek symbols. Use a long dash rather than a hyphen for a minus sign. Punctuate equations with commas or periods when they are part of a sentence, as in
+\subsection{CRUMB DENSITY IMPLEMENTATION}
+% 2D histogram of crumbs
+% world divided to 2D grids. Each cell contains number of crumbs within it
+% algorithm: whenever a crumb is created, increment corresponding cell in the grid. when a crumb is destroyed, decrease the corresponding cell
+% the size of cell chosen 0.25 m (talk about effects of changing this?)
 
-$$
-\alpha + \beta = \chi \eqno{(1)}
-$$
+For finding crumb density, we implemented an additional data structure which is a 2D grid that spans the simulation world. Each cell of the grid contains the number of crumbs within it. Hence, the grid represent a histogram of crumbs. The $crumb\_density$ around a crumb is then the number of crumbs in the cell it belongs to divided by total number of crumbs present. We used cells of size $0.25$ x $ 0.25$  m. This is approximation of a robot's size. Figure \ref{fig:grid_visualization} shows a visualization of our grid data structure. A brighter value means higher number of crumbs. The fact that SO-LOST implementation converges to a single source is clearly visible while our approach maintains trails leading to both the sources.
 
-Note that the equation is centered using a center tab stop. Be sure that the symbols in your equation have been defined before or immediately following the equation. Use �(1)�, not �Eq. (1)� or �equation (1)�, except at the beginning of a sentence: �Equation (1) is . . .�
+\subsection{DRAWBACKS OF THIS APPROACH} \label{ssec:drawbacks_of_1}
+% a lot of parameters, need to set it manually
+% paradox: avoiding congested trail and exploiting the nearest source
+% no guarantee of convergence to multiple sources: if by chance all the robots discover the same source, they stick with it. Redeeming factor: with large population size, they tend to find multiple sources
 
-\subsection{Some Common Mistakes}
-\begin{itemize}
+A major drawbacks of this approach is that there are a lot of parameters that needed to be handtuned. These parameters are evaporation rate of crumbs, grid size and weights of density and time to target in distance function. Even though we were able to get moderate invariance to size of the world, number of robots, number of sources and distances of the sources, these parameters still need fine tuning when used in drastically different setting.
 
+A future extension would be to change these parameters dynamically. For example, we can set evaporation rate based on distance between source and home such that multiple cycles on the same trail does not give a false impression of congestion.
 
-\item The word �data� is plural, not singular.
-\item The subscript for the permeability of vacuum ?0, and other common scientific constants, is zero with subscript formatting, not a lowercase letter �o�.
-\item In American English, commas, semi-/colons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
-\item A graph within a graph is an �inset�, not an �insert�. The word alternatively is preferred to the word �alternately� (unless you really mean something that alternates).
-\item Do not use the word �essentially� to mean �approximately� or �effectively�.
-\item In your paper title, if the words �that uses� can accurately replace the word �using�, capitalize the �u�; if not, keep using lower-cased.
-\item Be aware of the different meanings of the homophones �affect� and �effect�, �complement� and �compliment�, �discreet� and �discrete�, �principal� and �principle�.
-\item Do not confuse �imply� and �infer�.
-\item The prefix �non� is not a word; it should be joined to the word it modifies, usually without a hyphen.
-\item There is no period after the �et� in the Latin abbreviation �et al.�.
-\item The abbreviation �i.e.� means �that is�, and the abbreviation �e.g.� means �for example�.
+Also, there is also no guarantee of convergence to multiple sources. If by chance all the robots discover the same source, there will only be a single trail leading to that source (although this is highly unlikely if we have large number of robots).
 
-\end{itemize}
+\section{EXPLICIT ALLOCATION APPROACH} 
+% To mitigate the shortcomings of our previous approach
+% Instead of using crumb density as a proxy for congestion, keep track of the actual congestion (number of robots current pursuing a source)
+% Ensure that the spatial interference between the robots is minimum (allocate robots to source such that there is enough space per robot)
+% Our nice equation
 
+This method was explored to mitigate the shortcomings of our previous approach. Using crumb density as a heuristic of congestion introduces unwanted dependence on evaporation rate and trail length as discussed in the previous subsection \ref{ssec:drawbacks_of_1}. This approach, instead of using approximation, utilizes the actual congestion in different trails. It also modifies the crumb data structure to include the source the crumb is leading to and the total euclidean distance from that crumb to the target, so the new crumb data structure with respect to the its definition in the LOST review section is a tuple $C = [P_c, S_c, L_c, d_c, D_c, t_c]$ which contains the name of the Place $P_c$ to which it refers [source or sink], source id that the crumb is leading to $S_c$, a localization space pose $L_c$, an estimate $d_c$ of the distance from $L_c$ to the target $P_c$ which comes from a distance function that assume time as distance in the original version of LOST, an estimate of total euclidean distance from the crumb to the target, and the time $t_c$ containing the creation time of the crumb.
 
-\section{USING THE TEMPLATE}
+We also maintain a global data structure to keep track of numbers of robot currently following different sources. It is implemented as a hash table with all the discovered sources as its key and the number of robots in trail leading to a source as its value. This structure is updated every time a robot reaches home and is allocated to a source.
 
-Use this sample document as your LaTeX source file to create your document. Save this file as {\bf root.tex}. You have to make sure to use the cls file that came with this distribution. If you use a different style file, you cannot expect to get required margins. Note also that when you are creating your out PDF file, the source file is only part of the equation. {\it Your \TeX\ $\rightarrow$ PDF filter determines the output file size. Even if you make all the specifications to output a letter file in the source - if your filter is set to produce A4, you will only get A4 output. }
+When a robot reaches home, it checks congestion in every trail. We formulation our \emph{congestion\_factor} as follows:
 
-It is impossible to account for all possible situation, one would encounter using \TeX. If you are using multiple \TeX\ files you must make sure that the ``MAIN`` source file is called root.tex - this is particularly important if your conference is using PaperPlaza's built in \TeX\ to PDF conversion tool.
+\begin{equation}
+\begin{split}
+  congestion\_factor = \dfrac{(R_{SIZE} + D_{SAFE}) \cdot n_t}{ d_t }
+\end{split}
+\end{equation}
 
-\subsection{Headings, etc}
+where $R_{SIZE}$ is the size of robot (diameter) in meters, $D_{SAFE}$ is a safe distance (meters) we need to maintain between the robots, $n_t$ is the number of robots currently in that trail and $d_t$ is the length of the trail (meters)
 
-Text heads organize the topics on a relational, hierarchical basis. For example, the paper title is the primary text head because all subsequent material relates and elaborates on this one topic. If there are two or more sub-topics, the next level head (uppercase Roman numerals) should be used and, conversely, if there are not at least two sub-topics, then no subheads should be introduced. Styles named �Heading 1�, �Heading 2�, �Heading 3�, and �Heading 4� are prescribed.
+The ideal $congestion\_factor$ is $1$ where the robots form a tight loop in the trail with a safety distance  $D_{SAFE}$ between each other. Whenever a robot reaches home, it calculates $congestion\_factor$ for each source and decides to choose the source with minimum $congestion\_factor$ that is less than $1$. If no trail is available that has $congestion\_factor$ less than 1, the robot decides not to follow any trail and move randomly to find other food sources. After choosing the source (or deciding to explore randomly), the hash table is updated if needed.
 
-\subsection{Figures and Tables}
+Although this method maintains trail leading to multiple sources and increases our throughput, but in the case of having paths that are almost equally congested, robots can switch back and forth between sources. We introduce an \emph{inertia} factor for convergence of robots to a particular source; a robot decides to switch from one source to another only if the $congestion\_factor$ is better than that of previous source by a fixed threshold.
 
-Positioning Figures and Tables: Place figures and tables at the top and bottom of columns. Avoid placing them in the middle of columns. Large figures and tables may span across both columns. Figure captions should be below the figures; table heads should appear above the tables. Insert figures and tables after they are cited in the text. Use the abbreviation �Fig. 1�, even at the beginning of a sentence.
+This approach will have a better performance even in single source setting as the trail between source and home is maintained such that there is minimum change of interference between the robots. Experimental results showing this will be provided in the following section (Section \ref{section:experiments}). In our implementation, we do not restrict the wandering robots that were not assigned to any known source to cross existing trails. A better performance will likely be achieved by having such restrictions.
 
-\begin{table}[h]
-\caption{An Example of a Table}
-\label{table_example}
-\begin{center}
-\begin{tabular}{|c||c|}
-\hline
-One & Two\\
-\hline
-Three & Four\\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
+\subsection{POSSIBLE MODIFICATIONS FOR DISTRIBUTEDNESS}
+% one robot decides to stay home doing the book-keeping and allocates robots to different source 
+% robots communicate with each other and update information of the number of robots in different trails
+In the previous section we mentioned a new data structure that used to keep number of robots in each path, which makes this approach centralized, the following defintion of crumbs is suggested: $C = [P_c, S_c, L_c, d_c, D_c, t_c, R_{UDID}]$ in which we have a new information containing a random constant unique identity for each robot that is generated when they start working, in this case, instead of having a hash table which stores the number of robots in each path, each robot can read crumbs and see how many unique identity are in this path. However, persistence of the crumbs still depend on the evaporation rate and the length of the trail. In order to solve this issue, since the path converges after a while, each robot knows an estimate of traveling time, so they can count the number of robots based on the crumbs where the creation timestamp is greater than the average traveling time.
 
+Another way of making this approach distributed is having an agent at home which is incharge of maintaining the hash table and relays the information when a robot reaches home, based on which the robot decides the source to pursue. For this, we can either place a server like setup near home or arbitrarily have one of the robots stay at home to assume the role of conductor.
 
-   \begin{figure}[thpb]
-      \centering
-      \framebox{\parbox{3in}{We suggest that you use a text box to insert a graphic (which is ideally a 300 dpi TIFF or EPS file, with all fonts embedded) because, in an document, this method is somewhat more stable than directly inserting a picture.
-}}
-      %\includegraphics[scale=1.0]{figurefile}
-      \caption{Inductance of oscillation winding on amorphous
-       magnetic core versus DC bias magnetic field}
-      \label{figurelabel}
-   \end{figure}
-   
+\section{EXPERIMENTS} \label{section:experiments}
 
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words rather than symbols or abbreviations when writing Figure axis labels to avoid confusing the reader. As an example, write the quantity �Magnetization�, or �Magnetization, M�, not just �M�. If including units in the label, present them within parentheses. Do not label axes only with units. In the example, write �Magnetization (A/m)� or �Magnetization {A[m(1)]}�, not just �A/m�. Do not label axes with a ratio of quantities and units. For example, write �Temperature (K)�, not �Temperature/K.�
+\section{CONCLUSIONS AND FUTURE WORKS}
 
-\section{CONCLUSIONS}
+In this paper, we outlined two approaches for improving LOST algorithm for better throughput in a multiple-source, single-home setting. We have provided experimental results showing improved performance compared to a variant of LOST (SO-LOST) both quantitavely and qualititavely.  
 
-A conclusion section is not required. Although a conclusion may review the main points of the paper, do not replicate the abstract as the conclusion. A conclusion might elaborate on the importance of the work or suggest applications and extensions. 
+In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_PAPER Hjort et al. 1933 } where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{Song and Vaughan 2013} and \cite{Zhang
+and Zhao Song 2016} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
