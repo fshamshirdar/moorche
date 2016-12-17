@@ -173,7 +173,7 @@ void Moorche::randomMove()
             } else if (followingTrailAngle < -M_PI) {
                 followingTrailAngle += 2 * M_PI;
             }
-             // std::cout << "SO_LOST " << additionalAngle << std::endl;
+            // std::cout << "SO_LOST " << additionalAngle << std::endl;
 
             turnSpeed += turnSpeedCoef * followingTrailAngle;
         } else {
@@ -256,7 +256,7 @@ void Moorche::assigningFood()
     double min_congestion_factor = Config::MAX_CONGESTION_FACTOR; //1;
     double robotSize = (getPosition()->GetGeom().size.x > getPosition()->GetGeom().size.y) ? getPosition()->GetGeom().size.x : getPosition()->GetGeom().size.y;
     // find what is the congestion factor of previous assigned food source3 (to decide whether to change food or not)
-    double previous_food_congestion_factor = Config::MAX_CONGESTION_FACTOR;;
+    double previous_food_congestion_factor = Config::MAX_CONGESTION_FACTOR;
     
     std::vector<int> knownFoodsId = getColony()->getKnownFoodsId();
     for (std::vector<int>::const_iterator it = knownFoodsId.begin(); it != knownFoodsId.end(); it++) {
@@ -264,7 +264,7 @@ void Moorche::assigningFood()
         Trail::Point* point = getColony()->getTrail()->getBestPointInCircle(getColony()->getSource()->GetPose(), (*it), Config::ROBOT_TRAIL_RADIUS, false);
         // std::cout << point << std::endl;
         if (point != NULL) {
-            double congestion_factor = (robotSize + Config::FORWARD_DISTANCE_THRD) * getColony()->getNoOfRobots(*it) / point->getDistanceToTarget();
+            double congestion_factor = (2 * robotSize + Config::FORWARD_DISTANCE_THRD) * getColony()->getNoOfRobots(*it) / point->getDistanceToTarget();
             // std::cout << congestion_factor << " ";
             if (congestion_factor < min_congestion_factor) {
                 id = (*it);
@@ -276,7 +276,6 @@ void Moorche::assigningFood()
             }
         }
     }
-    // std::cout << std::endl;
     if ( (assignedFoodId != -1) && (assignedFoodId != id) ) {
         // switch to another food only if better than the previous food by a threshold
         if ( (previous_food_congestion_factor - min_congestion_factor) > Config::CONGESTION_SWITCHING_THRESHOLD ) {
@@ -290,6 +289,7 @@ void Moorche::assigningFood()
         getColony()->increaseNoOfRobots(assignedFoodId);
     }
     
+    std::cout << "Robot assigned to " << assignedFoodId << " previous food congestion " << previous_food_congestion_factor << " min_congestion_factor " << min_congestion_factor << std::endl;
 }
 
 void Moorche::desicion(Stg::World *world)
@@ -309,6 +309,9 @@ void Moorche::desicion(Stg::World *world)
                     }
                 }
  
+                if (assignedFoodId != -1) {
+                    getColony()->decreaseNoOfRobots(assignedFoodId);
+                }
                 assigningFood();
                 temporaryTrail.clear();
             } else {
@@ -318,7 +321,7 @@ void Moorche::desicion(Stg::World *world)
         case Moorche::SEARCH_FOR_FOOD:
             if (assignedFoodId == -1) {
                 for (int i = 0; i < getColony()->getFoods().size(); i++) {
-                    if (getPosition()->GetPose().Distance(getColony()->getFood(i)->GetPose()) < getModelRadius(getColony()->getFood(i))) {
+                    if (getPosition()->GetPose().Distance(getColony()->getFood(i)->GetPose()) < 2 * getModelRadius(getColony()->getFood(i))) {
                         currentState = Moorche::GO_TO_FOOD;
                         chosenFood = i;
                     } else {
@@ -326,7 +329,7 @@ void Moorche::desicion(Stg::World *world)
                     }
                 }
             } else {
-                if (getPosition()->GetPose().Distance(getColony()->getFood(assignedFoodId)->GetPose()) < getModelRadius(getColony()->getFood(assignedFoodId))) {
+                if (getPosition()->GetPose().Distance(getColony()->getFood(assignedFoodId)->GetPose()) < 2 * getModelRadius(getColony()->getFood(assignedFoodId))) {
                     currentState = Moorche::GO_TO_FOOD;
                     chosenFood = assignedFoodId;
                 } else {
@@ -343,10 +346,14 @@ void Moorche::desicion(Stg::World *world)
                     getPosition()->SetColor(Stg::Color::red);
                 } else if (chosenFood == 1) {
                     getPosition()->SetColor(Stg::Color::magenta);
+                } else if (chosenFood == 2) {
+                    getPosition()->SetColor(Stg::Color::cyan);
+                } else if (chosenFood == 3) {
+                    getPosition()->SetColor(Stg::Color::yellow);
                 }
 
                 getColony()->addFoodIdToKnownFoods(chosenFood);
-                getColony()->decreaseNoOfRobots(assignedFoodId);
+                // getColony()->decreaseNoOfRobots(assignedFoodId);
 
                 currentState = Moorche::MOVE_FOOD_TO_SOURCE;
                 if (temporaryTrail.size() < Config::MAX_TRAIL_SIZE) {
@@ -363,7 +370,7 @@ void Moorche::desicion(Stg::World *world)
             }
             break;
         case Moorche::MOVE_FOOD_TO_SOURCE:
-            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < getModelRadius(getColony()->getSource())) {
+            if (getPosition()->GetPose().Distance(getColony()->getSource()->GetPose()) < 2 * getModelRadius(getColony()->getSource())) {
                 currentState = Moorche::GO_TO_SOURCE;
             } else {
                 randomMove();

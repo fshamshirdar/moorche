@@ -6,10 +6,10 @@
 class Config
 {
 public:
-    static const double EVAPORATION_COEFFICIENT_PER_CYCLE = 0.005;
+    static const double EVAPORATION_COEFFICIENT_PER_CYCLE = 0.001;
     static const double ALPHA = 1.00;
-    static const double ROBOT_TRAIL_RADIUS = 1.5;
-    static const unsigned int TRAIL_UPDATE_MODE_CYCLE = 5;
+    static const double ROBOT_TRAIL_RADIUS = 2.5;
+    static const unsigned int TRAIL_UPDATE_MODE_CYCLE = 3;
     static const unsigned int RANDOM_DECISION_MODE_CYCLE = 5;
     static const double MIN_DISTANCE_BETWEEN_TRAILS = 0.75;
     static const double MAX_TRAIL_SIZE = 2000;
@@ -26,9 +26,9 @@ public:
     static const unsigned int RIGHT_IDX_END = 180;
     static const double MAP_SCALE = 0.25;
     static const double DENSITY_WEIGHT = 0; //0.7;
-    static const double STEPS_TO_TARGET_WEIGHT = 0.3;
-    static const double MAX_CONGESTION_FACTOR = 1.4; // 1.2;
-    static const double CONGESTION_SWITCHING_THRESHOLD = 0.5; // .3; // switch to another source only if congestion factor drop by more than this threshold
+    static const double STEPS_TO_TARGET_WEIGHT = 1.0;
+    static const double MAX_CONGESTION_FACTOR = 1.7; // 1.2;
+    static const double CONGESTION_SWITCHING_THRESHOLD = 0.3; // .3; // switch to another source only if congestion factor drop by more than this threshold
 };
 
 #endif

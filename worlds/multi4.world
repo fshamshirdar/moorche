@@ -42,7 +42,7 @@ floorplan
 zone                                                                                                  
 (
   color "green"
-  size [ 1.500 1.500 0.001 ]
+  size [ 2.500 2.500 0.001 ]
   pose [ 0.000 0.000 0.000 0.000 ]
   name "source_0"
   fiducial()
@@ -65,6 +65,26 @@ zone
   size [ 1.000 1.000 0.001 ]
   pose [ 4.750 4.750 0.000 0.000 ]
   name "food_1"
+  fiducial()
+  fiducial_return 10
+)
+
+zone
+(
+  color "purple"
+  size [ 1.000 1.000 0.001 ]
+  pose [ -4.750 4.750 0.000 0.000 ]
+  name "food_2"
+  fiducial()
+  fiducial_return 10
+)
+
+zone
+(
+  color "cyan"
+  size [ 1.000 1.000 0.001 ]
+  pose [ 4.750 -4.750 0.000 0.000 ]
+  name "food_3"
   fiducial()
   fiducial_return 10
 )

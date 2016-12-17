@@ -69,6 +69,16 @@ zone
   fiducial_return 10
 )
 
+zone
+(
+  color "purple"
+  size [ 1.000 1.000 0.001 ]
+  pose [ -4.750 4.750 0.000 0.000 ]
+  name "food_2"
+  fiducial()
+  fiducial_return 10
+)
+
 define moor roomba                                                                             
 (
  sicklaser(

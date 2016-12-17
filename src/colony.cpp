@@ -91,7 +91,7 @@ void Colony::run(Stg::World *world)
         moors[idx].desicion(world);
     }
 
-    if (getCycle() % 100 == 0) {
+    if (getCycle() % 100 == 0 && false) {
        map->print();
         // printFoodCount();
         for (int idx = 0; idx < size; ++idx) {
