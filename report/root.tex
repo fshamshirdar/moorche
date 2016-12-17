@@ -21,16 +21,21 @@
 %\usepackage{times} % assumes new font selection scheme installed
 \usepackage[pdftex]{graphicx}
 \usepackage{caption}
+\usepackage{subcaption}
 \usepackage{amsmath} % assumes amsmath package installed
 \usepackage{amssymb}  % assumes amsmath package installed
 \usepackage[pdftex]{graphicx}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
+\usepackage{hyperref}
+\usepackage{float}
+%\usepackage{cite}
+
+\bibliographystyle{IEEEtran}
 
 \makeatletter
 \def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
-
 
 \title{\LARGE \bf
 An Ant Algorithm for Multi-Robot Navigation and Distributed Simultaneous Task Allocation
@@ -155,8 +160,8 @@ This method not only maintains trails leading to multiple sources, each trail is
 \EndProcedure
 \BState
 \State $\Theta = \text{all the crumbs in the robot's FOV}$
-\State $\Sigma =\{ c | c \in \Theta \text{ } \Lambda \text{ } (c \cdot p_c = robot \cdot goal) \}$
-\State $\Pi =\{ c | c \in \Theta \text{ } \Lambda \text{ } (c \cdot p_c \neq robot \cdot goal) \}$
+\State $\Sigma =\{ c | c \in \Theta \text{ } \Lambda \text{ } (c. p_c = robot.goal) \}$
+\State $\Pi =\{ c | c \in \Theta \text{ } \Lambda \text{ } (c.p_c \neq robot.goal) \}$
 \\
 \State $\lambda = Min(crumb\_avoid, \text{ } dist\_obstacle)$
 \\
@@ -222,9 +227,10 @@ In our implementation, we do not restrict the wandering robots that were not ass
 \begin{algorithm}
 \caption{Explicit Allocation Approach}\label{algorithm:2}
 \begin{algorithmic}
-\State $\text{\# Congestion factor of a source}$
+\State $\text{\# Congestion factor of a source } s$
 \Procedure{$C_f(s)$}{}
-  \State $c_{farthest} =  c \text{ s.t. } (c.Sc=s) \text{ } \Lambda$
+  \State $\Sigma = \text{all the crumbs}$
+  \State $c_{farthest} =  c \text{ s.t. } (c \in \Sigma) \text{ } \Lambda \ (c.Sc=s) \text{ } \Lambda$
   \State  $\text{                                                 }(\nexists c' { s.t. } dist(c', home) < dist(c, home))$
   \\
   \State $\bold{return} \text{ } \dfrac{(R_{SIZE} + D_{SAFE})  s.num\_robots}{ c_{farthest}.d_t }$
@@ -255,6 +261,10 @@ In the previous section we mentioned a new data structure that used to keep numb
 Another way of making this approach distributed is having an agent at home which is incharge of maintaining the hash table and relays the information when a robot reaches home, based on which the robot decides the source to pursue. For this, we can either place a server like setup near home or arbitrarily have one of the robots stay at home to assume the role of conductor.
 
 \section{EXPERIMENTS} \label{section:experiments}
+
+\subsection{SIMULATION SETUP}
+
+We used Stage simulator \cite{STAGE} to implement SO-LOST, Embodied Approach and Explicit Allocation Approach. We tested in the empty world of size 10x10. Stage's Irobot Roomba robots were used with SICK LMS200 laser rangefinder. The middle green square is the home, the red square is source 1, the blue square is source 2 and the yellow square is source 3. Red robots are carrying resources from source 1, magenta robots are carrying resources from source 2 and the cyan robots are carrying resources from source 3. Robots that are not carrying any resource are colored blue. Each trial was run for 10 minutes and the total number of resources delivered at the end of the trial is our performance metric. Due to stochastic nature of all the methods, we run 5 trials for each setting.
 
 The experiments we conducted used the following parameter settings:
 
@@ -289,10 +299,81 @@ The experiments we conducted used the following parameter settings:
   \end{center}
 \end{table}
 
-\section{DISCUSSION}
+\subsection{RESULTS}
+
+\begin{figure}[h]
+  \begin{subfigure}{.25\textwidth}
+      \includegraphics[width=0.9\linewidth]{images/explicit/1/raw/8.png}
+         \centering
+         \caption{Explicit Approach}
+   \end{subfigure}%
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/embodied/1/raw/8.png}
+          \centering
+          \caption{Embodied Approach}
+     \end{subfigure}
+    \centering
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/so-lost/1/raw/8.png}
+          \centering
+          \caption{SO-LOST}
+     \end{subfigure}
+   
+   \centering
+   \caption{Screenshot after 10 minutes of simulation time: single source, 8 robots}
+   \label{fig:screenshot_1_source}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{subfigure}{.25\textwidth}
+      \includegraphics[width=0.9\linewidth]{images/explicit/2/raw/8.png}
+         \centering
+         \caption{Explicit Approach}
+   \end{subfigure}%
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/embodied/2/raw/8.png}
+          \centering
+          \caption{Embodied Approach}
+     \end{subfigure}
+    \centering
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/so-lost/2/raw/8.png}
+          \centering
+          \caption{SO-LOST}
+     \end{subfigure}
+   
+   \centering
+   \caption{Screenshot after 10 minutes of simulation time: 2 sources, 8 robots}
+   \label{fig:screenshot_2_source}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{subfigure}{.25\textwidth}
+      \includegraphics[width=0.9\linewidth]{images/explicit/3/raw/8.png}
+         \centering
+         \caption{Explicit Approach}
+   \end{subfigure}%
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/embodied/3/raw/8.png}
+          \centering
+          \caption{Embodied Approach}
+     \end{subfigure}
+    \centering
+     \begin{subfigure}{.25\textwidth}
+       \includegraphics[width=0.9\linewidth]{images/so-lost/3/raw/8.png}
+          \centering
+          \caption{SO-LOST}
+     \end{subfigure}
+   
+   \centering
+   \caption{Screenshot after 10 minutes of simulation time: 3 sources, 8 robots}
+   \label{fig:screenshot_3_source}
+\end{figure}
+
+\subsection{DISCUSSION}
 % increasing the number of robots, more robots won't be assigned to any source and left to wander. But these wandering robots interfere with the robots in existing trails and degrade the performance. 
 
-% incre
+% The first approach is highly dependent on number of parameters. It has high variance when number of robots large
 
 % 12 robots, 3 sources: In some cases the robots can't find the third source for a longer time. 
 
@@ -334,37 +415,8 @@ The preferred spelling of the word �acknowledgment� in America is without an
 
 References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
 
-
-
-\begin{thebibliography}{99}
-
-\bibitem{c1} G. O. Young, �Synthetic structure of industrial plastics (Book style with paper title and editor),� 	in Plastics, 2nd ed. vol. 3, J. Peters, Ed.  New York: McGraw-Hill, 1964, pp. 15�64.
-\bibitem{c2} W.-K. Chen, Linear Networks and Systems (Book style).	Belmont, CA: Wadsworth, 1993, pp. 123�135.
-\bibitem{c3} H. Poor, An Introduction to Signal Detection and Estimation.   New York: Springer-Verlag, 1985, ch. 4.
-\bibitem{c4} B. Smith, �An approach to graphs of linear forms (Unpublished work style),� unpublished.
-\bibitem{c5} E. H. Miller, �A note on reflector arrays (Periodical style�Accepted for publication),� IEEE Trans. Antennas Propagat., to be publised.
-\bibitem{c6} J. Wang, �Fundamentals of erbium-doped fiber amplifiers arrays (Periodical style�Submitted for publication),� IEEE J. Quantum Electron., submitted for publication.
-\bibitem{c7} C. J. Kaufman, Rocky Mountain Research Lab., Boulder, CO, private communication, May 1995.
-\bibitem{c8} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, �Electron spectroscopy studies on magneto-optical media and plastic substrate interfaces(Translation Journals style),� IEEE Transl. J. Magn.Jpn., vol. 2, Aug. 1987, pp. 740�741 [Dig. 9th Annu. Conf. Magnetics Japan, 1982, p. 301].
-\bibitem{c9} M. Young, The Techincal Writers Handbook.  Mill Valley, CA: University Science, 1989.
-\bibitem{c10} J. U. Duncombe, �Infrared navigation�Part I: An assessment of feasibility (Periodical style),� IEEE Trans. Electron Devices, vol. ED-11, pp. 34�39, Jan. 1959.
-\bibitem{c11} S. Chen, B. Mulgrew, and P. M. Grant, �A clustering technique for digital communications channel equalization using radial basis function networks,� IEEE Trans. Neural Networks, vol. 4, pp. 570�578, July 1993.
-\bibitem{c12} R. W. Lucky, �Automatic equalization for digital communication,� Bell Syst. Tech. J., vol. 44, no. 4, pp. 547�588, Apr. 1965.
-\bibitem{c13} S. P. Bingulac, �On the compatibility of adaptive controllers (Published Conference Proceedings style),� in Proc. 4th Annu. Allerton Conf. Circuits and Systems Theory, New York, 1994, pp. 8�16.
-\bibitem{c14} G. R. Faulhaber, �Design of service systems with priority reservation,� in Conf. Rec. 1995 IEEE Int. Conf. Communications, pp. 3�8.
-\bibitem{c15} W. D. Doyle, �Magnetization reversal in films with biaxial anisotropy,� in 1987 Proc. INTERMAG Conf., pp. 2.2-1�2.2-6.
-\bibitem{c16} G. W. Juette and L. E. Zeffanella, �Radio noise currents n short sections on bundle conductors (Presented Conference Paper style),� presented at the IEEE Summer power Meeting, Dallas, TX, June 22�27, 1990, Paper 90 SM 690-0 PWRS.
-\bibitem{c17} J. G. Kreifeldt, �An analysis of surface-detected EMG as an amplitude-modulated noise,� presented at the 1989 Int. Conf. Medicine and Biological Engineering, Chicago, IL.
-\bibitem{c18} J. Williams, �Narrow-band analyzer (Thesis or Dissertation style),� Ph.D. dissertation, Dept. Elect. Eng., Harvard Univ., Cambridge, MA, 1993. 
-\bibitem{c19} N. Kawasaki, �Parametric study of thermal and chemical nonequilibrium nozzle flow,� M.S. thesis, Dept. Electron. Eng., Osaka Univ., Osaka, Japan, 1993.
-\bibitem{c20} J. P. Wilkinson, �Nonlinear resonant circuit devices (Patent style),� U.S. Patent 3 624 12, July 16, 1990. 
-
-
-
-
-
-
-\end{thebibliography}
+% references section 
+\bibliography{root}
 
 
 
