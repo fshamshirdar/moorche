@@ -29,7 +29,7 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{hyperref}
 \usepackage{float}
-%\usepackage{cite}
+\usepackage{cite}
 
 \bibliographystyle{IEEEtran}
 
@@ -68,12 +68,12 @@ The algorithm is tested in simulation with varying number of robots and sources.
 \section{INTRODUCTION}
 
 % Task definition
-We present an algorithm for the classical \emph{resource transportation} task in an unmapped environment. Robots start from arbitrary positions and search for a supply of resources.  On reaching the source, they receive a unit of resource and return home with it, then return to fetch more resource repeatedly for the length of a trial \cite{RESOURCE_TRANSPORTATION}.
+We present an algorithm for the classical \emph{resource transportation} task in an unmapped environment. Robots start from arbitrary positions and search for a supply of resources.  On reaching the source, they receive a unit of resource and return home with it, then return to fetch more resource repeatedly for the length of a triaL.
 % Problem Statement %
 Our main focus in this paper is finding task allocation that maximizes the rate of collection of the resources (\emph{throughput}) and with minimum congestion in trails. These two goals are mostly overlapping, hence we achieve the former by trying to solve the latter.
 
 % earlier works
-The earlier works \cite{LOST} for this task present Localization-Space Trails (LOST)  which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified by reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite(DORIGO1992) of converging to  near-optimal paths from source to home.
+The earlier works \cite{LOST} for this task present Localization-Space Trails (LOST)  which is an implementation of ant-inspired trail following for imperfectly-localized robots. In that algorithm, robots generate and share trail data structures composed of waypoints specified by reference to task-level features. The trails are continuously refined online, and maintain the ant-algorithm property \cite{dorigo1992} of converging to  near-optimal paths from source to home.
 
 % a short introduction of our approach
 In the LOST and other ant-algorithm based methods, time is used as the distance function to be optimized, by which the discovered paths can be longer in space but shorter in time since they spread robots out to minimize spatial interference between robots. By increasing the population size, these interferences eventually dominate the traveling cost. However, since ant algorithms tend to converge to a single best trail, in a large population this train can become congested. Since the behaviour of the ant algorithms (including LOST) is to explore the environment to discover the target while finding the shortest path to that, in the case of multiple sources -- which we are trying to explore -- they do not perform well since they try to minimize the path to a random source (which might be the closest one). Hence, we modify the original algorithm such that it does not converge to a single source as it would result in better throughput.
@@ -90,12 +90,11 @@ In this paper we describe two modifications to the existing LOST algorithm that 
 \end{figure}
 
 \section{RELATED WORKS}
-Various works of ant-inspired trail following algorithms have been published, ranging from leaving real chemical trails \cite{Rus-
-sell et al. (1994)} to infra-red message transmission \cite{Payton et al. (2001)}. 
+Various works of ant-inspired trail following algorithms have been published, ranging from leaving real chemical trails \cite{RussellOdour1994} to infra-red message transmission \cite{payton2001pheromone}. 
 
-Our work closely follows from Localization-Space Trails (LOST) \cite{LOST} and its variants which is suitable for imperfectly localized robots. A brief review of LOST will be provided in subsection \ref{ssection:LOST_review}. The method is to generate and share short-lived waypoints (\emph{crumbs)} by robots, which contain some information (estimated distance to target, time to target, density of waypoints, to-source or to-sink label). By following these crumbs, robots can find optimal path between source and home. In the Spread-Out LOST (SO-LOST) which is a modified version of LOST, it tries to increase the scalability by minimizing mutual spatial inference between robots which is done by shifting crumbs in a trail from source to home and home to source for a single source, single sink. 
+Our work closely follows from Localization-Space Trails (LOST) \cite{LOST} and its variants which is suitable for imperfectly localized robots. A brief review of LOST will be provided in subsection \ref{ssection:LOST_review}. The method is to generate and share short-lived waypoints (\emph{crumbs)} by robots, which contain some information (estimated distance to target, time to target, density of waypoints, to-source or to-sink label). By following these crumbs, robots can find optimal path between source and home. In the Spread-Out LOST (SO-LOST) \cite{SO_LOST} which is a modified version of LOST, it tries to increase the scalability by minimizing mutual spatial inference between robots which is done by shifting crumbs in a trail from source to home and home to source for a single source, single sink. 
 
-the Multi-Objective LOST (MO-LOST) tries to reduce mutual spatial inference for paths with multiple sources, multiple sinks by shifting the crumbs of a trail which is crossing other crumbs of the other trails. In the Blinkered LOST (Blinkered LOST) it tries to modulate the field of the view (FOV) of the robots' trail-detecting sensor. it shows that the global throughput is a function of robot FOV, means that with narrower FOVs, it performs better in large populations, since narrrower FOV causes multiple trails to be maintained, so that the system can support larger population sizes before saturating due to inference.
+The Multi-Objective LOST (MO-LOST) \cite{MO_LOST} tries to reduce mutual spatial inference for paths with multiple sources, multiple sinks by shifting the crumbs of a trail which is crossing other crumbs of the other trails. In the Blinkered LOST \cite{BLINKERED_LOST} it tries to modulate the field of the view (FOV) of the robots' trail-detecting sensor. it shows that the global throughput is a function of robot FOV, means that with narrower FOVs, it performs better in large populations, since narrrower FOV causes multiple trails to be maintained, so that the system can support larger population sizes before saturating due to inference.
 
 \subsection{LOCALIZATION-SPACE TRAILS REVIEW} \label{ssection:LOST_review}
 
@@ -381,7 +380,7 @@ The experiments we conducted used the following parameter settings:
 
 In this paper, we outlined two approaches for improving LOST algorithm for better throughput in a multiple-source, single-home setting. We have provided experimental results showing improved performance compared to a variant of LOST (SO-LOST) both quantitavely and qualititavely.  The robots take into account the congestion in the trails either explicitly or implicitly to make better decisions regarding which trail to follow. 
 
-In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_PAPER Hjort et al. 1933 } where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{Song and Vaughan 2013} and \cite{Zhang and Zhao Song 2016} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. 
+In our future works we will implement a fully distributed version of our algorithm, potentially with real robots. Another extension can be implementing Maximum Sustainable Yield (MSY) \cite{MSY_Hjor1933} where the sources have a finite (and possibly different) resource growth rate. Previous works in multi-robot MSY foraging \cite{songmulti} and \cite{zhangmaximum} rely on known source position. We can extend our current work to deal with simultaneous source finding and MSY in multiple-souce, single-home setting. 
 
 We will also improve our navigation strategies. There are lot of room for improvement in our obstacle avoidance and trail-following behavior which could lead to better performance. 
 

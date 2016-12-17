@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{INTRODUCTION}{}% 1
+\BOOKMARK [1][-]{section.2}{RELATED WORKS}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{LOCALIZATION-SPACE TRAILS REVIEW}{section.2}% 3
+\BOOKMARK [1][-]{section.3}{CONTRIBUTION}{}% 4
+\BOOKMARK [1][-]{section.4}{EMBODIED APPROACH}{}% 5
+\BOOKMARK [2][-]{subsection.4.1}{CRUMB DENSITY IMPLEMENTATION}{section.4}% 6
+\BOOKMARK [2][-]{subsection.4.2}{DRAWBACKS OF THIS APPROACH}{section.4}% 7
+\BOOKMARK [1][-]{section.5}{EXPLICIT ALLOCATION APPROACH}{}% 8
+\BOOKMARK [2][-]{subsection.5.1}{POSSIBLE MODIFICATIONS FOR DISTRIBUTEDNESS}{section.5}% 9
+\BOOKMARK [1][-]{section.6}{EXPERIMENTS}{}% 10
+\BOOKMARK [2][-]{subsection.6.1}{SIMULATION SETUP}{section.6}% 11
+\BOOKMARK [2][-]{subsection.6.2}{RESULTS}{section.6}% 12
+\BOOKMARK [2][-]{subsection.6.3}{DISCUSSION}{section.6}% 13
+\BOOKMARK [1][-]{section.7}{CONCLUSIONS AND FUTURE WORKS}{}% 14
+\BOOKMARK [1][-]{section*.10}{References}{}% 15
